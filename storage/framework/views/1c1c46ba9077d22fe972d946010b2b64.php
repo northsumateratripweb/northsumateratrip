@@ -1,0 +1,201 @@
+<nav class="fixed top-0 left-0 right-0 z-[100] transition-all duration-500" x-data="{ scrolled: false, langOpen: false }" @scroll.window="scrolled = (window.pageYOffset > 20)" @click.outside="langOpen = false">
+    <!-- Sticky Glass Background -->
+    <div class="absolute inset-0 bg-white/90 dark:bg-slate-950/90 backdrop-blur-xl border-b border-slate-100 dark:border-slate-800 transition-all duration-500" :class="scrolled ? 'opacity-100 translate-y-0' : 'opacity-0 -translate-y-full'"></div>
+
+    <div class="max-w-7xl mx-auto px-6 lg:px-8 relative">
+        <div class="flex justify-between items-center h-16 md:h-20">
+            <!-- Logo -->
+            <div class="flex-shrink-0">
+                <a href="<?php echo e(route('home')); ?>" class="group flex items-center gap-3">
+                    <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if(isset($settings['site_logo'])): ?>
+                        <?php
+                            $logoUrl = $settings['site_logo'];
+                            if (!str_starts_with($logoUrl, 'http')) {
+                                $logoUrl = asset('storage/' . $logoUrl);
+                            }
+                        ?>
+                        <img src="<?php echo e($logoUrl); ?>" alt="<?php echo e($settings['site_name'] ?? 'Logo'); ?>" class="h-10 md:h-12 w-auto object-contain transition-all duration-300" :class="scrolled ? '' : 'brightness-0 invert drop-shadow-[0_1px_2px_rgba(0,0,0,0.3)]'">
+                    <?php else: ?>
+                        <div class="w-9 h-9 bg-blue-700 rounded-xl flex items-center justify-center text-white shadow-lg shadow-blue-500/20 group-hover:rotate-12 transition-transform duration-300">
+                            <i class="fas fa-route text-base"></i>
+                        </div>
+                    <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
+                    <div>
+                        <span class="text-lg font-black tracking-tight uppercase transition-colors duration-300" :class="scrolled ? 'text-slate-900 dark:text-white' : 'text-white drop-shadow-[0_1px_3px_rgba(0,0,0,0.5)]'"><?php echo e($settings['site_name'] ?? 'NorthSumateraTrip'); ?></span>
+                        <p class="text-[0.5rem] font-semibold uppercase tracking-wider leading-none mt-0.5 transition-colors duration-300" :class="scrolled ? 'text-slate-400' : 'text-white/70'"><?php echo e(__('ui.site_premium')); ?></p>
+                    </div>
+                </a>
+            </div>
+
+            <!-- Desktop Navigation -->
+            <div class="hidden lg:flex items-center gap-1">
+                <?php
+                    $navItems = [
+                        ['route' => 'home',           'label' => __('ui.nav_home')],
+                        ['route' => 'packages',        'label' => __('ui.nav_packages')],
+                        ['route' => 'car-rental',      'label' => __('ui.nav_car_rental')],
+                        ['route' => 'rental-package',  'label' => __('ui.nav_rental_package')],
+                        ['route' => 'gallery',         'label' => __('ui.nav_gallery')],
+                        ['route' => 'blog.index',      'label' => __('ui.nav_blog')],
+                    ];
+                ?>
+
+                <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php $__currentLoopData = $navItems; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $item): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                    <a href="<?php echo e(route($item['route'])); ?>"
+                       class="relative px-4 py-2 text-xs font-bold uppercase tracking-wider transition-all duration-300 group"
+                       :class="scrolled
+                           ? '<?php echo e(request()->routeIs($item['route']) ? 'text-blue-700' : 'text-slate-500 hover:text-slate-900 dark:hover:text-white'); ?>'
+                           : '<?php echo e(request()->routeIs($item['route']) ? 'text-white font-bold' : 'text-white/80 hover:text-white'); ?> drop-shadow-[0_1px_2px_rgba(0,0,0,0.4)]'">
+                        <?php echo e($item['label']); ?>
+
+                        <span class="absolute bottom-0 left-4 right-4 h-0.5 transform origin-left transition-transform duration-300 <?php echo e(request()->routeIs($item['route']) ? 'scale-x-100' : 'scale-x-0 group-hover:scale-x-100'); ?>" :class="scrolled ? 'bg-blue-700' : 'bg-white'"></span>
+                    </a>
+                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
+            </div>
+
+            <!-- Right Side: Lang Switcher + Wishlist + CTA -->
+            <div class="flex items-center gap-2">
+
+                <!-- Language / Currency Switcher -->
+                <div class="relative">
+                    <?php
+                        $currentLocale = app()->getLocale();
+                        $langMap = [
+                            'id' => ['flag' => '🇮🇩', 'label' => 'ID', 'currency' => 'IDR', 'full' => __('ui.lang_id')],
+                            'ms' => ['flag' => '🇲🇾', 'label' => 'MY', 'currency' => 'MYR', 'full' => __('ui.lang_ms')],
+                            'en' => ['flag' => '🇸🇬', 'label' => 'EN', 'currency' => 'SGD', 'full' => __('ui.lang_en')],
+                        ];
+                        $current = $langMap[$currentLocale] ?? $langMap['id'];
+                    ?>
+                    <button @click="langOpen = !langOpen"
+                            class="flex items-center gap-1.5 px-3 py-2 rounded-xl transition-all duration-300 text-xs font-bold"
+                            :class="scrolled ? 'bg-slate-50 dark:bg-slate-900 border border-slate-100 dark:border-slate-800 text-slate-600 dark:text-slate-300 hover:border-blue-200 hover:bg-blue-50 dark:hover:bg-slate-800' : 'bg-white/15 backdrop-blur-sm border border-white/20 text-white hover:bg-white/25'"
+                            type="button">
+                        <span class="text-base leading-none"><?php echo e($current['flag']); ?></span>
+                        <span class="hidden sm:inline text-xs"><?php echo e($current['label']); ?></span>
+                        <span class="hidden sm:inline" :class="scrolled ? 'text-slate-300' : 'text-white/50'">·</span>
+                        <span class="hidden sm:inline text-xs font-black" :class="scrolled ? 'text-blue-600' : 'text-white'"><?php echo e($current['currency']); ?></span>
+                        <svg class="w-3 h-3 transition-all duration-200" :class="[langOpen ? 'rotate-180' : '', scrolled ? 'text-slate-400' : 'text-white/60']" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M19 9l-7 7-7-7"/></svg>
+                    </button>
+
+                    <!-- Dropdown -->
+                    <div x-show="langOpen"
+                         x-transition:enter="transition ease-out duration-150"
+                         x-transition:enter-start="opacity-0 scale-95"
+                         x-transition:enter-end="opacity-100 scale-100"
+                         x-transition:leave="transition ease-in duration-100"
+                         x-transition:leave-start="opacity-100 scale-100"
+                         x-transition:leave-end="opacity-0 scale-95"
+                         class="absolute right-0 top-full mt-2 w-52 bg-white dark:bg-slate-900 rounded-2xl border border-slate-100 dark:border-slate-800 shadow-xl shadow-slate-900/10 overflow-hidden z-50"
+                         style="display: none;">
+                        <div class="p-2">
+                            <p class="text-xs font-semibold text-slate-400 uppercase tracking-wider px-3 py-2"><?php echo e(__('ui.language')); ?> & <?php echo e(__('ui.currency')); ?></p>
+                            <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php $__currentLoopData = $langMap; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $locale => $info): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                            <a href="<?php echo e(route('lang.switch', $locale)); ?>"
+                               class="flex items-center gap-3 px-3 py-2.5 rounded-xl transition-all duration-150 <?php echo e($locale === $currentLocale ? 'bg-blue-50 dark:bg-blue-900/30 text-blue-700' : 'text-slate-600 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-800'); ?>">
+                                <span class="text-xl leading-none"><?php echo e($info['flag']); ?></span>
+                                <div class="flex-1 min-w-0">
+                                    <p class="text-xs font-bold leading-tight"><?php echo e($info['full']); ?></p>
+                                    <p class="text-xs text-slate-400 font-medium"><?php echo e($info['currency']); ?></p>
+                                </div>
+                                <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if($locale === $currentLocale): ?>
+                                <svg class="w-4 h-4 text-blue-600 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg>
+                                <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
+                            </a>
+                            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Wishlist -->
+                <a href="<?php echo e(route('wishlist.index')); ?>" class="relative w-10 h-10 rounded-xl flex items-center justify-center hover:text-rose-500 hover:shadow-lg hover:shadow-rose-500/10 transition-all duration-300" :class="scrolled ? 'bg-slate-50 dark:bg-slate-900 text-slate-400 border border-slate-100 dark:border-slate-800' : 'bg-white/15 backdrop-blur-sm text-white/80 border border-white/20 hover:bg-white/25'">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path></svg>
+                    <?php
+                        $wishlistCount = count($wishlistedProductIds ?? []) + count($wishlistedVehicleIds ?? []);
+                    ?>
+                    <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if($wishlistCount > 0): ?>
+                        <span data-wishlist-count class="absolute -top-1 -right-1 w-4 h-4 bg-rose-500 text-white text-[0.5rem] font-black rounded-full flex items-center justify-center border-2 border-white dark:border-slate-950"><?php echo e($wishlistCount); ?></span>
+                    <?php else: ?>
+                        <span data-wishlist-count class="absolute -top-1 -right-1 w-4 h-4 bg-rose-500 text-white text-[0.5rem] font-black rounded-full flex items-center justify-center border-2 border-white dark:border-slate-950" style="display:none;">0</span>
+                    <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
+                </a>
+
+                <!-- Contact CTA -->
+                <a href="<?php echo e(route('contact')); ?>" class="hidden sm:flex px-6 py-2.5 rounded-xl text-xs font-bold uppercase tracking-wider transition-all duration-300 active:scale-95" :class="scrolled ? 'bg-slate-900 border border-slate-900 dark:bg-white dark:border-white text-white dark:text-slate-900 hover:bg-blue-700 hover:border-blue-700 hover:text-white' : 'bg-white text-slate-900 border border-white hover:bg-blue-600 hover:border-blue-600 hover:text-white shadow-lg shadow-black/10'">
+                    <?php echo e(__('ui.nav_contact')); ?>
+
+                </a>
+
+                <!-- Mobile Menu Button -->
+                <button id="mobile-menu-btn" class="lg:hidden w-10 h-10 rounded-xl flex items-center justify-center shadow-lg active:scale-90 transition-all duration-300" :class="scrolled ? 'bg-slate-900 text-white shadow-slate-900/10' : 'bg-white text-slate-900 shadow-black/10'">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M4 6h16M4 12h16m-7 6h7"></path></svg>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Mobile Menu -->
+    <div id="mobile-menu" class="lg:hidden fixed inset-0 z-[110] bg-white dark:bg-slate-950 translate-x-full transition-transform duration-500 ease-in-out py-16 px-8 overflow-y-auto">
+        <button id="close-menu-btn" class="absolute top-8 right-8 w-10 h-10 bg-slate-50 dark:bg-slate-900 rounded-xl flex items-center justify-center text-slate-400">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M6 18L18 6M6 6l12 12"></path></svg>
+        </button>
+
+        <div class="space-y-5 mt-4">
+            <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php $__currentLoopData = $navItems; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $item): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                <a href="<?php echo e(route($item['route'])); ?>" class="block text-3xl font-black text-slate-900 dark:text-white uppercase tracking-tight hover:text-blue-600 transition-colors">
+                    <?php echo e($item['label']); ?>
+
+                </a>
+            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
+            <hr class="border-slate-100 dark:border-slate-800 my-4">
+            <a href="<?php echo e(route('contact')); ?>" class="block text-lg font-bold text-slate-400 uppercase tracking-wider"><?php echo e(__('ui.nav_contact')); ?></a>
+
+            <!-- Mobile Language Switcher -->
+            <hr class="border-slate-100 dark:border-slate-800">
+            <div>
+                <p class="text-xs font-semibold text-slate-400 uppercase tracking-wider mb-3"><?php echo e(__('ui.language')); ?> & <?php echo e(__('ui.currency')); ?></p>
+                <div class="flex flex-col gap-2">
+                    <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php $__currentLoopData = $langMap; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $locale => $info): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                    <a href="<?php echo e(route('lang.switch', $locale)); ?>"
+                       class="flex items-center gap-3 px-4 py-3 rounded-xl border text-sm font-semibold transition-all <?php echo e($locale === $currentLocale ? 'bg-blue-50 border-blue-200 text-blue-700' : 'bg-slate-50 border-slate-100 text-slate-600 hover:border-blue-200'); ?>">
+                        <span class="text-xl"><?php echo e($info['flag']); ?></span>
+                        <div class="flex-1">
+                            <p class="font-bold text-sm leading-tight"><?php echo e($info['full']); ?></p>
+                            <p class="text-xs text-slate-400"><?php echo e($info['currency']); ?></p>
+                        </div>
+                        <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if($locale === $currentLocale): ?>
+                        <svg class="w-4 h-4 text-blue-600" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg>
+                        <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
+                    </a>
+                    <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
+                </div>
+            </div>
+        </div>
+    </div>
+</nav>
+
+<script>
+    window.addEventListener('scroll', function() {
+        const nav = document.querySelector('nav');
+        if (window.scrollY > 50) {
+            nav.classList.add('py-0');
+        } else {
+            nav.classList.remove('py-0');
+        }
+    });
+
+    const mobileMenu    = document.getElementById('mobile-menu');
+    const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+    const closeMenuBtn  = document.getElementById('close-menu-btn');
+
+    mobileMenuBtn.addEventListener('click', () => {
+        mobileMenu.classList.remove('translate-x-full');
+        document.body.style.overflow = 'hidden';
+    });
+
+    closeMenuBtn.addEventListener('click', () => {
+        mobileMenu.classList.add('translate-x-full');
+        document.body.style.overflow = '';
+    });
+</script>
+<?php /**PATH D:\PROYEK\WISATA SEDERHANA\northsumateratrip.com\resources\views/partials/navbar.blade.php ENDPATH**/ ?>
