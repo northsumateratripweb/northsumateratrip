@@ -8,7 +8,7 @@ Upgrade ke Laravel 12 & PHP 8.4
 
 2) Perbarui composer.json (contoh)
 - Ubah requirement inti dan versi paket terkait:
-
+sd
   {
     "require": {
       "php": "^8.4",
