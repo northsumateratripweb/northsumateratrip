@@ -1,0 +1,200 @@
+﻿#27 D:/PROYEK/WISATA SEDERHANA/northsumateratrip.com/vendor/laravel/framework/src/Illuminate/Console/Command.php(182): Symfony/Component/Console/Command/Command->run(Object(Symfony/Component/Console/Input/ArgvInput), Object(Illuminate/Console/OutputStyle))
+#28 D:/PROYEK/WISATA SEDERHANA/northsumateratrip.com/vendor/symfony/console/Application.php(1102): Illuminate/Console/Command->run(Object(Symfony/Component/Console/Input/ArgvInput), Object(Symfony/Component/Console/Output/ConsoleOutput))
+#29 D:/PROYEK/WISATA SEDERHANA/northsumateratrip.com/vendor/symfony/console/Application.php(356): Symfony/Component/Console/Application->doRunCommand(Object(Laravel/Mcp/Console/Commands/StartCommand), Object(Symfony/Component/Console/Input/ArgvInput), Object(Symfony/Component/Console/Output/ConsoleOutput))
+#30 D:/PROYEK/WISATA SEDERHANA/northsumateratrip.com/vendor/symfony/console/Application.php(195): Symfony/Component/Console/Application->doRun(Object(Symfony/Component/Console/Input/ArgvInput), Object(Symfony/Component/Console/Output/ConsoleOutput))
+#31 D:/PROYEK/WISATA SEDERHANA/northsumateratrip.com/vendor/laravel/framework/src/Illuminate/Foundation/Console/Kernel.php(198): Symfony/Component/Console/Application->run(Object(Symfony/Component/Console/Input/ArgvInput), Object(Symfony/Component/Console/Output/ConsoleOutput))
+#32 D:/PROYEK/WISATA SEDERHANA/northsumateratrip.com/artisan(24): Illuminate/Foundation/Console/Kernel->handle(Object(Symfony/Component/Console/Input/ArgvInput), Object(Symfony/Component/Console/Output/ConsoleOutput))
+#33 {main}
+"} 
+[2026-03-05 02:19:40] local.ERROR: PDO::prepare(): Argument #1 ($query) must be of type string, Illuminate\Database\Query\Expression given {"exception":"[object] (TypeError(code: 0): PDO::prepare(): Argument #1 ($query) must be of type string, Illuminate\\Database\\Query\\Expression given at D:/PROYEK/WISATA SEDERHANA/northsumateratrip.com/vendor/laravel/framework/src/Illuminate/Database/Connection.php:407)
+[stacktrace]
+#0 D:/PROYEK/WISATA SEDERHANA/northsumateratrip.com/vendor/laravel/framework/src/Illuminate/Database/Connection.php(407): PDO->prepare(Object(Illuminate/Database/Query/Expression))
+#1 D:/PROYEK/WISATA SEDERHANA/northsumateratrip.com/vendor/laravel/framework/src/Illuminate/Database/Connection.php(812): Illuminate/Database/Connection->Illuminate/Database/{closure}(Object(Illuminate/Database/Query/Expression), Array)
+#2 D:/PROYEK/WISATA SEDERHANA/northsumateratrip.com/vendor/laravel/framework/src/Illuminate/Database/Connection.php(779): Illuminate/Database/Connection->runQueryCallback(Object(Illuminate/Database/Query/Expression), Array, Object(Closure))
+#3 D:/PROYEK/WISATA SEDERHANA/northsumateratrip.com/vendor/laravel/framework/src/Illuminate/Database/Connection.php(398): Illuminate/Database/Connection->run(Object(Illuminate/Database/Query/Expression), Array, Object(Closure))
+#4 D:/PROYEK/WISATA SEDERHANA/northsumateratrip.com/vendor/laravel/framework/src/Illuminate/Database/DatabaseManager.php(495): Illuminate/Database/Connection->select(Object(Illuminate/Database/Query/Expression))
+#5 D:/PROYEK/WISATA SEDERHANA/northsumateratrip.com/vendor/laravel/framework/src/Illuminate/Support/Facades/Facade.php(361): Illuminate/Database/DatabaseManager->__call('select', Array)
+#6 D:/PROYEK/WISATA SEDERHANA/northsumateratrip.com/app/Mcp/Tools/DatabaseQuery.php(30): Illuminate/Support/Facades/Facade::__callStatic('select', Array)
+#7 D:/PROYEK/WISATA SEDERHANA/northsumateratrip.com/vendor/laravel/framework/src/Illuminate/Container/BoundMethod.php(36): App/Mcp/Tools/DatabaseQuery->handle(Object(Laravel/Mcp/Request))
+#8 D:/PROYEK/WISATA SEDERHANA/northsumateratrip.com/vendor/laravel/framework/src/Illuminate/Container/Util.php(43): Illuminate/Container/BoundMethod::Illuminate/Container/{closure}()
+#9 D:/PROYEK/WISATA SEDERHANA/northsumateratrip.com/vendor/laravel/framework/src/Illuminate/Container/BoundMethod.php(95): Illuminate/Container/Util::unwrapIfClosure(Object(Closure))
+#10 D:/PROYEK/WISATA SEDERHANA/northsumateratrip.com/vendor/laravel/framework/src/Illuminate/Container/BoundMethod.php(35): Illuminate/Container/BoundMethod::callBoundMethod(Object(Illuminate/Foundation/Application), Array, Object(Closure))
+#11 D:/PROYEK/WISATA SEDERHANA/northsumateratrip.com/vendor/laravel/framework/src/Illuminate/Container/Container.php(696): Illuminate/Container/BoundMethod::call(Object(Illuminate/Foundation/Application), Array, Array, NULL)
+#12 D:/PROYEK/WISATA SEDERHANA/northsumateratrip.com/vendor/laravel/mcp/src/Server/Methods/CallTool.php(53): Illuminate/Container/Container->call(Array)
+#13 D:/PROYEK/WISATA SEDERHANA/northsumateratrip.com/vendor/laravel/mcp/src/Server.php(287): Laravel/Mcp/Server/Methods/CallTool->handle(Object(Laravel/Mcp/Server/Transport/JsonRpcRequest), Object(Laravel/Mcp/Server/ServerContext))
+#14 D:/PROYEK/WISATA SEDERHANA/northsumateratrip.com/vendor/laravel/mcp/src/Server.php(255): Laravel/Mcp/Server->runMethodHandle(Object(Laravel/Mcp/Server/Transport/JsonRpcRequest), Object(Laravel/Mcp/Server/ServerContext))
+#15 D:/PROYEK/WISATA SEDERHANA/northsumateratrip.com/vendor/laravel/mcp/src/Server.php(208): Laravel/Mcp/Server->handleMessage(Object(Laravel/Mcp/Server/Transport/JsonRpcRequest), Object(Laravel/Mcp/Server/ServerContext))
+#16 D:/PROYEK/WISATA SEDERHANA/northsumateratrip.com/vendor/laravel/mcp/src/Server/Transport/StdioTransport.php(44): Laravel/Mcp/Server->handle('{\"jsonrpc\":\"2.0...')
+#17 D:/PROYEK/WISATA SEDERHANA/northsumateratrip.com/vendor/laravel/mcp/src/Server/Registrar.php(143): Laravel/Mcp/Server/Transport/StdioTransport->run()
+#18 D:/PROYEK/WISATA SEDERHANA/northsumateratrip.com/vendor/laravel/mcp/src/Server/Registrar.php(61): Laravel/Mcp/Server/Registrar::startServer('App//Mcp//Servers...', Object(Closure))
+#19 D:/PROYEK/WISATA SEDERHANA/northsumateratrip.com/vendor/laravel/mcp/src/Console/Commands/StartCommand.php(32): Laravel/Mcp/Server/Registrar->Laravel/Mcp/Server/{closure}()
+#20 D:/PROYEK/WISATA SEDERHANA/northsumateratrip.com/vendor/laravel/framework/src/Illuminate/Container/BoundMethod.php(36): Laravel/Mcp/Console/Commands/StartCommand->handle(Object(Laravel/Mcp/Server/Registrar))
+#21 D:/PROYEK/WISATA SEDERHANA/northsumateratrip.com/vendor/laravel/framework/src/Illuminate/Container/Util.php(43): Illuminate/Container/BoundMethod::Illuminate/Container/{closure}()
+#22 D:/PROYEK/WISATA SEDERHANA/northsumateratrip.com/vendor/laravel/framework/src/Illuminate/Container/BoundMethod.php(95): Illuminate/Container/Util::unwrapIfClosure(Object(Closure))
+#23 D:/PROYEK/WISATA SEDERHANA/northsumateratrip.com/vendor/laravel/framework/src/Illuminate/Container/BoundMethod.php(35): Illuminate/Container/BoundMethod::callBoundMethod(Object(Illuminate/Foundation/Application), Array, Object(Closure))
+#24 D:/PROYEK/WISATA SEDERHANA/northsumateratrip.com/vendor/laravel/framework/src/Illuminate/Container/Container.php(696): Illuminate/Container/BoundMethod::call(Object(Illuminate/Foundation/Application), Array, Array, NULL)
+#25 D:/PROYEK/WISATA SEDERHANA/northsumateratrip.com/vendor/laravel/framework/src/Illuminate/Console/Command.php(213): Illuminate/Container/Container->call(Array)
+#26 D:/PROYEK/WISATA SEDERHANA/northsumateratrip.com/vendor/symfony/console/Command/Command.php(341): Illuminate/Console/Command->execute(Object(Symfony/Component/Console/Input/ArgvInput), Object(Illuminate/Console/OutputStyle))
+#27 D:/PROYEK/WISATA SEDERHANA/northsumateratrip.com/vendor/laravel/framework/src/Illuminate/Console/Command.php(182): Symfony/Component/Console/Command/Command->run(Object(Symfony/Component/Console/Input/ArgvInput), Object(Illuminate/Console/OutputStyle))
+#28 D:/PROYEK/WISATA SEDERHANA/northsumateratrip.com/vendor/symfony/console/Application.php(1102): Illuminate/Console/Command->run(Object(Symfony/Component/Console/Input/ArgvInput), Object(Symfony/Component/Console/Output/ConsoleOutput))
+#29 D:/PROYEK/WISATA SEDERHANA/northsumateratrip.com/vendor/symfony/console/Application.php(356): Symfony/Component/Console/Application->doRunCommand(Object(Laravel/Mcp/Console/Commands/StartCommand), Object(Symfony/Component/Console/Input/ArgvInput), Object(Symfony/Component/Console/Output/ConsoleOutput))
+#30 D:/PROYEK/WISATA SEDERHANA/northsumateratrip.com/vendor/symfony/console/Application.php(195): Symfony/Component/Console/Application->doRun(Object(Symfony/Component/Console/Input/ArgvInput), Object(Symfony/Component/Console/Output/ConsoleOutput))
+#31 D:/PROYEK/WISATA SEDERHANA/northsumateratrip.com/vendor/laravel/framework/src/Illuminate/Foundation/Console/Kernel.php(198): Symfony/Component/Console/Application->run(Object(Symfony/Component/Console/Input/ArgvInput), Object(Symfony/Component/Console/Output/ConsoleOutput))
+#32 D:/PROYEK/WISATA SEDERHANA/northsumateratrip.com/artisan(24): Illuminate/Foundation/Console/Kernel->handle(Object(Symfony/Component/Console/Input/ArgvInput), Object(Symfony/Component/Console/Output/ConsoleOutput))
+#33 {main}
+"} 
+[2026-03-05 02:19:40] local.ERROR: PDO::prepare(): Argument #1 ($query) must be of type string, Illuminate\Database\Query\Expression given {"exception":"[object] (TypeError(code: 0): PDO::prepare(): Argument #1 ($query) must be of type string, Illuminate\\Database\\Query\\Expression given at D:/PROYEK/WISATA SEDERHANA/northsumateratrip.com/vendor/laravel/framework/src/Illuminate/Database/Connection.php:407)
+[stacktrace]
+#0 D:/PROYEK/WISATA SEDERHANA/northsumateratrip.com/vendor/laravel/framework/src/Illuminate/Database/Connection.php(407): PDO->prepare(Object(Illuminate/Database/Query/Expression))
+#1 D:/PROYEK/WISATA SEDERHANA/northsumateratrip.com/vendor/laravel/framework/src/Illuminate/Database/Connection.php(812): Illuminate/Database/Connection->Illuminate/Database/{closure}(Object(Illuminate/Database/Query/Expression), Array)
+#2 D:/PROYEK/WISATA SEDERHANA/northsumateratrip.com/vendor/laravel/framework/src/Illuminate/Database/Connection.php(779): Illuminate/Database/Connection->runQueryCallback(Object(Illuminate/Database/Query/Expression), Array, Object(Closure))
+#3 D:/PROYEK/WISATA SEDERHANA/northsumateratrip.com/vendor/laravel/framework/src/Illuminate/Database/Connection.php(398): Illuminate/Database/Connection->run(Object(Illuminate/Database/Query/Expression), Array, Object(Closure))
+#4 D:/PROYEK/WISATA SEDERHANA/northsumateratrip.com/vendor/laravel/framework/src/Illuminate/Database/DatabaseManager.php(495): Illuminate/Database/Connection->select(Object(Illuminate/Database/Query/Expression))
+#5 D:/PROYEK/WISATA SEDERHANA/northsumateratrip.com/vendor/laravel/framework/src/Illuminate/Support/Facades/Facade.php(361): Illuminate/Database/DatabaseManager->__call('select', Array)
+#6 D:/PROYEK/WISATA SEDERHANA/northsumateratrip.com/app/Mcp/Tools/DatabaseQuery.php(30): Illuminate/Support/Facades/Facade::__callStatic('select', Array)
+#7 D:/PROYEK/WISATA SEDERHANA/northsumateratrip.com/vendor/laravel/framework/src/Illuminate/Container/BoundMethod.php(36): App/Mcp/Tools/DatabaseQuery->handle(Object(Laravel/Mcp/Request))
+#8 D:/PROYEK/WISATA SEDERHANA/northsumateratrip.com/vendor/laravel/framework/src/Illuminate/Container/Util.php(43): Illuminate/Container/BoundMethod::Illuminate/Container/{closure}()
+#9 D:/PROYEK/WISATA SEDERHANA/northsumateratrip.com/vendor/laravel/framework/src/Illuminate/Container/BoundMethod.php(95): Illuminate/Container/Util::unwrapIfClosure(Object(Closure))
+#10 D:/PROYEK/WISATA SEDERHANA/northsumateratrip.com/vendor/laravel/framework/src/Illuminate/Container/BoundMethod.php(35): Illuminate/Container/BoundMethod::callBoundMethod(Object(Illuminate/Foundation/Application), Array, Object(Closure))
+#11 D:/PROYEK/WISATA SEDERHANA/northsumateratrip.com/vendor/laravel/framework/src/Illuminate/Container/Container.php(696): Illuminate/Container/BoundMethod::call(Object(Illuminate/Foundation/Application), Array, Array, NULL)
+#12 D:/PROYEK/WISATA SEDERHANA/northsumateratrip.com/vendor/laravel/mcp/src/Server/Methods/CallTool.php(53): Illuminate/Container/Container->call(Array)
+#13 D:/PROYEK/WISATA SEDERHANA/northsumateratrip.com/vendor/laravel/mcp/src/Server.php(287): Laravel/Mcp/Server/Methods/CallTool->handle(Object(Laravel/Mcp/Server/Transport/JsonRpcRequest), Object(Laravel/Mcp/Server/ServerContext))
+#14 D:/PROYEK/WISATA SEDERHANA/northsumateratrip.com/vendor/laravel/mcp/src/Server.php(255): Laravel/Mcp/Server->runMethodHandle(Object(Laravel/Mcp/Server/Transport/JsonRpcRequest), Object(Laravel/Mcp/Server/ServerContext))
+#15 D:/PROYEK/WISATA SEDERHANA/northsumateratrip.com/vendor/laravel/mcp/src/Server.php(208): Laravel/Mcp/Server->handleMessage(Object(Laravel/Mcp/Server/Transport/JsonRpcRequest), Object(Laravel/Mcp/Server/ServerContext))
+#16 D:/PROYEK/WISATA SEDERHANA/northsumateratrip.com/vendor/laravel/mcp/src/Server/Transport/StdioTransport.php(44): Laravel/Mcp/Server->handle('{\"jsonrpc\":\"2.0...')
+#17 D:/PROYEK/WISATA SEDERHANA/northsumateratrip.com/vendor/laravel/mcp/src/Server/Registrar.php(143): Laravel/Mcp/Server/Transport/StdioTransport->run()
+#18 D:/PROYEK/WISATA SEDERHANA/northsumateratrip.com/vendor/laravel/mcp/src/Server/Registrar.php(61): Laravel/Mcp/Server/Registrar::startServer('App//Mcp//Servers...', Object(Closure))
+#19 D:/PROYEK/WISATA SEDERHANA/northsumateratrip.com/vendor/laravel/mcp/src/Console/Commands/StartCommand.php(32): Laravel/Mcp/Server/Registrar->Laravel/Mcp/Server/{closure}()
+#20 D:/PROYEK/WISATA SEDERHANA/northsumateratrip.com/vendor/laravel/framework/src/Illuminate/Container/BoundMethod.php(36): Laravel/Mcp/Console/Commands/StartCommand->handle(Object(Laravel/Mcp/Server/Registrar))
+#21 D:/PROYEK/WISATA SEDERHANA/northsumateratrip.com/vendor/laravel/framework/src/Illuminate/Container/Util.php(43): Illuminate/Container/BoundMethod::Illuminate/Container/{closure}()
+#22 D:/PROYEK/WISATA SEDERHANA/northsumateratrip.com/vendor/laravel/framework/src/Illuminate/Container/BoundMethod.php(95): Illuminate/Container/Util::unwrapIfClosure(Object(Closure))
+#23 D:/PROYEK/WISATA SEDERHANA/northsumateratrip.com/vendor/laravel/framework/src/Illuminate/Container/BoundMethod.php(35): Illuminate/Container/BoundMethod::callBoundMethod(Object(Illuminate/Foundation/Application), Array, Object(Closure))
+#24 D:/PROYEK/WISATA SEDERHANA/northsumateratrip.com/vendor/laravel/framework/src/Illuminate/Container/Container.php(696): Illuminate/Container/BoundMethod::call(Object(Illuminate/Foundation/Application), Array, Array, NULL)
+#25 D:/PROYEK/WISATA SEDERHANA/northsumateratrip.com/vendor/laravel/framework/src/Illuminate/Console/Command.php(213): Illuminate/Container/Container->call(Array)
+#26 D:/PROYEK/WISATA SEDERHANA/northsumateratrip.com/vendor/symfony/console/Command/Command.php(341): Illuminate/Console/Command->execute(Object(Symfony/Component/Console/Input/ArgvInput), Object(Illuminate/Console/OutputStyle))
+#27 D:/PROYEK/WISATA SEDERHANA/northsumateratrip.com/vendor/laravel/framework/src/Illuminate/Console/Command.php(182): Symfony/Component/Console/Command/Command->run(Object(Symfony/Component/Console/Input/ArgvInput), Object(Illuminate/Console/OutputStyle))
+#28 D:/PROYEK/WISATA SEDERHANA/northsumateratrip.com/vendor/symfony/console/Application.php(1102): Illuminate/Console/Command->run(Object(Symfony/Component/Console/Input/ArgvInput), Object(Symfony/Component/Console/Output/ConsoleOutput))
+#29 D:/PROYEK/WISATA SEDERHANA/northsumateratrip.com/vendor/symfony/console/Application.php(356): Symfony/Component/Console/Application->doRunCommand(Object(Laravel/Mcp/Console/Commands/StartCommand), Object(Symfony/Component/Console/Input/ArgvInput), Object(Symfony/Component/Console/Output/ConsoleOutput))
+#30 D:/PROYEK/WISATA SEDERHANA/northsumateratrip.com/vendor/symfony/console/Application.php(195): Symfony/Component/Console/Application->doRun(Object(Symfony/Component/Console/Input/ArgvInput), Object(Symfony/Component/Console/Output/ConsoleOutput))
+#31 D:/PROYEK/WISATA SEDERHANA/northsumateratrip.com/vendor/laravel/framework/src/Illuminate/Foundation/Console/Kernel.php(198): Symfony/Component/Console/Application->run(Object(Symfony/Component/Console/Input/ArgvInput), Object(Symfony/Component/Console/Output/ConsoleOutput))
+#32 D:/PROYEK/WISATA SEDERHANA/northsumateratrip.com/artisan(24): Illuminate/Foundation/Console/Kernel->handle(Object(Symfony/Component/Console/Input/ArgvInput), Object(Symfony/Component/Console/Output/ConsoleOutput))
+#33 {main}
+"} 
+[2026-03-05 02:24:18] local.WARNING: Slow request detected {"url":"http://127.0.0.1:8000","method":"GET","execution_time":"3091.98ms","memory_used":"6.95MB","user_id":1} 
+[2026-03-05 02:24:46] local.WARNING: Slow request detected {"url":"http://127.0.0.1:8000/admin","method":"GET","execution_time":"18116.21ms","memory_used":"8.95MB","user_id":1} 
+[2026-03-05 02:25:08] local.WARNING: Slow request detected {"url":"http://127.0.0.1:8000/admin/business-profile-settings","method":"GET","execution_time":"8072.1ms","memory_used":"22.19MB","user_id":1} 
+[2026-03-05 02:31:01] local.ERROR: The "--columns" option does not exist. {"exception":"[object] (Symfony\\Component\\Console\\Exception\\RuntimeException(code: 0): The \"--columns\" option does not exist. at D:/PROYEK/WISATA SEDERHANA/northsumateratrip.com/vendor/symfony/console/Input/ArgvInput.php:226)
+[stacktrace]
+#0 D:/PROYEK/WISATA SEDERHANA/northsumateratrip.com/vendor/symfony/console/Input/ArgvInput.php(153): Symfony/Component/Console/Input/ArgvInput->addLongOption('columns', 'method,uri,name')
+#1 D:/PROYEK/WISATA SEDERHANA/northsumateratrip.com/vendor/symfony/console/Input/ArgvInput.php(88): Symfony/Component/Console/Input/ArgvInput->parseLongOption('--columns=metho...')
+#2 D:/PROYEK/WISATA SEDERHANA/northsumateratrip.com/vendor/symfony/console/Input/ArgvInput.php(77): Symfony/Component/Console/Input/ArgvInput->parseToken('--columns=metho...', true)
+#3 D:/PROYEK/WISATA SEDERHANA/northsumateratrip.com/vendor/symfony/console/Input/Input.php(53): Symfony/Component/Console/Input/ArgvInput->parse()
+#4 D:/PROYEK/WISATA SEDERHANA/northsumateratrip.com/vendor/symfony/console/Command/Command.php(295): Symfony/Component/Console/Input/Input->bind(Object(Symfony/Component/Console/Input/InputDefinition))
+#5 D:/PROYEK/WISATA SEDERHANA/northsumateratrip.com/vendor/laravel/framework/src/Illuminate/Console/Command.php(182): Symfony/Component/Console/Command/Command->run(Object(Symfony/Component/Console/Input/ArgvInput), Object(Illuminate/Console/OutputStyle))
+#6 D:/PROYEK/WISATA SEDERHANA/northsumateratrip.com/vendor/symfony/console/Application.php(1102): Illuminate/Console/Command->run(Object(Symfony/Component/Console/Input/ArgvInput), Object(Symfony/Component/Console/Output/ConsoleOutput))
+#7 D:/PROYEK/WISATA SEDERHANA/northsumateratrip.com/vendor/symfony/console/Application.php(356): Symfony/Component/Console/Application->doRunCommand(Object(Illuminate/Foundation/Console/RouteListCommand), Object(Symfony/Component/Console/Input/ArgvInput), Object(Symfony/Component/Console/Output/ConsoleOutput))
+#8 D:/PROYEK/WISATA SEDERHANA/northsumateratrip.com/vendor/symfony/console/Application.php(195): Symfony/Component/Console/Application->doRun(Object(Symfony/Component/Console/Input/ArgvInput), Object(Symfony/Component/Console/Output/ConsoleOutput))
+#9 D:/PROYEK/WISATA SEDERHANA/northsumateratrip.com/vendor/laravel/framework/src/Illuminate/Foundation/Console/Kernel.php(198): Symfony/Component/Console/Application->run(Object(Symfony/Component/Console/Input/ArgvInput), Object(Symfony/Component/Console/Output/ConsoleOutput))
+#10 D:/PROYEK/WISATA SEDERHANA/northsumateratrip.com/artisan(24): Illuminate/Foundation/Console/Kernel->handle(Object(Symfony/Component/Console/Input/ArgvInput), Object(Symfony/Component/Console/Output/ConsoleOutput))
+#11 {main}
+"} 
+[2026-03-05 02:36:06] local.WARNING: Slow request detected {"url":"http://127.0.0.1:8000","method":"GET","execution_time":"2691.28ms","memory_used":"6.95MB","user_id":1} 
+[2026-03-05 02:39:29] local.WARNING: Slow request detected {"url":"http://localhost:7000/admin/login","method":"GET","execution_time":"3984.98ms","memory_used":"9.92MB","user_id":null} 
+[2026-03-05 02:41:47] local.WARNING: Slow request detected {"url":"http://localhost:7000/admin","method":"GET","execution_time":"12011.41ms","memory_used":"9.19MB","user_id":1} 
+[2026-03-05 02:42:06] local.WARNING: Slow request detected {"url":"http://localhost:7000/admin/business-profile-settings","method":"GET","execution_time":"3919.74ms","memory_used":"22.22MB","user_id":1} 
+[2026-03-05 02:45:56] local.WARNING: Slow request detected {"url":"http://localhost:7000","method":"GET","execution_time":"2639.26ms","memory_used":"6.95MB","user_id":1} 
+[2026-03-05 02:46:23] local.WARNING: Slow request detected {"url":"http://localhost:7000/admin/business-profile-settings","method":"GET","execution_time":"18487.79ms","memory_used":"22.11MB","user_id":1} 
+[2026-03-05 03:04:13] local.ERROR: There are no commands defined in the "reverb" namespace. {"exception":"[object] (Symfony\\Component\\Console\\Exception\\NamespaceNotFoundException(code: 0): There are no commands defined in the \"reverb\" namespace. at D:/PROYEK/WISATA SEDERHANA/northsumateratrip.com/vendor/symfony/console/Application.php:694)
+[stacktrace]
+#0 D:/PROYEK/WISATA SEDERHANA/northsumateratrip.com/vendor/symfony/console/Application.php(743): Symfony/Component/Console/Application->findNamespace('reverb')
+#1 D:/PROYEK/WISATA SEDERHANA/northsumateratrip.com/vendor/symfony/console/Application.php(298): Symfony/Component/Console/Application->find('reverb:install')
+#2 D:/PROYEK/WISATA SEDERHANA/northsumateratrip.com/vendor/symfony/console/Application.php(195): Symfony/Component/Console/Application->doRun(Object(Symfony/Component/Console/Input/ArgvInput), Object(Symfony/Component/Console/Output/ConsoleOutput))
+#3 D:/PROYEK/WISATA SEDERHANA/northsumateratrip.com/vendor/laravel/framework/src/Illuminate/Foundation/Console/Kernel.php(198): Symfony/Component/Console/Application->run(Object(Symfony/Component/Console/Input/ArgvInput), Object(Symfony/Component/Console/Output/ConsoleOutput))
+#4 D:/PROYEK/WISATA SEDERHANA/northsumateratrip.com/artisan(24): Illuminate/Foundation/Console/Kernel->handle(Object(Symfony/Component/Console/Input/ArgvInput), Object(Symfony/Component/Console/Output/ConsoleOutput))
+#5 {main}
+"} 
+[2026-03-05 03:16:03] local.ERROR: Cannot redeclare non static Filament\Widgets\StatsOverviewWidget::$pollingInterval as static App\Filament\Widgets\StatsOverview::$pollingInterval {"exception":"[object] (Symfony\\Component\\ErrorHandler\\Error\\FatalError(code: 0): Cannot redeclare non static Filament\\Widgets\\StatsOverviewWidget::$pollingInterval as static App\\Filament\\Widgets\\StatsOverview::$pollingInterval at D:/PROYEK/WISATA SEDERHANA/northsumateratrip.com/app/Filament/Widgets/StatsOverview.php:11)
+[stacktrace]
+#0 {main}
+"} 
+[2026-03-05 03:16:21] local.ERROR: Cannot redeclare non static Filament\Widgets\StatsOverviewWidget::$pollingInterval as static App\Filament\Widgets\StatsOverview::$pollingInterval {"exception":"[object] (Symfony\\Component\\ErrorHandler\\Error\\FatalError(code: 0): Cannot redeclare non static Filament\\Widgets\\StatsOverviewWidget::$pollingInterval as static App\\Filament\\Widgets\\StatsOverview::$pollingInterval at D:/PROYEK/WISATA SEDERHANA/northsumateratrip.com/app/Filament/Widgets/StatsOverview.php:11)
+[stacktrace]
+#0 {main}
+"} 
+[2026-03-05 03:18:27] local.ERROR: Cannot redeclare non static Filament\Widgets\StatsOverviewWidget::$pollingInterval as static App\Filament\Widgets\StatsOverview::$pollingInterval {"exception":"[object] (Symfony\\Component\\ErrorHandler\\Error\\FatalError(code: 0): Cannot redeclare non static Filament\\Widgets\\StatsOverviewWidget::$pollingInterval as static App\\Filament\\Widgets\\StatsOverview::$pollingInterval at D:/PROYEK/WISATA SEDERHANA/northsumateratrip.com/app/Filament/Widgets/StatsOverview.php:11)
+[stacktrace]
+#0 {main}
+"} 
+[2026-03-05 03:18:38] local.ERROR: Cannot redeclare non static Filament\Widgets\StatsOverviewWidget::$pollingInterval as static App\Filament\Widgets\StatsOverview::$pollingInterval {"exception":"[object] (Symfony\\Component\\ErrorHandler\\Error\\FatalError(code: 0): Cannot redeclare non static Filament\\Widgets\\StatsOverviewWidget::$pollingInterval as static App\\Filament\\Widgets\\StatsOverview::$pollingInterval at D:/PROYEK/WISATA SEDERHANA/northsumateratrip.com/app/Filament/Widgets/StatsOverview.php:11)
+[stacktrace]
+#0 {main}
+"} 
+[2026-03-05 03:18:55] local.ERROR: Cannot redeclare non static Filament\Widgets\StatsOverviewWidget::$pollingInterval as static App\Filament\Widgets\StatsOverview::$pollingInterval {"exception":"[object] (Symfony\\Component\\ErrorHandler\\Error\\FatalError(code: 0): Cannot redeclare non static Filament\\Widgets\\StatsOverviewWidget::$pollingInterval as static App\\Filament\\Widgets\\StatsOverview::$pollingInterval at D:/PROYEK/WISATA SEDERHANA/northsumateratrip.com/app/Filament/Widgets/StatsOverview.php:11)
+[stacktrace]
+#0 {main}
+"} 
+[2026-03-05 03:21:33] local.WARNING: Slow request detected {"url":"http://127.0.0.1:8000","method":"GET","execution_time":"6838.06ms","memory_used":"6.73MB","user_id":null} 
+[2026-03-05 09:50:18] local.ERROR: Command "tail" is not defined.
+
+Did you mean one of these?
+    sail:add
+    sail:install
+    sail:publish {"exception":"[object] (Symfony\\Component\\Console\\Exception\\CommandNotFoundException(code: 0): Command \"tail\" is not defined.
+
+Did you mean one of these?
+    sail:add
+    sail:install
+    sail:publish at D:/PROYEK/WISATA SEDERHANA/northsumateratrip.com/vendor/symfony/console/Application.php:759)
+[stacktrace]
+#0 D:/PROYEK/WISATA SEDERHANA/northsumateratrip.com/vendor/symfony/console/Application.php(298): Symfony/Component/Console/Application->find('tail')
+#1 D:/PROYEK/WISATA SEDERHANA/northsumateratrip.com/vendor/symfony/console/Application.php(195): Symfony/Component/Console/Application->doRun(Object(Symfony/Component/Console/Input/ArgvInput), Object(Symfony/Component/Console/Output/ConsoleOutput))
+#2 D:/PROYEK/WISATA SEDERHANA/northsumateratrip.com/vendor/laravel/framework/src/Illuminate/Foundation/Console/Kernel.php(198): Symfony/Component/Console/Application->run(Object(Symfony/Component/Console/Input/ArgvInput), Object(Symfony/Component/Console/Output/ConsoleOutput))
+#3 D:/PROYEK/WISATA SEDERHANA/northsumateratrip.com/artisan(24): Illuminate/Foundation/Console/Kernel->handle(Object(Symfony/Component/Console/Input/ArgvInput), Object(Symfony/Component/Console/Output/ConsoleOutput))
+#4 {main}
+"} 
+[2026-03-05 09:52:49] local.ERROR: PHP Parse error: Syntax error, unexpected T_NS_SEPARATOR on line 1 {"exception":"[object] (Psy\\Exception\\ParseErrorException(code: 0): PHP Parse error: Syntax error, unexpected T_NS_SEPARATOR on line 1 at D:/PROYEK/WISATA SEDERHANA/northsumateratrip.com/vendor/psy/psysh/src/Exception/ParseErrorException.php:44)
+[stacktrace]
+#0 D:/PROYEK/WISATA SEDERHANA/northsumateratrip.com/vendor/psy/psysh/src/CodeCleaner.php(488): Psy/Exception/ParseErrorException::fromParseError(Object(PhpParser/Error))
+#1 D:/PROYEK/WISATA SEDERHANA/northsumateratrip.com/vendor/psy/psysh/src/CodeCleaner.php(269): Psy/CodeCleaner->parse('<?php try { // =...', false)
+#2 D:/PROYEK/WISATA SEDERHANA/northsumateratrip.com/vendor/psy/psysh/src/Shell.php(1059): Psy/CodeCleaner->clean(Array, false)
+#3 D:/PROYEK/WISATA SEDERHANA/northsumateratrip.com/vendor/psy/psysh/src/Shell.php(1092): Psy/Shell->addCode('try { // = new //...', true)
+#4 D:/PROYEK/WISATA SEDERHANA/northsumateratrip.com/vendor/psy/psysh/src/Shell.php(1640): Psy/Shell->setCode('try { // = new //...', true)
+#5 D:/PROYEK/WISATA SEDERHANA/northsumateratrip.com/vendor/laravel/tinker/src/Console/TinkerCommand.php(77): Psy/Shell->execute('try { // = new //...')
+#6 D:/PROYEK/WISATA SEDERHANA/northsumateratrip.com/vendor/laravel/framework/src/Illuminate/Container/BoundMethod.php(36): Laravel/Tinker/Console/TinkerCommand->handle()
+#7 D:/PROYEK/WISATA SEDERHANA/northsumateratrip.com/vendor/laravel/framework/src/Illuminate/Container/Util.php(43): Illuminate/Container/BoundMethod::Illuminate/Container/{closure}()
+#8 D:/PROYEK/WISATA SEDERHANA/northsumateratrip.com/vendor/laravel/framework/src/Illuminate/Container/BoundMethod.php(95): Illuminate/Container/Util::unwrapIfClosure(Object(Closure))
+#9 D:/PROYEK/WISATA SEDERHANA/northsumateratrip.com/vendor/laravel/framework/src/Illuminate/Container/BoundMethod.php(35): Illuminate/Container/BoundMethod::callBoundMethod(Object(Illuminate/Foundation/Application), Array, Object(Closure))
+#10 D:/PROYEK/WISATA SEDERHANA/northsumateratrip.com/vendor/laravel/framework/src/Illuminate/Container/Container.php(696): Illuminate/Container/BoundMethod::call(Object(Illuminate/Foundation/Application), Array, Array, NULL)
+#11 D:/PROYEK/WISATA SEDERHANA/northsumateratrip.com/vendor/laravel/framework/src/Illuminate/Console/Command.php(213): Illuminate/Container/Container->call(Array)
+#12 D:/PROYEK/WISATA SEDERHANA/northsumateratrip.com/vendor/symfony/console/Command/Command.php(341): Illuminate/Console/Command->execute(Object(Symfony/Component/Console/Input/ArgvInput), Object(Illuminate/Console/OutputStyle))
+#13 D:/PROYEK/WISATA SEDERHANA/northsumateratrip.com/vendor/laravel/framework/src/Illuminate/Console/Command.php(182): Symfony/Component/Console/Command/Command->run(Object(Symfony/Component/Console/Input/ArgvInput), Object(Illuminate/Console/OutputStyle))
+#14 D:/PROYEK/WISATA SEDERHANA/northsumateratrip.com/vendor/symfony/console/Application.php(1117): Illuminate/Console/Command->run(Object(Symfony/Component/Console/Input/ArgvInput), Object(Symfony/Component/Console/Output/ConsoleOutput))
+#15 D:/PROYEK/WISATA SEDERHANA/northsumateratrip.com/vendor/symfony/console/Application.php(356): Symfony/Component/Console/Application->doRunCommand(Object(Laravel/Tinker/Console/TinkerCommand), Object(Symfony/Component/Console/Input/ArgvInput), Object(Symfony/Component/Console/Output/ConsoleOutput))
+#16 D:/PROYEK/WISATA SEDERHANA/northsumateratrip.com/vendor/symfony/console/Application.php(195): Symfony/Component/Console/Application->doRun(Object(Symfony/Component/Console/Input/ArgvInput), Object(Symfony/Component/Console/Output/ConsoleOutput))
+#17 D:/PROYEK/WISATA SEDERHANA/northsumateratrip.com/vendor/laravel/framework/src/Illuminate/Foundation/Console/Kernel.php(198): Symfony/Component/Console/Application->run(Object(Symfony/Component/Console/Input/ArgvInput), Object(Symfony/Component/Console/Output/ConsoleOutput))
+#18 D:/PROYEK/WISATA SEDERHANA/northsumateratrip.com/artisan(24): Illuminate/Foundation/Console/Kernel->handle(Object(Symfony/Component/Console/Input/ArgvInput), Object(Symfony/Component/Console/Output/ConsoleOutput))
+#19 {main}
+"} 
+[2026-03-05 09:53:22] local.ERROR: PHP Parse error: Syntax error, unexpected T_NS_SEPARATOR on line 1 {"exception":"[object] (Psy\\Exception\\ParseErrorException(code: 0): PHP Parse error: Syntax error, unexpected T_NS_SEPARATOR on line 1 at D:/PROYEK/WISATA SEDERHANA/northsumateratrip.com/vendor/psy/psysh/src/Exception/ParseErrorException.php:44)
+[stacktrace]
+#0 D:/PROYEK/WISATA SEDERHANA/northsumateratrip.com/vendor/psy/psysh/src/CodeCleaner.php(488): Psy/Exception/ParseErrorException::fromParseError(Object(PhpParser/Error))
+#1 D:/PROYEK/WISATA SEDERHANA/northsumateratrip.com/vendor/psy/psysh/src/CodeCleaner.php(269): Psy/CodeCleaner->parse('<?php // = new A...', false)
+#2 D:/PROYEK/WISATA SEDERHANA/northsumateratrip.com/vendor/psy/psysh/src/Shell.php(1059): Psy/CodeCleaner->clean(Array, false)
+#3 D:/PROYEK/WISATA SEDERHANA/northsumateratrip.com/vendor/psy/psysh/src/Shell.php(1092): Psy/Shell->addCode('// = new App//Fil...', true)
+#4 D:/PROYEK/WISATA SEDERHANA/northsumateratrip.com/vendor/psy/psysh/src/Shell.php(1640): Psy/Shell->setCode('// = new App//Fil...', true)
+#5 D:/PROYEK/WISATA SEDERHANA/northsumateratrip.com/vendor/laravel/tinker/src/Console/TinkerCommand.php(77): Psy/Shell->execute('// = new App//Fil...')
+#6 D:/PROYEK/WISATA SEDERHANA/northsumateratrip.com/vendor/laravel/framework/src/Illuminate/Container/BoundMethod.php(36): Laravel/Tinker/Console/TinkerCommand->handle()
+#7 D:/PROYEK/WISATA SEDERHANA/northsumateratrip.com/vendor/laravel/framework/src/Illuminate/Container/Util.php(43): Illuminate/Container/BoundMethod::Illuminate/Container/{closure}()
+#8 D:/PROYEK/WISATA SEDERHANA/northsumateratrip.com/vendor/laravel/framework/src/Illuminate/Container/BoundMethod.php(95): Illuminate/Container/Util::unwrapIfClosure(Object(Closure))
+#9 D:/PROYEK/WISATA SEDERHANA/northsumateratrip.com/vendor/laravel/framework/src/Illuminate/Container/BoundMethod.php(35): Illuminate/Container/BoundMethod::callBoundMethod(Object(Illuminate/Foundation/Application), Array, Object(Closure))
+#10 D:/PROYEK/WISATA SEDERHANA/northsumateratrip.com/vendor/laravel/framework/src/Illuminate/Container/Container.php(696): Illuminate/Container/BoundMethod::call(Object(Illuminate/Foundation/Application), Array, Array, NULL)
+#11 D:/PROYEK/WISATA SEDERHANA/northsumateratrip.com/vendor/laravel/framework/src/Illuminate/Console/Command.php(213): Illuminate/Container/Container->call(Array)
+#12 D:/PROYEK/WISATA SEDERHANA/northsumateratrip.com/vendor/symfony/console/Command/Command.php(341): Illuminate/Console/Command->execute(Object(Symfony/Component/Console/Input/ArgvInput), Object(Illuminate/Console/OutputStyle))
+#13 D:/PROYEK/WISATA SEDERHANA/northsumateratrip.com/vendor/laravel/framework/src/Illuminate/Console/Command.php(182): Symfony/Component/Console/Command/Command->run(Object(Symfony/Component/Console/Input/ArgvInput), Object(Illuminate/Console/OutputStyle))
+#14 D:/PROYEK/WISATA SEDERHANA/northsumateratrip.com/vendor/symfony/console/Application.php(1117): Illuminate/Console/Command->run(Object(Symfony/Component/Console/Input/ArgvInput), Object(Symfony/Component/Console/Output/ConsoleOutput))
+#15 D:/PROYEK/WISATA SEDERHANA/northsumateratrip.com/vendor/symfony/console/Application.php(356): Symfony/Component/Console/Application->doRunCommand(Object(Laravel/Tinker/Console/TinkerCommand), Object(Symfony/Component/Console/Input/ArgvInput), Object(Symfony/Component/Console/Output/ConsoleOutput))
+#16 D:/PROYEK/WISATA SEDERHANA/northsumateratrip.com/vendor/symfony/console/Application.php(195): Symfony/Component/Console/Application->doRun(Object(Symfony/Component/Console/Input/ArgvInput), Object(Symfony/Component/Console/Output/ConsoleOutput))
+#17 D:/PROYEK/WISATA SEDERHANA/northsumateratrip.com/vendor/laravel/framework/src/Illuminate/Foundation/Console/Kernel.php(198): Symfony/Component/Console/Application->run(Object(Symfony/Component/Console/Input/ArgvInput), Object(Symfony/Component/Console/Output/ConsoleOutput))
+#18 D:/PROYEK/WISATA SEDERHANA/northsumateratrip.com/artisan(24): Illuminate/Foundation/Console/Kernel->handle(Object(Symfony/Component/Console/Input/ArgvInput), Object(Symfony/Component/Console/Output/ConsoleOutput))
+#19 {main}
+"} 

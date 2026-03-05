@@ -11,8 +11,8 @@ class CategorySeeder extends Seeder
     {
         $categories = [
             [
-                'name' => 'Trip 1 Hari',
-                'slug' => 'trip-1-hari',
+                'name' => '1 Hari',
+                'slug' => '1-hari',
                 'icon' => 'fa-sun',
                 'description' => 'Paket wisata singkat 1 hari tanpa menginap, cocok untuk day trip.',
                 'meta_title' => 'Paket Wisata 1 Hari - NorthSumateraTrip',
