@@ -153,17 +153,24 @@ class BusinessProfileSettings extends Page implements HasForms
                                         Forms\FileUpload::make('site_logo')
                                             ->label('Logo Website')
                                             ->image()
+                                            ->disk('public')
+                                            ->visibility('public')
                                             ->directory('settings')
-                                            ->maxSize(2048),
+                                            ->maxSize(2048)
+                                            ->imagePreviewHeight('100'),
                                         Forms\FileUpload::make('site_favicon')
                                             ->label('Favicon (32x32)')
                                             ->image()
+                                            ->disk('public')
+                                            ->visibility('public')
                                             ->directory('settings')
                                             ->maxSize(512),
                                         Forms\FileUpload::make('default_hero_image')
                                             ->label('Banner Carousel (Hero Images)')
                                             ->helperText('Upload satu atau lebih gambar untuk slider. Gunakan format JPG/PNG/WebP (HEIC tidak didukung oleh browser).')
                                             ->image()
+                                            ->disk('public')
+                                            ->visibility('public')
                                             ->directory('settings')
                                             ->multiple()
                                             ->reorderable()
@@ -237,6 +244,8 @@ class BusinessProfileSettings extends Page implements HasForms
                                         Forms\FileUpload::make('qris_image')
                                             ->label('Gambar QRIS')
                                             ->image()
+                                            ->disk('public')
+                                            ->visibility('public')
                                             ->directory('payment')
                                             ->maxSize(2048)
                                             ->columnSpanFull(),
@@ -330,33 +339,19 @@ class BusinessProfileSettings extends Page implements HasForms
     {
         $data = $this->form->getState();
 
-        // Daftar kolom yang berupa file upload
-        $fileFields = ['site_logo', 'site_favicon', 'qris_image', 'default_hero_image'];
+        // File fields - Filament sudah handle upload ke disk('public')
+        // getState() mengembalikan path string (single) atau array path (multiple)
+        $singleFileFields = ['site_logo', 'site_favicon', 'qris_image'];
 
         foreach ($data as $key => $value) {
-            // Jika ini field file, dan value-nya adalah array dari TemporaryUploadedFile (Livewire)
-            if (in_array($key, $fileFields) && is_array($value)) {
-                $savedPaths = [];
-                foreach ($value as $fileKey => $file) {
-                    if ($file instanceof \Livewire\Features\SupportFileUploads\TemporaryUploadedFile) {
-                        // Pindahkan secara aman ke disk public di dalam folder 'settings'
-                        $path = $file->store('settings', 'public');
-                        $savedPaths[] = $path;
-                    } else if (is_string($file)) {
-                        $savedPaths[] = $file; // Sudah berupa path gambar (sudah ada sebelumnya)
-                    }
-                }
-                
-                // Jika hanya 1 gambar (misal logo, favicon), ambil string pertama. Jika hero (multiple), tetap array.
-                if ($key !== 'default_hero_image' && count($savedPaths) > 0) {
-                    $value = $savedPaths[0]; 
-                } else if ($key !== 'default_hero_image' && count($savedPaths) === 0) {
-                    $value = null;
-                } else {
-                    $value = $savedPaths;
-                }
-            } else if (in_array($key, $fileFields) && $value instanceof \Livewire\Features\SupportFileUploads\TemporaryUploadedFile) {
-                 $value = $value->store('settings', 'public');
+            // Single file fields: Filament returns array with one entry, extract the path
+            if (in_array($key, $singleFileFields) && is_array($value)) {
+                $value = !empty($value) ? array_values($value)[0] : null;
+            }
+
+            // Multiple file field (hero): Filament returns associative array, normalize to indexed
+            if ($key === 'default_hero_image' && is_array($value)) {
+                $value = array_values($value);
             }
 
             Setting::set($key, $value);

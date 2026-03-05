@@ -7,7 +7,7 @@
             <!-- Logo -->
             <div class="flex-shrink-0">
                 <a href="{{ route('home') }}" class="group flex items-center gap-3">
-                    @if(isset($settings['site_logo']))
+                    @if(!empty($settings['site_logo']))
                         @php
                             $logoUrl = $settings['site_logo'];
                             if (!str_starts_with($logoUrl, 'http')) {

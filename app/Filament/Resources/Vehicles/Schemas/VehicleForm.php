@@ -29,6 +29,19 @@ class VehicleForm
                         'Sedan' => 'Sedan',
                     ])
                     ->required(),
+                \Filament\Forms\Components\TextInput::make('brand')
+                    ->label('Merek')
+                    ->maxLength(100),
+                \Filament\Forms\Components\TextInput::make('transmission')
+                    ->label('Transmisi')
+                    ->maxLength(50)
+                    ->placeholder('Manual / Automatic'),
+                \Filament\Forms\Components\FileUpload::make('thumbnail')
+                    ->label('Foto Kendaraan')
+                    ->disk('public')
+                    ->directory('vehicles')
+                    ->visibility('public')
+                    ->image(),
                 \Filament\Forms\Components\Toggle::make('is_active')
                     ->default(true),
             ]);

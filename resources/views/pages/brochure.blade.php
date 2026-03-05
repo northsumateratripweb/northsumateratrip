@@ -18,7 +18,12 @@
     
     $featuredImage = null;
     if ($product->featured_image) {
+        // Try storage path first (Filament uploads)
         $imgP = storage_path('app/public/' . $product->featured_image);
+        if (!file_exists($imgP)) {
+            // Try public/images/products fallback (legacy/demo)
+            $imgP = public_path('images/products/' . $product->featured_image);
+        }
         if (file_exists($imgP)) {
             $type = pathinfo($imgP, PATHINFO_EXTENSION);
             $data = file_get_contents($imgP);

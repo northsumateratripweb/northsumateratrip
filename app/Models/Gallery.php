@@ -2,10 +2,13 @@
 
 namespace App\Models;
 
+use App\Traits\ResolvesImagePath;
 use Illuminate\Database\Eloquent\Model;
 
 class Gallery extends Model
 {
+    use ResolvesImagePath;
+
     protected $fillable = [
         'title',
         'image_url',
@@ -22,5 +25,10 @@ class Gallery extends Model
     public function scopeActive($query)
     {
         return $query->where('is_active', true);
+    }
+
+    public function getResolvedImageUrlAttribute(): string
+    {
+        return self::resolveImagePath($this->image_url, 'images/galleries');
     }
 }

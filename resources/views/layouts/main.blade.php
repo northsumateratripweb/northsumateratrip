@@ -25,22 +25,20 @@
     <meta property="og:url" content="{{ url()->current() }}">
     <meta property="og:title" content="@yield('title', $settings['meta_title'] ?? ($settings['site_name'] ?? 'NorthSumateraTrip'))">
     <meta property="og:description" content="@yield('meta_description', $settings['meta_description'] ?? 'Eksplorasi Sumatera Utara dengan layanan premium.')">
-    <meta property="og:image" content="@yield('og_image', asset('images/header-hero.jpg'))">
+    <meta property="og:image" content="@yield('og_image', '')">
 
     {{-- Twitter Card --}}
     <meta property="twitter:card" content="summary_large_image">
     <meta property="twitter:url" content="{{ url()->current() }}">
     <meta property="twitter:title" content="@yield('title', $settings['meta_title'] ?? ($settings['site_name'] ?? 'NorthSumateraTrip'))">
     <meta property="twitter:description" content="@yield('meta_description', $settings['meta_description'] ?? 'Eksplorasi Sumatera Utara dengan layanan premium.')">
-    <meta property="twitter:image" content="@yield('og_image', asset('images/header-hero.jpg'))">
+    <meta property="twitter:image" content="@yield('og_image', '')">
 
-    <link rel="icon" type="image/x-icon" href="{{ isset($settings['site_favicon']) ? asset('storage/' . $settings['site_favicon']) : asset('favicon.ico') }}">
+    <link rel="icon" type="image/x-icon" href="{{ !empty($settings['site_favicon']) ? asset('storage/' . $settings['site_favicon']) : asset('favicon.ico') }}">
 
     {{-- Preload hero image for faster LCP --}}
     @hasSection('hero_preload')
         @yield('hero_preload')
-    @else
-        <link rel="preload" as="image" href="{{ asset('images/header-hero.jpg') }}" type="image/jpeg">
     @endif
 
     <!-- Fonts: Inter for body text (readability), Outfit for display/headings -->

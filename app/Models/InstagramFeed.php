@@ -2,10 +2,13 @@
 
 namespace App\Models;
 
+use App\Traits\ResolvesImagePath;
 use Illuminate\Database\Eloquent\Model;
 
 class InstagramFeed extends Model
 {
+    use ResolvesImagePath;
+
     protected $fillable = ['post_id', 'image_url', 'caption', 'permalink', 'is_active'];
 
     protected $casts = [
@@ -15,5 +18,10 @@ class InstagramFeed extends Model
     public function scopeActive($query)
     {
         return $query->where('is_active', true);
+    }
+
+    public function getResolvedImageUrlAttribute(): string
+    {
+        return self::resolveImagePath($this->image_url, 'images/instagram');
     }
 }

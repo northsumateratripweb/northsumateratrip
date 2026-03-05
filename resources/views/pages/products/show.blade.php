@@ -82,8 +82,7 @@
                              alt="{{ $product->name }}" 
                              class="w-full h-full object-cover">
                     </button>
-                    @foreach($product->gallery_images as $image)
-                    @php $imageUrl = \App\Models\Product::resolveImagePath($image, 'images/products'); @endphp
+                    @foreach($product->gallery_urls as $imageUrl)
                     <button onclick="changeImage(event, '{{ $imageUrl }}')"
                             class="thumbnail-btn flex-shrink-0 w-20 h-20 rounded-xl overflow-hidden border-2 border-transparent hover:border-blue-600 transition-colors">
                         <img src="{{ $imageUrl }}"
@@ -597,10 +596,10 @@
 
                             @if($review->gallery_images && count($review->gallery_images) > 0)
                             <div class="flex flex-wrap gap-2 mt-4">
-                                @foreach($review->gallery_images as $image)
+                                @foreach($review->gallery_urls as $reviewImgUrl)
                                 <div class="w-20 h-20 rounded-lg overflow-hidden border border-slate-100 shadow-sm cursor-pointer hover:opacity-80 transition-opacity"
-                                     onclick="openLightbox('{{ asset('storage/' . $image) }}')">
-                                    <img src="{{ asset('storage/' . $image) }}" 
+                                     onclick="openLightbox('{{ $reviewImgUrl }}')">
+                                    <img src="{{ $reviewImgUrl }}" 
                                          alt="Review Image" 
                                          class="w-full h-full object-cover">
                                 </div>

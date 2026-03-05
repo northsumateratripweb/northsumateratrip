@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Traits\ResolvesImagePath;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
@@ -35,6 +36,8 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  */
 class CarRental extends Model
 {
+    use ResolvesImagePath;
+
     protected $fillable = [
         'vehicle_id',
         'name',
@@ -92,12 +95,15 @@ class CarRental extends Model
 
     public function getImageUrlAttribute(): string
     {
-        if (!$this->featured_image) {
-            return asset('images/default-car.jpg');
+        return self::resolveImagePath($this->featured_image, 'images/car-rentals');
+    }
+
+    public function getGalleryUrlsAttribute(): array
+    {
+        if (empty($this->gallery_images)) {
+            return [];
         }
-        return str_starts_with($this->featured_image, 'http')
-            ? $this->featured_image
-            : asset('storage/' . $this->featured_image);
+        return array_map(fn ($img) => self::resolveImagePath($img, 'images/car-rentals'), $this->gallery_images);
     }
 
     public function getBrandAttribute(): ?string

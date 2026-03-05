@@ -2,10 +2,13 @@
 
 namespace App\Models;
 
+use App\Traits\ResolvesImagePath;
 use Illuminate\Database\Eloquent\Model;
 
 class Hotel extends Model
 {
+    use ResolvesImagePath;
+
     protected $fillable = [
         'name',
         'address',
@@ -29,11 +32,6 @@ class Hotel extends Model
 
     public function getImageUrlAttribute(): string
     {
-        if (!$this->featured_image) {
-            return asset('images/default-hotel.jpg');
-        }
-        return str_starts_with($this->featured_image, 'http')
-            ? $this->featured_image
-            : asset('storage/' . $this->featured_image);
+        return self::resolveImagePath($this->featured_image, 'images/hotels');
     }
 }

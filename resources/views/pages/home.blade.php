@@ -67,18 +67,10 @@
     }, $heroImages)));
 
     if (!empty($uploadedUrls)) {
-        // Admin sudah upload hero images — gunakan itu
         $heroUrls = $uploadedUrls;
-    } elseif (!$heroSettingExists) {
-        // Setting belum pernah diset (fresh install) — fallback ke default
-        $heroUrls = [
-            asset('images/header-hero.jpg'),
-            asset('images/header-hero-2.jpg'),
-            asset('images/header-hero-3.jpg'),
-        ];
     } else {
-        // Admin sudah pernah simpan tapi kosongkan — pakai 1 placeholder
-        $heroUrls = [asset('images/header-hero.jpg')];
+        // Belum ada hero image — gunakan placeholder gradient
+        $heroUrls = ['https://placehold.co/1920x1080/1E3A5F/white?text=Upload+Hero+Image+di+Admin+Panel'];
     }
     $slideCount = count($heroUrls);
 @endphp
@@ -199,7 +191,7 @@
                 @if($banner->link_url)
                 <a href="{{ $banner->link_url }}" @if(str_starts_with($banner->link_url, 'http')) target="_blank" @endif>
                 @endif
-                    <img src="{{ str_starts_with($banner->image_url ?? '', 'http') ? $banner->image_url : asset('storage/' . ($banner->image_url ?? '')) }}"
+                    <img src="{{ $banner->resolved_image_url }}"
                          alt="{{ $banner->title }}"
                          class="w-full h-40 sm:h-48 object-cover group-hover:scale-105 transition-transform duration-700 ease-out rounded-2xl">
                     @if($banner->title)
@@ -483,7 +475,7 @@
                 @if($partner->website)
                 <a href="{{ $partner->website }}" target="_blank">
                 @endif
-                    <img src="{{ asset('images/partners/' . $partner->logo) }}"
+                    <img src="{{ $partner->logo_url }}"
                          alt="{{ $partner->name }}"
                          class="h-10 md:h-12 w-auto object-contain grayscale opacity-40 hover:grayscale-0 hover:opacity-100 transition-all duration-500">
                 @if($partner->website)
@@ -609,7 +601,7 @@
             @foreach($instagramFeeds as $feed)
             <div class="aspect-square rounded-2xl overflow-hidden group">
                 <a href="{{ $feed->permalink }}" target="_blank" class="block w-full h-full relative">
-                    <img src="{{ $feed->image_url }}" alt="{{ $feed->caption }}" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700 ease-out">
+                    <img src="{{ $feed->resolved_image_url }}" alt="{{ $feed->caption }}" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700 ease-out">
                     <div class="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-all duration-500 flex items-center justify-center">
                         <div class="w-12 h-12 bg-white/90 rounded-2xl flex items-center justify-center scale-50 group-hover:scale-100 transition-all duration-500">
                             <i class="fab fa-instagram text-lg bg-gradient-to-br from-purple-600 to-pink-500 bg-clip-text text-transparent"></i>

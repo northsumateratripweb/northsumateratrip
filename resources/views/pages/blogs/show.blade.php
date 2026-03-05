@@ -110,9 +110,9 @@
         <div class="mt-20 pt-20 border-t border-slate-100 dark:border-slate-800">
             <h3 class="text-xl font-extrabold text-slate-900 dark:text-white mb-8">Visual Moments</h3>
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                @foreach($blog->gallery_images as $image)
+                @foreach($blog->gallery_urls as $galleryImageUrl)
                 <div class="aspect-video rounded-2xl overflow-hidden border border-slate-100 hover:shadow-lg hover:shadow-blue-900/[0.06] hover:-translate-y-1 transition-all duration-500">
-                    <img src="{{ asset('images/blogs/' . $image) }}" alt="{{ $blog->title }}" class="w-full h-full object-cover">
+                    <img src="{{ $galleryImageUrl }}" alt="{{ $blog->title }}" class="w-full h-full object-cover">
                 </div>
                 @endforeach
             </div>

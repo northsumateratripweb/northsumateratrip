@@ -2,12 +2,13 @@
 
 namespace App\Models;
 
+use App\Traits\ResolvesImagePath;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class Blog extends Model
 {
-    use HasFactory;
+    use HasFactory, ResolvesImagePath;
 
     protected $fillable = [
         'title',
@@ -55,26 +56,12 @@ class Blog extends Model
         return self::resolveImagePath($this->featured_image, 'images/blogs');
     }
 
-    public static function resolveImagePath(?string $path, string $fallbackDir = 'images/blogs'): string
+    public function getGalleryUrlsAttribute(): array
     {
-        if (!$path) {
-            return 'https://placehold.co/800x600/3B82F6/white?text=No+Image';
+        if (empty($this->gallery_images)) {
+            return [];
         }
-        if (str_starts_with($path, 'http')) {
-            return $path;
-        }
-
-        $storagePath = public_path('storage/' . $path);
-        $publicPath = public_path($fallbackDir . '/' . $path);
-        
-        if (str_contains($path, '/') && file_exists($storagePath)) {
-            return asset('storage/' . $path);
-        }
-        if (file_exists($publicPath)) {
-            return asset($fallbackDir . '/' . $path);
-        }
-        
-        return 'https://placehold.co/800x600/3B82F6/white?text=' . urlencode(basename($path));
+        return array_map(fn ($img) => self::resolveImagePath($img, 'images/blogs'), $this->gallery_images);
     }
 
     public function getReadTimeAttribute(): string

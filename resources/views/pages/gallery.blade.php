@@ -24,9 +24,9 @@
     @if($items->count() > 0)
     <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4 md:gap-5">
         @foreach($items as $gallery)
-        <div class="group relative overflow-hidden rounded-2xl bg-white dark:bg-slate-900 border border-slate-100 dark:border-slate-800 cursor-zoom-in transition-all duration-500 hover:shadow-xl hover:shadow-blue-900/[0.06] hover:-translate-y-0.5" onclick="openLightbox('{{ $gallery->image_url }}', '{{ $gallery->title }}')">
+        <div class="group relative overflow-hidden rounded-2xl bg-white dark:bg-slate-900 border border-slate-100 dark:border-slate-800 cursor-zoom-in transition-all duration-500 hover:shadow-xl hover:shadow-blue-900/[0.06] hover:-translate-y-0.5" onclick="openLightbox('{{ $gallery->resolved_image_url }}', '{{ $gallery->title }}')">
             <div class="aspect-[4/3] overflow-hidden">
-                <img src="{{ $gallery->image_url }}" 
+                <img src="{{ $gallery->resolved_image_url }}" 
                      alt="{{ $gallery->title }}" 
                      class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700 ease-out">
             </div>

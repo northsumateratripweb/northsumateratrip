@@ -28,8 +28,7 @@
                     {{-- Gallery Images --}}
                     @if(!empty($carRental->gallery_images) && count($carRental->gallery_images) > 0)
                     <div class="grid grid-cols-3 gap-4 mt-4">
-                        @foreach(array_slice($carRental->gallery_images, 0, 6) as $galleryImage)
-                        @php $galleryUrl = str_starts_with($galleryImage, 'http') ? $galleryImage : asset('storage/' . $galleryImage); @endphp
+                        @foreach(array_slice($carRental->gallery_urls, 0, 6) as $galleryUrl)
                         <div class="aspect-video rounded-2xl overflow-hidden border border-slate-100 cursor-zoom-in" onclick="openLightbox('{{ $galleryUrl }}', '{{ $carRental->name }}')">
                             <img src="{{ $galleryUrl }}"
                                  alt="{{ $carRental->name }}"

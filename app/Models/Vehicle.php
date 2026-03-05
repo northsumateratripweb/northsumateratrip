@@ -2,10 +2,13 @@
 
 namespace App\Models;
 
+use App\Traits\ResolvesImagePath;
 use Illuminate\Database\Eloquent\Model;
 
 class Vehicle extends Model
 {
+    use ResolvesImagePath;
+
     protected $fillable = [
         'name',
         'plate_number',
@@ -30,11 +33,6 @@ class Vehicle extends Model
 
     public function getImageUrlAttribute(): string
     {
-        if (!$this->thumbnail) {
-            return asset('images/default-car.jpg');
-        }
-        return str_starts_with($this->thumbnail, 'http') 
-            ? $this->thumbnail 
-            : asset('storage/' . $this->thumbnail);
+        return self::resolveImagePath($this->thumbnail, 'images/vehicles');
     }
 }

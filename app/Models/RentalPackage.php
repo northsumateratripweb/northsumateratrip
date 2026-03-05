@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Traits\ResolvesImagePath;
 use Illuminate\Database\Eloquent\Model;
 
 /**
@@ -22,6 +23,8 @@ use Illuminate\Database\Eloquent\Model;
  */
 class RentalPackage extends Model
 {
+    use ResolvesImagePath;
+
     protected $fillable = [
         'name',
         'slug',
@@ -47,12 +50,7 @@ class RentalPackage extends Model
     ];
     public function getImageUrlAttribute(): string
     {
-        if (!$this->featured_image) {
-            return 'https://placehold.co/800x600/3B82F6/white?text=No+Image';
-        }
-        return str_starts_with($this->featured_image, 'http')
-            ? $this->featured_image
-            : asset('storage/' . $this->featured_image);
+        return self::resolveImagePath($this->featured_image, 'images/rental-packages');
     }
 
     public function scopeActive($query)
