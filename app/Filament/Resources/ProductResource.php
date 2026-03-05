@@ -44,13 +44,10 @@ class ProductResource extends Resource
                     ->schema([
                         Forms\Components\Select::make('category_id')
                             ->label('Kategori')
-                            ->options(
-                                \App\Models\Category::query()
-                                    ->where('is_active', true)
-                                    ->orderBy('sort_order')
-                                    ->pluck('name', 'id')
-                            )
-                            ->searchable()
+                            ->options(fn () => \App\Models\Category::query()
+                                ->where('is_active', true)
+                                ->orderBy('sort_order')
+                                ->pluck('name', 'id'))
                             ->required()
                             ->columnSpanFull(),
 
