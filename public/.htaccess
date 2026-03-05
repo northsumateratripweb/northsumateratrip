@@ -28,3 +28,19 @@ Options -Indexes
     Order allow,deny
     Deny from all
 </Files>
+
+# Fix file upload on shared hosting (open_basedir restriction)
+<IfModule mod_php.c>
+    php_value upload_tmp_dir "/home/northsum/tmp"
+    php_value upload_max_filesize 64M
+    php_value post_max_size 128M
+    php_value memory_limit 256M
+    php_value max_execution_time 120
+</IfModule>
+<IfModule mod_php8.c>
+    php_value upload_tmp_dir "/home/northsum/tmp"
+    php_value upload_max_filesize 64M
+    php_value post_max_size 128M
+    php_value memory_limit 256M
+    php_value max_execution_time 120
+</IfModule>
