@@ -330,7 +330,35 @@ class BusinessProfileSettings extends Page implements HasForms
     {
         $data = $this->form->getState();
 
+        // Daftar kolom yang berupa file upload
+        $fileFields = ['site_logo', 'site_favicon', 'qris_image', 'default_hero_image'];
+
         foreach ($data as $key => $value) {
+            // Jika ini field file, dan value-nya adalah array dari TemporaryUploadedFile (Livewire)
+            if (in_array($key, $fileFields) && is_array($value)) {
+                $savedPaths = [];
+                foreach ($value as $fileKey => $file) {
+                    if ($file instanceof \Livewire\Features\SupportFileUploads\TemporaryUploadedFile) {
+                        // Pindahkan secara aman ke disk public di dalam folder 'settings'
+                        $path = $file->store('settings', 'public');
+                        $savedPaths[] = $path;
+                    } else if (is_string($file)) {
+                        $savedPaths[] = $file; // Sudah berupa path gambar (sudah ada sebelumnya)
+                    }
+                }
+                
+                // Jika hanya 1 gambar (misal logo, favicon), ambil string pertama. Jika hero (multiple), tetap array.
+                if ($key !== 'default_hero_image' && count($savedPaths) > 0) {
+                    $value = $savedPaths[0]; 
+                } else if ($key !== 'default_hero_image' && count($savedPaths) === 0) {
+                    $value = null;
+                } else {
+                    $value = $savedPaths;
+                }
+            } else if (in_array($key, $fileFields) && $value instanceof \Livewire\Features\SupportFileUploads\TemporaryUploadedFile) {
+                 $value = $value->store('settings', 'public');
+            }
+
             Setting::set($key, $value);
         }
 
