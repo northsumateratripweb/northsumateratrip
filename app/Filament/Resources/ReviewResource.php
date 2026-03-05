@@ -37,10 +37,12 @@ class ReviewResource extends Resource
                 Forms\Components\FileUpload::make('gallery_images')
                     ->label('Foto Gallery Review')
                     ->image()
+                    ->disk('public')
+                    ->directory('reviews/gallery')
+                    ->visibility('public')
                     ->multiple()
                     ->maxFiles(6)
                     ->maxSize(5120) // 5MB
-                    ->directory('reviews/gallery')
                     ->reorderable()
                     ->columnSpanFull(),
                 Forms\Components\Toggle::make('is_approved')->default(false),

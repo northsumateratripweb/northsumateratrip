@@ -108,13 +108,17 @@ class CarRentalForm
                     FileUpload::make('featured_image')
                         ->label('Foto Utama')
                         ->image()
-                        ->directory('car-rentals'),
+                        ->disk('public')
+                        ->directory('car-rentals')
+                        ->visibility('public'),
 
                     FileUpload::make('gallery_images')
                         ->label('Galeri Foto')
                         ->image()
-                        ->multiple()
-                        ->directory('car-rentals/gallery'),
+                        ->disk('public')
+                        ->directory('car-rentals/gallery')
+                        ->visibility('public')
+                        ->multiple(),
                 ]),
 
             Section::make('Pengaturan')

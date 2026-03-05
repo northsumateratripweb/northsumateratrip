@@ -14,7 +14,9 @@ class InstagramFeedForm
                     ->maxLength(255),
                 \Filament\Forms\Components\FileUpload::make('image_url')
                     ->image()
+                    ->disk('public')
                     ->directory('instagram')
+                    ->visibility('public')
                     ->required(),
                 \Filament\Forms\Components\Textarea::make('caption')
                     ->rows(3),

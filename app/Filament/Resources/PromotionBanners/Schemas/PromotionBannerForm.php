@@ -15,7 +15,9 @@ class PromotionBannerForm
                     ->maxLength(255),
                 \Filament\Forms\Components\FileUpload::make('image_url')
                     ->image()
+                    ->disk('public')
                     ->directory('banners')
+                    ->visibility('public')
                     ->required(),
                 \Filament\Forms\Components\TextInput::make('link_url')
                     ->maxLength(255),

@@ -137,12 +137,16 @@ class CarRentalResource extends Resource
                     ->schema([
                         Forms\Components\FileUpload::make('featured_image')
                             ->label('Gambar Utama')
+                            ->disk('public')
                             ->directory('car-rentals')
+                            ->visibility('public')
                             ->image()
                             ->required(),
                         Forms\Components\FileUpload::make('gallery_images')
                             ->label('Galeri Foto')
+                            ->disk('public')
                             ->directory('car-rentals/gallery')
+                            ->visibility('public')
                             ->image()
                             ->multiple()
                             ->reorderable()

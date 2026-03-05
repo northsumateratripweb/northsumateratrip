@@ -93,7 +93,9 @@ class ProductResource extends Resource
                     ->schema([
                         Forms\Components\FileUpload::make('featured_image')
                             ->label('Foto Utama *')
+                            ->disk('public')
                             ->directory('products')
+                            ->visibility('public')
                             ->image()
                             ->imagePreviewHeight('200')
                             ->required()
@@ -101,7 +103,9 @@ class ProductResource extends Resource
 
                         Forms\Components\FileUpload::make('gallery_images')
                             ->label('Galeri Foto')
+                            ->disk('public')
                             ->directory('products/gallery')
+                            ->visibility('public')
                             ->image()
                             ->multiple()
                             ->reorderable()

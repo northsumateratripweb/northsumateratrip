@@ -40,7 +40,9 @@ class BlogResource extends Resource
                             ->maxLength(255),
                         Forms\Components\FileUpload::make('featured_image')
                             ->image()
+                            ->disk('public')
                             ->directory('blog')
+                            ->visibility('public')
                             ->columnSpanFull(),
                         Forms\Components\Textarea::make('excerpt')
                             ->rows(3)

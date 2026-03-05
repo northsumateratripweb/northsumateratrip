@@ -68,7 +68,9 @@ class HotelResource extends Resource
                     ->schema([
                         Forms\Components\FileUpload::make('featured_image')
                             ->label('Gambar Utama')
+                            ->disk('public')
                             ->directory('hotels')
+                            ->visibility('public')
                             ->image()
                             ->columnSpanFull(),
                         Forms\Components\Toggle::make('is_active')

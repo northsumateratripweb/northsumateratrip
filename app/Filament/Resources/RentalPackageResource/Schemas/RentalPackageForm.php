@@ -80,7 +80,9 @@ class RentalPackageForm
                     FileUpload::make('featured_image')
                         ->label('Foto Paket')
                         ->image()
+                        ->disk('public')
                         ->directory('rental-packages')
+                        ->visibility('public')
                         ->columnSpan(2),
 
                     Section::make()

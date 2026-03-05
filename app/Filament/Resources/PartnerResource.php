@@ -26,7 +26,9 @@ class PartnerResource extends Resource
                 Forms\Components\TextInput::make('name')->required()->maxLength(255),
                 Forms\Components\FileUpload::make('logo')
                     ->image()
+                    ->disk('public')
                     ->directory('partners')
+                    ->visibility('public')
                     ->required(),
                 Forms\Components\TextInput::make('website')->maxLength(255)->url(),
                 Forms\Components\Textarea::make('description')->rows(3),

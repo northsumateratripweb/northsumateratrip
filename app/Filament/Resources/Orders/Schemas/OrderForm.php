@@ -81,7 +81,9 @@ class OrderForm
                         \Filament\Forms\Components\FileUpload::make('payment_proof')
                             ->label('Unggah Bukti Pembayaran')
                             ->image()
+                            ->disk('public')
                             ->directory('payment_proofs')
+                            ->visibility('public')
                             ->columnSpanFull(),
                     ]),
                 \Filament\Schemas\Components\Section::make('🏨 Akomodasi & Logistik')

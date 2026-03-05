@@ -81,7 +81,9 @@ class RentalPackageResource extends Resource
                     ->schema([
                         Forms\Components\FileUpload::make('featured_image')
                             ->label('Gambar Utama')
+                            ->disk('public')
                             ->directory('rental-packages')
+                            ->visibility('public')
                             ->image()
                             ->required(),
                     ]),
