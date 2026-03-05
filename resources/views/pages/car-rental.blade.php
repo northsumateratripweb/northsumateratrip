@@ -89,17 +89,7 @@
                                 </span>
                             </div>
 
-                            <!-- Wishlist Button -->
-                            @if($carRental->vehicle_id)
-                            <form action="{{ route('wishlist.toggle-vehicle', $carRental->vehicle_id) }}" method="POST" class="absolute top-4 right-4 z-10" onclick="event.stopPropagation(); event.preventDefault(); this.submit();">
-                                @csrf
-                                <button type="submit" class="w-10 h-10 bg-white/90 dark:bg-slate-900/90 backdrop-blur-sm rounded-xl flex items-center justify-center text-slate-400 hover:text-rose-500 transition-all shadow-sm border border-white/20 dark:border-slate-800 active:scale-90">
-                                    <svg class="w-5 h-5 {{ in_array($carRental->vehicle_id, $wishlistedVehicleIds ?? []) ? 'fill-rose-500 text-rose-500' : 'fill-none' }}" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2.5">
-                                        <path d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path>
-                                    </svg>
-                                </button>
-                            </form>
-                            @endif
+
                         </div>
 
                         <!-- Content -->

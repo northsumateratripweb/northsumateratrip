@@ -204,16 +204,7 @@
                                 <p class="text-xs font-semibold text-slate-400 uppercase tracking-wider mb-2">{{ __('ui.starting_from') }}</p>
                                 <p class="text-3xl font-extrabold text-slate-900 dark:text-white tracking-tight">{{ currency($carRental->price_per_day) }}<span class="text-sm text-slate-400 font-medium ml-1">{{ __('ui.per_day') }}</span></p>
                             </div>
-                            @if($carRental->vehicle_id)
-                            <form action="{{ route('wishlist.toggle-vehicle', $carRental->vehicle_id) }}" method="POST">
-                                @csrf
-                                <button type="submit" class="w-14 h-14 bg-slate-50 dark:bg-slate-800 rounded-2xl flex items-center justify-center text-slate-400 hover:text-rose-500 transition-all group">
-                                    <svg class="w-6 h-6 transition-transform group-hover:scale-110 {{ in_array($carRental->vehicle_id, $wishlistedVehicleIds ?? []) ? 'fill-rose-500 text-rose-500' : 'fill-none' }}" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2.5">
-                                        <path d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path>
-                                    </svg>
-                                </button>
-                            </form>
-                            @endif
+
                         </div>
 
                         {{-- Pricing Options --}}

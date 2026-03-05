@@ -106,18 +106,7 @@
                     </div>
                 </div>
 
-                <!-- Wishlist -->
-                <a href="{{ route('wishlist.index') }}" class="relative w-10 h-10 rounded-xl flex items-center justify-center hover:text-rose-500 hover:shadow-lg hover:shadow-rose-500/10 transition-all duration-300" :class="scrolled ? 'bg-slate-50 dark:bg-slate-900 text-slate-400 border border-slate-100 dark:border-slate-800' : 'bg-white/15 backdrop-blur-sm text-white/80 border border-white/20 hover:bg-white/25'">
-                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path></svg>
-                    @php
-                        $wishlistCount = count($wishlistedProductIds ?? []) + count($wishlistedVehicleIds ?? []);
-                    @endphp
-                    @if($wishlistCount > 0)
-                        <span data-wishlist-count class="absolute -top-1 -right-1 w-4 h-4 bg-rose-500 text-white text-[0.5rem] font-black rounded-full flex items-center justify-center border-2 border-white dark:border-slate-950">{{ $wishlistCount }}</span>
-                    @else
-                        <span data-wishlist-count class="absolute -top-1 -right-1 w-4 h-4 bg-rose-500 text-white text-[0.5rem] font-black rounded-full flex items-center justify-center border-2 border-white dark:border-slate-950" style="display:none;">0</span>
-                    @endif
-                </a>
+
 
                 <!-- Contact CTA -->
                 <a href="{{ route('contact') }}" class="hidden sm:flex px-6 py-2.5 rounded-xl text-xs font-bold uppercase tracking-wider transition-all duration-300 active:scale-95" :class="scrolled ? 'bg-slate-900 border border-slate-900 dark:bg-white dark:border-white text-white dark:text-slate-900 hover:bg-blue-700 hover:border-blue-700 hover:text-white' : 'bg-white text-slate-900 border border-white hover:bg-blue-600 hover:border-blue-600 hover:text-white shadow-lg shadow-black/10'">

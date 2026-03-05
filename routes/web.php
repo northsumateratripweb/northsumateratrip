@@ -10,7 +10,6 @@ use App\Http\Controllers\ProductController;
 use App\Http\Controllers\StaticPageController;
 use App\Http\Controllers\UserDashboardController;
 use App\Http\Controllers\VehicleController;
-use App\Http\Controllers\WishlistController;
 use App\Http\Controllers\InvoiceController;
 use App\Http\Controllers\CustomRequestController;
 use Illuminate\Support\Facades\Route;
@@ -100,12 +99,7 @@ Route::get('/robots.txt', [\App\Http\Controllers\SitemapController::class, 'robo
 // Static Pages (CMS)
 Route::get('/page/{slug}', [StaticPageController::class, 'show'])->name('page.show');
 
-// Wishlist
-Route::prefix('wishlist')->group(function () {
-    Route::get('/', [WishlistController::class, 'index'])->name('wishlist.index');
-    Route::post('/toggle/{productId}', [WishlistController::class, 'toggle'])->name('wishlist.toggle');
-    Route::post('/toggle-vehicle/{vehicleId}', [WishlistController::class, 'toggleVehicle'])->name('wishlist.toggle-vehicle');
-});
+
 
 // Invoices & Itineraries
 Route::get('/order/{order}/invoice', [InvoiceController::class, 'orderPdf'])->name('order.invoice')->middleware(['auth', 'throttle:10,1']);
