@@ -11,7 +11,7 @@ use Illuminate\Support\Number;
 class StatsOverview extends BaseWidget
 {
     protected static ?int $sort = 1;
-    protected ?string $pollingInterval = '5s';
+    protected ?string $pollingInterval = '15s';
 
 
     protected function getStats(): array
