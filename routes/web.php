@@ -111,3 +111,9 @@ Route::get('lang/{locale}', [App\Http\Controllers\LocaleController::class, 'setL
 
 // Catch-all route for static pages (legacy)
 Route::get('/{page:slug}', [\App\Http\Controllers\PageController::class, 'show'])->name('pages.static');
+
+// Laporan Pesanan
+Route::get('/dashboard-laporan', [App\Http\Controllers\LaporanPesananController::class, 'dashboard'])->name('dashboard.laporan');
+Route::get('/laporan-pesanan', [App\Http\Controllers\LaporanPesananController::class, 'laporan'])->name('laporan.pesanan');
+Route::get('/laporan-pesanan/export-csv', [App\Http\Controllers\LaporanPesananController::class, 'exportCsv'])->name('laporan.pesanan.csv');
+Route::get('/laporan-pesanan/export-excel', [App\Http\Controllers\LaporanPesananController::class, 'exportExcel'])->name('laporan.pesanan.excel');
