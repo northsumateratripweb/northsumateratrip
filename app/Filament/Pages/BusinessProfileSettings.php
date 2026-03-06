@@ -316,6 +316,42 @@ class BusinessProfileSettings extends Page implements HasForms
     protected function getHeaderActions(): array
     {
         return [
+            Action::make('create_setting')
+                ->label('Tambah Pengaturan')
+                ->url(fn () => \App\Filament\Resources\SettingResource::getUrl('create'))
+                ->icon('heroicon-o-plus-circle')
+                ->color('success'),
+            Action::make('manage_settings')
+                ->label('Kelola Semua')
+                ->url(fn () => \App\Filament\Resources\SettingResource::getUrl('index'))
+                ->icon('heroicon-o-cog-6-tooth')
+                ->color('info'),
+            Action::make('delete_section')
+                ->label('Hapus Pengaturan')
+                ->icon('heroicon-o-trash')
+                ->color('danger')
+                ->form([
+                    Forms\Select::make('settings_to_delete')
+                        ->label('Pilih pengaturan yang akan dihapus')
+                        ->multiple()
+                        ->options(fn () => Setting::orderBy('key')->pluck('key', 'key')->toArray())
+                        ->required()
+                        ->searchable(),
+                ])
+                ->action(function (array $data): void {
+                    Setting::whereIn('key', $data['settings_to_delete'])->delete();
+                    \Illuminate\Support\Facades\Cache::forget('site_settings');
+                    \Illuminate\Support\Facades\Cache::forget('app_settings');
+                    Notification::make()
+                        ->title('Pengaturan berhasil dihapus')
+                        ->success()
+                        ->send();
+                    $this->mount();
+                })
+                ->requiresConfirmation()
+                ->modalHeading('Hapus Pengaturan')
+                ->modalDescription('Apakah Anda yakin ingin menghapus pengaturan yang dipilih? Tindakan ini tidak dapat dibatalkan.')
+                ->modalSubmitActionLabel('Ya, Hapus'),
             Action::make('view_site')
                 ->label('Lihat Website')
                 ->url(url('/'))

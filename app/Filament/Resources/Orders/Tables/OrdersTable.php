@@ -3,6 +3,8 @@
 namespace App\Filament\Resources\Orders\Tables;
 
 use Filament\Actions\BulkActionGroup;
+use Filament\Actions\CreateAction;
+use Filament\Actions\DeleteAction;
 use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
 use Filament\Actions\ViewAction;
@@ -119,8 +121,10 @@ class OrdersTable
                     ->color('success')
                     ->url(fn ($record) => "https://wa.me/" . preg_replace('/\D/', '', $record->customer_phone) . "?text=" . urlencode("Halo {$record->customer_name}, kami ingin menginformasikan status pesanan Anda #ORD-" . str_pad($record->id, 5, '0', STR_PAD_LEFT) . " saat ini adalah " . strtoupper($record->status) . "."))
                     ->openUrlInNewTab(),
+                DeleteAction::make(),
             ])
             ->toolbarActions([
+                CreateAction::make(),
                 BulkActionGroup::make([
                     DeleteBulkAction::make(),
                 ]),
