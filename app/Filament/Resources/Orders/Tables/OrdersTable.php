@@ -129,22 +129,28 @@ class OrdersTable
                     DeleteBulkAction::make(),
                 ]),
                 \Filament\Actions\Action::make('viewLaporan')
-                    ->label('View Laporan')
-                    ->icon('heroicon-o-eye')
+                    ->label('Lihat Laporan')
+                    ->icon('heroicon-o-chart-bar')
                     ->color('info')
-                    ->url(fn () => route('laporan.pesanan'))
+                    ->url(fn () => route('laporan.pesanan', ['tahun' => now()->year, 'bulan' => now()->month]))
                     ->openUrlInNewTab(),
                 \Filament\Actions\Action::make('downloadCsv')
-                    ->label('Download CSV')
-                    ->icon('heroicon-o-arrow-down-tray')
-                    ->color('secondary')
-                    ->url(fn () => route('laporan.pesanan.csv'))
+                    ->label('CSV Bulan Ini')
+                    ->icon('heroicon-o-document-text')
+                    ->color('gray')
+                    ->url(fn () => route('laporan.pesanan.csv', ['tahun' => now()->year, 'bulan' => now()->month]))
                     ->openUrlInNewTab(),
                 \Filament\Actions\Action::make('downloadExcel')
-                    ->label('Download Excel')
-                    ->icon('heroicon-o-arrow-down-tray')
+                    ->label('Excel Bulan Ini')
+                    ->icon('heroicon-o-table-cells')
                     ->color('success')
-                    ->url(fn () => route('laporan.pesanan.excel'))
+                    ->url(fn () => route('laporan.pesanan.excel', ['tahun' => now()->year, 'bulan' => now()->month]))
+                    ->openUrlInNewTab(),
+                \Filament\Actions\Action::make('downloadExcelYear')
+                    ->label('Excel Tahunan')
+                    ->icon('heroicon-o-table-cells')
+                    ->color('warning')
+                    ->url(fn () => route('laporan.pesanan.excel', ['tahun' => now()->year]))
                     ->openUrlInNewTab(),
             ]);
     }

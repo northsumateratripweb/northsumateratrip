@@ -129,86 +129,86 @@
             <h1>📊 Laporan Pesanan</h1>
             <p>NorthSumateraTrip — Sistem Manajemen Data Pesanan</p>
         </div>
-        <a href="{{ url('/admin') }}" class="back-btn">← Kembali ke Admin</a>
+        <a href="<?php echo e(url('/admin')); ?>" class="back-btn">← Kembali ke Admin</a>
     </div>
 </header>
 
 <main>
 <div class="wrap">
 
-    {{-- ── FILTER BAR ──────────────────────────────────────────── --}}
-    <form method="GET" action="{{ route('laporan.pesanan') }}">
+    
+    <form method="GET" action="<?php echo e(route('laporan.pesanan')); ?>">
         <div class="filter-bar">
             <div>
                 <label>Tahun</label>
                 <select name="tahun">
-                    @foreach($availableYears as $yr)
-                        <option value="{{ $yr }}" {{ $tahun == $yr ? 'selected' : '' }}>{{ $yr }}</option>
-                    @endforeach
+                    <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php $__currentLoopData = $availableYears; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $yr): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                        <option value="<?php echo e($yr); ?>" <?php echo e($tahun == $yr ? 'selected' : ''); ?>><?php echo e($yr); ?></option>
+                    <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
                 </select>
             </div>
             <div>
                 <label>Bulan</label>
                 <select name="bulan">
                     <option value="">— Semua Bulan —</option>
-                    @foreach($namaBulan as $num => $nama)
-                        <option value="{{ $num }}" {{ $bulan == $num ? 'selected' : '' }}>{{ $nama }}</option>
-                    @endforeach
+                    <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php $__currentLoopData = $namaBulan; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $num => $nama): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                        <option value="<?php echo e($num); ?>" <?php echo e($bulan == $num ? 'selected' : ''); ?>><?php echo e($nama); ?></option>
+                    <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
                 </select>
             </div>
             <button type="submit" class="btn btn-primary">🔍 Filter</button>
             <div class="btn-group">
-                <a href="{{ route('laporan.pesanan.csv', ['tahun'=>$tahun,'bulan'=>$bulan]) }}"
-                   class="btn btn-csv">⬇ CSV {{ $bulan ? 'Bulan' : 'Tahunan' }}</a>
-                <a href="{{ route('laporan.pesanan.excel', ['tahun'=>$tahun,'bulan'=>$bulan]) }}"
-                   class="btn btn-excel">⬇ Excel {{ $bulan ? 'Bulan' : 'Tahunan' }}</a>
-                @if($bulan)
-                <a href="{{ route('laporan.pesanan.csv', ['tahun'=>$tahun]) }}" class="btn btn-csv2">⬇ CSV Tahunan</a>
-                <a href="{{ route('laporan.pesanan.excel', ['tahun'=>$tahun]) }}" class="btn btn-excel2">⬇ Excel Tahunan</a>
-                @endif
+                <a href="<?php echo e(route('laporan.pesanan.csv', ['tahun'=>$tahun,'bulan'=>$bulan])); ?>"
+                   class="btn btn-csv">⬇ CSV <?php echo e($bulan ? 'Bulan' : 'Tahunan'); ?></a>
+                <a href="<?php echo e(route('laporan.pesanan.excel', ['tahun'=>$tahun,'bulan'=>$bulan])); ?>"
+                   class="btn btn-excel">⬇ Excel <?php echo e($bulan ? 'Bulan' : 'Tahunan'); ?></a>
+                <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if($bulan): ?>
+                <a href="<?php echo e(route('laporan.pesanan.csv', ['tahun'=>$tahun])); ?>" class="btn btn-csv2">⬇ CSV Tahunan</a>
+                <a href="<?php echo e(route('laporan.pesanan.excel', ['tahun'=>$tahun])); ?>" class="btn btn-excel2">⬇ Excel Tahunan</a>
+                <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
             </div>
         </div>
     </form>
 
-    {{-- ── MONTHLY STATS ────────────────────────────────────────── --}}
-    @php
+    
+    <?php
         $currentBulanLabel = $bulan ? ($namaBulan[$bulan] ?? $bulan) . ' ' . $tahun : 'Semua Bulan ' . $tahun;
-    @endphp
+    ?>
     <div class="stats-section">
-        <h2>📅 Ringkasan — {{ $currentBulanLabel }}</h2>
-        @if($statsBulan)
+        <h2>📅 Ringkasan — <?php echo e($currentBulanLabel); ?></h2>
+        <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if($statsBulan): ?>
         <div class="stat-grid">
-            <div class="stat-card"><div class="ico">📋</div><div class="lbl">Total Pesanan</div><div class="val">{{ $statsBulan['total'] }}</div></div>
-            <div class="stat-card"><div class="ico">💰</div><div class="lbl">Total Pendapatan</div><div class="val" style="font-size:1.1rem">Rp {{ number_format($statsBulan['revenue'],0,',','.') }}</div></div>
-            <div class="stat-card"><div class="ico">🏔️</div><div class="lbl">Paket Wisata</div><div class="val">{{ $statsBulan['tour'] }}</div></div>
-            <div class="stat-card"><div class="ico">🗺️</div><div class="lbl">Paket Rental</div><div class="val">{{ $statsBulan['rental'] }}</div></div>
-            <div class="stat-card"><div class="ico">🚗</div><div class="lbl">Rental Mobil</div><div class="val">{{ $statsBulan['car'] }}</div></div>
+            <div class="stat-card"><div class="ico">📋</div><div class="lbl">Total Pesanan</div><div class="val"><?php echo e($statsBulan['total']); ?></div></div>
+            <div class="stat-card"><div class="ico">💰</div><div class="lbl">Total Pendapatan</div><div class="val" style="font-size:1.1rem">Rp <?php echo e(number_format($statsBulan['revenue'],0,',','.')); ?></div></div>
+            <div class="stat-card"><div class="ico">🏔️</div><div class="lbl">Paket Wisata</div><div class="val"><?php echo e($statsBulan['tour']); ?></div></div>
+            <div class="stat-card"><div class="ico">🗺️</div><div class="lbl">Paket Rental</div><div class="val"><?php echo e($statsBulan['rental']); ?></div></div>
+            <div class="stat-card"><div class="ico">🚗</div><div class="lbl">Rental Mobil</div><div class="val"><?php echo e($statsBulan['car']); ?></div></div>
         </div>
         <div class="status-grid">
-            <div class="status-pill sp-yellow"><span class="cnt">{{ $statsBulan['pending'] }}</span><span class="lbl">Pending</span></div>
-            <div class="status-pill sp-blue"><span class="cnt">{{ $statsBulan['confirmed'] }}</span><span class="lbl">Dikonfirmasi</span></div>
-            <div class="status-pill sp-green"><span class="cnt">{{ $statsBulan['completed'] }}</span><span class="lbl">Selesai</span></div>
-            <div class="status-pill sp-red"><span class="cnt">{{ $statsBulan['cancelled'] }}</span><span class="lbl">Dibatalkan</span></div>
+            <div class="status-pill sp-yellow"><span class="cnt"><?php echo e($statsBulan['pending']); ?></span><span class="lbl">Pending</span></div>
+            <div class="status-pill sp-blue"><span class="cnt"><?php echo e($statsBulan['confirmed']); ?></span><span class="lbl">Dikonfirmasi</span></div>
+            <div class="status-pill sp-green"><span class="cnt"><?php echo e($statsBulan['completed']); ?></span><span class="lbl">Selesai</span></div>
+            <div class="status-pill sp-red"><span class="cnt"><?php echo e($statsBulan['cancelled']); ?></span><span class="lbl">Dibatalkan</span></div>
         </div>
-        @endif
+        <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
     </div>
 
-    {{-- ── YEARLY BANNER ────────────────────────────────────────── --}}
+    
     <div class="yearly-banner">
-        <h2>📊 Ringkasan Tahunan {{ $tahun }}</h2>
+        <h2>📊 Ringkasan Tahunan <?php echo e($tahun); ?></h2>
         <div class="yb-grid">
-            <div class="yb-item"><div class="val">{{ $statsTahun['total'] }}</div><div class="lbl">Total Pesanan</div></div>
-            <div class="yb-item"><div class="val" style="font-size:1.15rem">Rp {{ number_format($statsTahun['revenue'],0,',','.') }}</div><div class="lbl">Total Pendapatan</div></div>
-            <div class="yb-item"><div class="val">{{ $statsTahun['tour'] }}</div><div class="lbl">Paket Wisata</div></div>
-            <div class="yb-item"><div class="val">{{ $statsTahun['rental'] }}</div><div class="lbl">Paket Rental</div></div>
-            <div class="yb-item"><div class="val">{{ $statsTahun['car'] }}</div><div class="lbl">Rental Mobil</div></div>
-            <div class="yb-item"><div class="val">{{ $statsTahun['paid'] }}</div><div class="lbl">Sudah Lunas</div></div>
-            <div class="yb-item"><div class="val">{{ $statsTahun['unpaid'] }}</div><div class="lbl">Belum Lunas</div></div>
+            <div class="yb-item"><div class="val"><?php echo e($statsTahun['total']); ?></div><div class="lbl">Total Pesanan</div></div>
+            <div class="yb-item"><div class="val" style="font-size:1.15rem">Rp <?php echo e(number_format($statsTahun['revenue'],0,',','.')); ?></div><div class="lbl">Total Pendapatan</div></div>
+            <div class="yb-item"><div class="val"><?php echo e($statsTahun['tour']); ?></div><div class="lbl">Paket Wisata</div></div>
+            <div class="yb-item"><div class="val"><?php echo e($statsTahun['rental']); ?></div><div class="lbl">Paket Rental</div></div>
+            <div class="yb-item"><div class="val"><?php echo e($statsTahun['car']); ?></div><div class="lbl">Rental Mobil</div></div>
+            <div class="yb-item"><div class="val"><?php echo e($statsTahun['paid']); ?></div><div class="lbl">Sudah Lunas</div></div>
+            <div class="yb-item"><div class="val"><?php echo e($statsTahun['unpaid']); ?></div><div class="lbl">Belum Lunas</div></div>
         </div>
     </div>
 
-    {{-- ── MONTHLY CHART ─────────────────────────────────────────── --}}
-    @php
+    
+    <?php
         $grafikBulanan = [];
         $namaBulanSingkat = [1=>'Jan',2=>'Feb',3=>'Mar',4=>'Apr',5=>'Mei',6=>'Jun',7=>'Jul',8=>'Agt',9=>'Sep',10=>'Okt',11=>'Nov',12=>'Des'];
         for ($m = 1; $m <= 12; $m++) {
@@ -217,29 +217,29 @@
             $grafikBulanan[] = ['bulan' => $namaBulanSingkat[$m], 'pesanan' => $ct, 'revenue' => $rv, 'num' => $m];
         }
         $maxOrders = max(array_column($grafikBulanan, 'pesanan')) ?: 1;
-    @endphp
+    ?>
     <div class="chart-card">
-        <h3>📈 Grafik Pesanan Per Bulan — {{ $tahun }}</h3>
+        <h3>📈 Grafik Pesanan Per Bulan — <?php echo e($tahun); ?></h3>
         <div class="bar-chart">
-            @foreach($grafikBulanan as $row)
+            <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php $__currentLoopData = $grafikBulanan; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $row): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
             <div class="bar-col">
-                <div class="bar-cnt">{{ $row['pesanan'] ?: '' }}</div>
+                <div class="bar-cnt"><?php echo e($row['pesanan'] ?: ''); ?></div>
                 <div class="bar-rect"
-                     style="height: {{ max(4, ($row['pesanan'] / $maxOrders) * 120) }}px;
-                            background: {{ ($bulan && (int)$bulan === $row['num']) ? '#1e40af' : '#93c5fd' }}"
-                     title="{{ $row['bulan'] }}: {{ $row['pesanan'] }} pesanan, Rp {{ number_format($row['revenue'],0,',','.') }}">
+                     style="height: <?php echo e(max(4, ($row['pesanan'] / $maxOrders) * 120)); ?>px;
+                            background: <?php echo e(($bulan && (int)$bulan === $row['num']) ? '#1e40af' : '#93c5fd'); ?>"
+                     title="<?php echo e($row['bulan']); ?>: <?php echo e($row['pesanan']); ?> pesanan, Rp <?php echo e(number_format($row['revenue'],0,',','.')); ?>">
                 </div>
-                <div class="bar-lbl">{{ $row['bulan'] }}</div>
+                <div class="bar-lbl"><?php echo e($row['bulan']); ?></div>
             </div>
-            @endforeach
+            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
         </div>
     </div>
 
-    {{-- ── ORDERS TABLE ─────────────────────────────────────────── --}}
+    
     <div class="table-card">
         <div class="table-head">
-            <h3>📋 Daftar Pesanan — {{ $currentBulanLabel }}</h3>
-            <span class="cnt">{{ $orders->count() }} pesanan</span>
+            <h3>📋 Daftar Pesanan — <?php echo e($currentBulanLabel); ?></h3>
+            <span class="cnt"><?php echo e($orders->count()); ?> pesanan</span>
         </div>
         <div style="overflow-x:auto">
             <table>
@@ -261,9 +261,9 @@
                     </tr>
                 </thead>
                 <tbody>
-                @php $no = 0; $prevMonth = null; @endphp
-                @forelse($orders as $order)
-                    @php
+                <?php $no = 0; $prevMonth = null; ?>
+                <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php $__empty_1 = true; $__currentLoopData = $orders; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $order): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); $__empty_1 = false; ?>
+                    <?php
                         $thisMonth = $order->created_at->format('n');
                         if (!$bulan && $thisMonth !== $prevMonth) {
                             $prevMonth = $thisMonth;
@@ -289,46 +289,47 @@
                         $payLabel = match($order->payment_status) { 'paid' => 'Lunas', 'partial' => 'DP', default => 'Belum' };
                         $payBadge = match($order->payment_status) { 'paid' => 'b-paid', 'partial' => 'b-partial', default => 'b-unpaid' };
                         $item = $order->vehicle?->name ?? $order->rentalPackage?->name ?? $order->product?->name ?? '-';
-                    @endphp
-                    @if($monthLabel && !$bulan)
+                    ?>
+                    <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if($monthLabel && !$bulan): ?>
                     <tr>
                         <td colspan="13" class="month-group-header">
-                            📅 {{ $namaBulan[$thisMonth] ?? $thisMonth }} {{ $tahun }}
-                            — {{ $orders->filter(fn($o) => $o->created_at->format('n') == $thisMonth)->count() }} pesanan
+                            📅 <?php echo e($namaBulan[$thisMonth] ?? $thisMonth); ?> <?php echo e($tahun); ?>
+
+                            — <?php echo e($orders->filter(fn($o) => $o->created_at->format('n') == $thisMonth)->count()); ?> pesanan
                         </td>
                     </tr>
-                    @endif
+                    <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
                     <tr>
-                        <td style="color:#94a3b8; font-size:.75rem">{{ $no }}</td>
-                        <td style="white-space:nowrap; font-size:.8rem">{{ $order->created_at->format('d M Y') }}</td>
-                        <td style="font-family:monospace; font-size:.8rem; color:#1d4ed8">{{ $order->transaction_id ?? '-' }}</td>
-                        <td><span class="badge {{ $tipeBadge }}">{{ $tipeLabel }}</span></td>
-                        <td style="max-width:200px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap" title="{{ $item }}">{{ $item }}</td>
+                        <td style="color:#94a3b8; font-size:.75rem"><?php echo e($no); ?></td>
+                        <td style="white-space:nowrap; font-size:.8rem"><?php echo e($order->created_at->format('d M Y')); ?></td>
+                        <td style="font-family:monospace; font-size:.8rem; color:#1d4ed8"><?php echo e($order->transaction_id ?? '-'); ?></td>
+                        <td><span class="badge <?php echo e($tipeBadge); ?>"><?php echo e($tipeLabel); ?></span></td>
+                        <td style="max-width:200px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap" title="<?php echo e($item); ?>"><?php echo e($item); ?></td>
                         <td>
-                            <strong>{{ $order->customer_name }}</strong>
-                            @if($order->customer_email)<br><small style="color:#94a3b8">{{ $order->customer_email }}</small>@endif
+                            <strong><?php echo e($order->customer_name); ?></strong>
+                            <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if($order->customer_email): ?><br><small style="color:#94a3b8"><?php echo e($order->customer_email); ?></small><?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
                         </td>
-                        <td style="white-space:nowrap; font-size:.8rem">{{ $order->customer_phone }}</td>
-                        <td style="white-space:nowrap; font-size:.8rem">{{ $order->trip_date?->format('d M Y') ?? '-' }}</td>
-                        <td style="white-space:nowrap; font-size:.8rem">{{ $order->trip_end_date?->format('d M Y') ?? '-' }}</td>
-                        <td style="text-align:center">{{ $order->quantity }}</td>
-                        <td style="text-align:right; font-weight:700; white-space:nowrap">Rp {{ number_format($order->total_price,0,',','.') }}</td>
-                        <td><span class="badge {{ $statusBadge }}">{{ $statusLabel }}</span></td>
-                        <td><span class="badge {{ $payBadge }}">{{ $payLabel }}</span></td>
+                        <td style="white-space:nowrap; font-size:.8rem"><?php echo e($order->customer_phone); ?></td>
+                        <td style="white-space:nowrap; font-size:.8rem"><?php echo e($order->trip_date?->format('d M Y') ?? '-'); ?></td>
+                        <td style="white-space:nowrap; font-size:.8rem"><?php echo e($order->trip_end_date?->format('d M Y') ?? '-'); ?></td>
+                        <td style="text-align:center"><?php echo e($order->quantity); ?></td>
+                        <td style="text-align:right; font-weight:700; white-space:nowrap">Rp <?php echo e(number_format($order->total_price,0,',','.')); ?></td>
+                        <td><span class="badge <?php echo e($statusBadge); ?>"><?php echo e($statusLabel); ?></span></td>
+                        <td><span class="badge <?php echo e($payBadge); ?>"><?php echo e($payLabel); ?></span></td>
                     </tr>
-                @empty
+                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); if ($__empty_1): ?>
                     <tr><td colspan="13" class="no-data"><div class="ico">📭</div><div>Tidak ada pesanan untuk periode ini.</div></td></tr>
-                @endforelse
+                <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
                 </tbody>
-                @if($orders->count() > 0)
+                <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if($orders->count() > 0): ?>
                 <tfoot>
                     <tr>
                         <td colspan="10" style="text-align:right; color:#64748b">Total Pendapatan (non-cancelled):</td>
-                        <td style="text-align:right; color:#16a34a">Rp {{ number_format($orders->where('status','!=','cancelled')->sum('total_price'),0,',','.') }}</td>
+                        <td style="text-align:right; color:#16a34a">Rp <?php echo e(number_format($orders->where('status','!=','cancelled')->sum('total_price'),0,',','.')); ?></td>
                         <td colspan="2"></td>
                     </tr>
                 </tfoot>
-                @endif
+                <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
             </table>
         </div>
     </div>
@@ -337,3 +338,4 @@
 </main>
 </body>
 </html>
+<?php /**PATH D:\PROYEK\WEBSITE WISATA\WISATA SEDERHANA\northsumateratrip.com\resources\views/pages/laporan-pesanan.blade.php ENDPATH**/ ?>
