@@ -99,8 +99,12 @@ class VehicleController extends Controller
         $total_price = $pricePerDay * $days;
 
         $order = DB::transaction(function () use ($carRental, $request, $total_price, $days) {
+            $vehicleId = $carRental->vehicle_id ?: null;
+            if (!$vehicleId && $carRental->vehicle) {
+                $vehicleId = $carRental->vehicle->id;
+            }
             $order = Order::create([
-                'vehicle_id'     => $carRental->vehicle_id ?? $carRental->id,
+                'vehicle_id'     => $vehicleId,
                 'user_id'        => Auth::check() ? Auth::id() : null,
                 'customer_name'  => $request->customer_name,
                 'customer_email' => $request->customer_email,

@@ -23,12 +23,14 @@ class InvoiceController extends Controller
             abort(403);
         }
 
-        $order->load(['product']);
+        $order->load(['product', 'vehicle', 'rentalPackage']);
 
         // Data for invoice
         $data = [
             'order' => $order,
             'product' => $order->product,
+            'vehicle' => $order->vehicle,
+            'rentalPackage' => $order->rentalPackage,
             'hotels' => [
                 $order->hotel_1,
                 $order->hotel_2,

@@ -11,6 +11,18 @@
         $itemPrice  = $product->price ?? 0;
         $itemQty    = 1;
         $totalPrice = $itemPrice;
+    } else if ($order->vehicle) {
+        $itemName   = $order->vehicle->name ?? 'Rental Mobil';
+        $itemMeta   = $order->vehicle->category ?? '';
+        $itemPrice  = $order->total_price;
+        $itemQty    = 1;
+        $totalPrice = $order->total_price;
+    } else if ($order->rentalPackage) {
+        $itemName   = $order->rentalPackage->name ?? 'Paket Rental';
+        $itemMeta   = $order->rentalPackage->category ?? '';
+        $itemPrice  = $order->total_price;
+        $itemQty    = 1;
+        $totalPrice = $order->total_price;
     } else {
         $itemName   = $order->product->name ?? 'Paket Wisata';
         $itemMeta   = ($order->product->location ?? 'Sumatera');
@@ -189,7 +201,17 @@
 
         <div class="meta-c">
             <div class="ml">Kategori</div>
-            <div class="mv">🏔️ Paket Wisata</div>
+            <div class="mv">
+                @if(!$isItinerary && $order->vehicle)
+                    🚗 Rental Mobil
+                @elseif(!$isItinerary && $order->rentalPackage)
+                    🎫 Paket Rental
+                @elseif(!$isItinerary && $order->product)
+                    🏔️ Paket Wisata
+                @else
+                    -
+                @endif
+            </div>
         </div>
     </div>
 </div>
