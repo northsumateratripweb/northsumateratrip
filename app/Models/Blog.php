@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Blog extends Model
 {
-    use HasFactory, ResolvesImagePath;
+    use HasFactory, ResolvesImagePath, \App\Traits\OptimizesImages;
 
     protected $fillable = [
         'title',

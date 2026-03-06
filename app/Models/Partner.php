@@ -8,7 +8,9 @@ use Illuminate\Database\Eloquent\Model;
 
 class Partner extends Model
 {
-    use HasFactory, ResolvesImagePath;
+    use HasFactory, ResolvesImagePath, \App\Traits\OptimizesImages;
+    
+    public $optimizableImages = ['logo'];
 
     protected $fillable = [
         'name',

@@ -49,7 +49,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  */
 class Product extends Model
 {
-    use HasFactory, ResolvesImagePath;
+    use HasFactory, ResolvesImagePath, \App\Traits\OptimizesImages;
 
     protected $fillable = [
         'category_id',

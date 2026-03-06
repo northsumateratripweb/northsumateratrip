@@ -9,7 +9,9 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Review extends Model
 {
-    use HasFactory, ResolvesImagePath;
+    use HasFactory, ResolvesImagePath, \App\Traits\OptimizesImages;
+    
+    public $optimizableImages = ['gallery_images', 'avatar'];
 
     protected $fillable = [
         'product_id',

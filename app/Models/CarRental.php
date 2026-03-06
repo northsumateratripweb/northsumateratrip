@@ -36,7 +36,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  */
 class CarRental extends Model
 {
-    use ResolvesImagePath;
+    use ResolvesImagePath, \App\Traits\OptimizesImages;
 
     protected $fillable = [
         'vehicle_id',
