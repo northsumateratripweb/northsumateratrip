@@ -5,33 +5,13 @@
 @section('og_image', $product->image_url)
 @section('canonical', route('products.show', [$product->category->slug, $product->slug]))
 
-@push('styles')
-    {{-- Product Schema --}}
-    <script type="application/ld+json">
-    {
-      "@context": "https://schema.org/",
-      "@type": "Product",
-      "name": "{{ $product->name }}",
-      "image": "{{ $product->image_url }}",
-      "description": "{{ $product->short_description }}",
-      "brand": {
-        "@type": "Brand",
-        "name": "NorthSumateraTrip"
-      },
-      "aggregateRating": {
-        "@type": "AggregateRating",
-        "ratingValue": "{{ $product->rating }}",
-        "reviewCount": "{{ $product->review_count }}"
-      },
-      "offers": {
-        "@type": "Offer",
-        "url": "{{ url()->current() }}",
-        "priceCurrency": "{{ \App\Services\CurrencyService::code() }}",
-        "price": "{{ currency($product->price_min, null, false) }}",
-        "availability": "https://schema.org/InStock"
-      }
-    }
-    </script>
+@push('schema')
+    {!! \App\Helpers\SchemaHelper::product($product) !!}
+    {!! \App\Helpers\SchemaHelper::breadcrumbs([
+        'Home' => route('home'),
+        $product->category->name => route('products.category', $product->category->slug),
+        $product->name => url()->current()
+    ]) !!}
 @endpush
 
 @section('content')

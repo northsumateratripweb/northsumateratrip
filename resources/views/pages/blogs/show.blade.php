@@ -5,7 +5,7 @@
 @section('og_image', $blog->image_url)
 @section('canonical', route('blog.show', $blog->slug))
 
-@push('styles')
+@push('schema')
     {{-- Article Schema --}}
     <script type="application/ld+json">
     {
@@ -29,6 +29,9 @@
       "dateModified": "{{ $blog->updated_at->toIso8601String() }}"
     }
     </script>
+@endpush
+
+@push('styles')
     <style>
         .blog-content h2 { font-family: 'Outfit', system-ui, sans-serif; font-size: 1.5rem; font-weight: 700; color: #0f172a; letter-spacing: -0.02em; margin-top: 2.5rem; margin-bottom: 1rem; line-height: 1.3; }
         .blog-content h3 { font-family: 'Outfit', system-ui, sans-serif; font-size: 1.25rem; font-weight: 600; color: #0f172a; letter-spacing: -0.01em; margin-top: 2rem; margin-bottom: 0.75rem; line-height: 1.3; }

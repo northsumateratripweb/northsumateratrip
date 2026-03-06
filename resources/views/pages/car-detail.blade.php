@@ -1,7 +1,16 @@
 @extends('layouts.main')
 
 @section('title', ($carRental->meta_title ?? $carRental->name) . ' - NorthSumateraTrip')
-@section('meta_description', Str::limit(strip_tags($carRental->meta_description ?? $carRental->description ?? 'Sewa mobil ' . $carRental->name . ' di Sumatera harga murah dengan supir profesional.'), 160))
+@section('canonical', route('car.detail', $carRental->slug))
+
+@push('schema')
+    {!! \App\Helpers\SchemaHelper::car($carRental) !!}
+    {!! \App\Helpers\SchemaHelper::breadcrumbs([
+        'Home' => route('home'),
+        'Sewa Mobil' => route('car-rental'),
+        $carRental->name => url()->current()
+    ]) !!}
+@endpush
 
 @section('content')
     <div class="pt-36 md:pt-44 pb-24 max-w-7xl mx-auto px-6 lg:px-8 relative">

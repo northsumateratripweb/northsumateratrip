@@ -2,46 +2,8 @@
 
 @section('title', ($settings['site_name'] ?? 'NorthSumateraTrip') . ' - ' . ($settings['site_slogan'] ?? 'Premium Tour & Travel'))
 
-@push('styles')
-    {{-- Organization Schema for Search Engines --}}
-    <script type="application/ld+json">
-    {
-      "@context": "https://schema.org",
-      "@type": "Organization",
-      "name": "{{ $settings['site_name'] ?? 'NorthSumateraTrip' }}",
-      "url": "{{ url('/') }}",
-      "logo": "{{ asset('storage/' . ($settings['site_logo'] ?? '')) }}",
-      "contactPoint": {
-        "@type": "ContactPoint",
-        "telephone": "{{ $settings['whatsapp_number'] ?? '' }}",
-        "contactType": "customer service"
-      },
-      "sameAs": [
-        "{{ $settings['facebook_url'] ?? '#' }}",
-        "{{ $settings['instagram_url'] ?? '#' }}",
-        "{{ $settings['tiktok_url'] ?? '#' }}"
-      ]
-    }
-    </script>
-    <script type="application/ld+json">
-    {
-      "@context": "https://schema.org",
-      "@type": "LocalBusiness",
-      "name": "{{ $settings['site_name'] ?? 'NorthSumateraTrip' }}",
-      "image": "{{ asset('storage/' . ($settings['site_logo'] ?? '')) }}",
-      "@id": "{{ url('/') }}",
-      "url": "{{ url('/') }}",
-      "telephone": "{{ $settings['whatsapp_number'] ?? '' }}",
-      "address": {
-        "@type": "PostalAddress",
-        "streetAddress": "{{ $settings['site_address'] ?? '' }}",
-        "addressLocality": "Medan",
-        "addressRegion": "Sumatera Utara",
-        "postalCode": "20131",
-        "addressCountry": "ID"
-      }
-    }
-    </script>
+@push('schema')
+    {!! \App\Helpers\SchemaHelper::organization($settings) !!}
 @endpush
 
 @section('header_hero')

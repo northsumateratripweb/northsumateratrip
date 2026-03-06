@@ -1,6 +1,16 @@
 @extends('layouts.main')
 
 @section('title', $package->name . ' - NorthSumateraTrip')
+@section('canonical', route('rental-package.show', $package->slug))
+
+@push('schema')
+    {!! \App\Helpers\SchemaHelper::rentalPackage($package) !!}
+    {!! \App\Helpers\SchemaHelper::breadcrumbs([
+        'Home' => route('home'),
+        'Paket Rental' => route('rental-package'),
+        $package->name => url()->current()
+    ]) !!}
+@endpush
 
 @section('content')
     <div class="pt-36 md:pt-44 pb-24 max-w-7xl mx-auto px-6 lg:px-8 relative">

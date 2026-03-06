@@ -131,6 +131,7 @@
         .card-lift:hover { transform: translateY(-4px); }
     </style>
 
+    @stack('schema')
     @stack('styles')
 </head>
 <body class="font-sans antialiased bg-white dark:bg-slate-950 text-slate-700 dark:text-slate-300 transition-colors duration-300">
