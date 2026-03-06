@@ -27,6 +27,7 @@ class RentalPackage extends Model
 
     protected $fillable = [
         'name',
+        'category',
         'slug',
         'description',
         'price_per_day',

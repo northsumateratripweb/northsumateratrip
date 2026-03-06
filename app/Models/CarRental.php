@@ -41,6 +41,7 @@ class CarRental extends Model
     protected $fillable = [
         'vehicle_id',
         'name',
+        'category',
         'slug',
         'description',
         'capacity',

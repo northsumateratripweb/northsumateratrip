@@ -54,6 +54,10 @@ class CarRentalResource extends Resource
                             ->maxLength(255)
                             ->live(onBlur: true)
                             ->afterStateUpdated(fn ($state, callable $set) => $set('slug', \Illuminate\Support\Str::slug($state))),
+                        Forms\Components\TextInput::make('category')
+                            ->label('Kategori')
+                            ->maxLength(255)
+                            ->placeholder('Contoh: SUV, MPV, Sedan, dll'),
                         Forms\Components\TextInput::make('slug')
                             ->required()
                             ->unique(ignoreRecord: true)
