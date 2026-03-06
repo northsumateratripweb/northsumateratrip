@@ -145,7 +145,7 @@ class CarRentalResource extends Resource
                             ->directory('car-rentals')
                             ->visibility('public')
                             ->image()
-                            ->mimes(['jpg','jpeg','png','webp'])
+                            ->acceptedFileTypes(['image/jpeg','image/png','image/webp'])
                             ->required(),
                         Forms\Components\FileUpload::make('gallery_images')
                             ->label('Galeri Foto')
@@ -153,7 +153,7 @@ class CarRentalResource extends Resource
                             ->directory('car-rentals/gallery')
                             ->visibility('public')
                             ->image()
-                            ->mimes(['jpg','jpeg','png','webp'])
+                            ->acceptedFileTypes(['image/jpeg','image/png','image/webp'])
                             ->multiple()
                             ->reorderable()
                             ->columnSpanFull(),
