@@ -211,6 +211,24 @@ class PackageRentalScheduleResource extends Resource
                 BulkActionGroup::make([
                     DeleteBulkAction::make(),
                 ]),
+                \Filament\Actions\Action::make('viewLaporan')
+                    ->label('View Laporan')
+                    ->icon('heroicon-o-eye')
+                    ->color('info')
+                    ->url(fn () => route('laporan.pesanan'))
+                    ->openUrlInNewTab(),
+                \Filament\Actions\Action::make('downloadCsv')
+                    ->label('Download CSV')
+                    ->icon('heroicon-o-arrow-down-tray')
+                    ->color('secondary')
+                    ->url(fn () => route('laporan.pesanan.csv'))
+                    ->openUrlInNewTab(),
+                \Filament\Actions\Action::make('downloadExcel')
+                    ->label('Download Excel')
+                    ->icon('heroicon-o-arrow-down-tray')
+                    ->color('success')
+                    ->url(fn () => route('laporan.pesanan.excel'))
+                    ->openUrlInNewTab(),
             ])
             ->defaultSort('start_date', 'desc');
     }
