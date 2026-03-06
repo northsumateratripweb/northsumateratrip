@@ -66,6 +66,7 @@ class ImportTemplates extends Command
                 'price_max' => 1500000,
                 'rating' => 5.0,
                 'review_count' => 12,
+                'featured_image' => 'placeholder.webp',
                 'is_active' => false,
                 'pricing_details' => [
                     ['pax' => '2-3', 'price' => 1500000, 'note' => 'Per pax'],
@@ -84,6 +85,7 @@ class ImportTemplates extends Command
                  'category_id' => $category->id,
                  'short_description' => 'Tour sehari penuh menikmati udara sejuk dan pemandangan alam Berastagi.',
                  'description' => '<p>Nikmati perjalanan singkat tapi berkesan ke daerah pegunungan Berastagi...</p>',
+                 'featured_image' => 'placeholder.webp',
                  'location_tag' => 'Berastagi, Karo',
                  'duration' => '1 Hari',
                  'price_min' => 450000,
@@ -102,7 +104,7 @@ class ImportTemplates extends Command
         try {
             foreach ($productsData as $data) {
                 $data['slug'] = Str::slug($data['name']);
-                Product::firstOrCreate(['slug' => $data['slug']], $data);
+                Product::updateOrCreate(['slug' => $data['slug']], $data);
             }
             $this->info("Products OK");
         } catch (\Throwable $e) {
@@ -112,14 +114,14 @@ class ImportTemplates extends Command
         // 3. Armada/Vehicle Template
         $this->info("Membuat template Armada & Kendaraan...");
         $vehicleInfo = [
-            ['name' => '[TEMPLATE] Toyota Innova Reborn', 'type' => 'MPV', 'capacity' => 7, 'brand' => 'Toyota', 'transmission' => 'Automatic / Manual', 'price_per_day' => 800000],
-            ['name' => '[TEMPLATE] Toyota Hiace Commuter', 'type' => 'Minibus', 'capacity' => 15, 'brand' => 'Toyota', 'transmission' => 'Manual', 'price_per_day' => 1200000]
+            ['name' => '[TEMPLATE] Toyota Innova Reborn', 'type' => 'MPV', 'capacity' => 7, 'brand' => 'Toyota', 'transmission' => 'Automatic / Manual', 'price_per_day' => 800000, 'plate_number' => 'T-REB-01'],
+            ['name' => '[TEMPLATE] Toyota Hiace Commuter', 'type' => 'Minibus', 'capacity' => 15, 'brand' => 'Toyota', 'transmission' => 'Manual', 'price_per_day' => 1200000, 'plate_number' => 'T-HIA-01']
         ];
         
         try {
             $vehicles = [];
             foreach ($vehicleInfo as $v) {
-                $vehicles[] = Vehicle::firstOrCreate(['name' => $v['name']], $v + ['is_active' => false]);
+                $vehicles[] = Vehicle::updateOrCreate(['name' => $v['name']], $v + ['is_active' => false]);
             }
             $this->info("Vehicles OK");
         } catch (\Throwable $e) {
