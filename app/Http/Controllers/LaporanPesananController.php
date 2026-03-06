@@ -149,12 +149,12 @@ class LaporanPesananController extends Controller
      */
     protected function getAvailableYears(): array
     {
-        $driver = config('database.default');
+        $driver = \Illuminate\Support\Facades\DB::getDriverName();
         
         $query = Order::query();
         
         if ($driver === 'sqlite') {
-            $query->selectRaw('CAST(strftime("%Y", created_at) AS INTEGER) as y');
+            $query->selectRaw('strftime("%Y", created_at) as y');
         } else {
             $query->selectRaw('YEAR(created_at) as y');
         }

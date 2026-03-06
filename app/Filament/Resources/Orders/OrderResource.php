@@ -18,6 +18,11 @@ use UnitEnum;
 class OrderResource extends Resource
 {
     protected static ?string $model = Order::class;
+    
+    public static function getEloquentQuery(): \Illuminate\Database\Eloquent\Builder
+    {
+        return parent::getEloquentQuery()->with(['product', 'vehicle', 'rentalPackage']);
+    }
 
     protected static string|BackedEnum|null $navigationIcon = 'heroicon-o-shopping-bag';
 

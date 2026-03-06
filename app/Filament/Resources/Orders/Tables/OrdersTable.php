@@ -15,7 +15,7 @@ class OrdersTable
     public static function configure(Table $table): Table
     {
         return $table
-            ->poll('10s')
+            ->poll('30s')
 
             ->columns([
                 \Filament\Tables\Columns\TextColumn::make('created_at')
