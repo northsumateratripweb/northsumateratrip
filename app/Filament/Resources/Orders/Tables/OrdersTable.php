@@ -93,6 +93,28 @@ class OrdersTable
                         'paid' => 'Lunas',
                         'partial' => 'DP (Sebagian)',
                     ]),
+                \Filament\Tables\Filters\Filter::make('created_at_month')
+                    ->form([
+                        \Filament\Forms\Components\Select::make('month')
+                            ->label('Bulan')
+                            ->options([
+                                1 => 'Januari', 2 => 'Februari', 3 => 'Maret', 4 => 'April', 5 => 'Mei', 6 => 'Juni',
+                                7 => 'Juli', 8 => 'Agustus', 9 => 'September', 10 => 'Oktober', 11 => 'November', 12 => 'Desember',
+                            ]),
+                    ])
+                    ->query(function ($query, array $data) {
+                        return $query->when($data['month'], fn ($query, $month) => $query->whereMonth('created_at', $month));
+                    }),
+                \Filament\Tables\Filters\Filter::make('created_at_year')
+                    ->form([
+                        \Filament\Forms\Components\Select::make('year')
+                            ->label('Tahun')
+                            ->options(array_combine(range(now()->year, now()->year - 5), range(now()->year, now()->year - 5)))
+                            ->default(now()->year),
+                    ])
+                    ->query(function ($query, array $data) {
+                        return $query->when($data['year'], fn ($query, $year) => $query->whereYear('created_at', $year));
+                    }),
                 \Filament\Tables\Filters\Filter::make('is_vehicle')
                     ->label('Sewa Mobil')
                     ->query(fn ($query) => $query->whereNotNull('vehicle_id')),
@@ -123,35 +145,10 @@ class OrdersTable
                     ->openUrlInNewTab(),
                 DeleteAction::make(),
             ])
-            ->toolbarActions([
-                CreateAction::make(),
+            ->bulkActions([
                 BulkActionGroup::make([
                     DeleteBulkAction::make(),
                 ]),
-                \Filament\Actions\Action::make('viewLaporan')
-                    ->label('Lihat Laporan')
-                    ->icon('heroicon-o-chart-bar')
-                    ->color('info')
-                    ->url(fn () => route('laporan.pesanan', ['tahun' => now()->year, 'bulan' => now()->month]))
-                    ->openUrlInNewTab(),
-                \Filament\Actions\Action::make('downloadCsv')
-                    ->label('CSV Bulan Ini')
-                    ->icon('heroicon-o-document-text')
-                    ->color('gray')
-                    ->url(fn () => route('laporan.pesanan.csv', ['tahun' => now()->year, 'bulan' => now()->month]))
-                    ->openUrlInNewTab(),
-                \Filament\Actions\Action::make('downloadExcel')
-                    ->label('Excel Bulan Ini')
-                    ->icon('heroicon-o-table-cells')
-                    ->color('success')
-                    ->url(fn () => route('laporan.pesanan.excel', ['tahun' => now()->year, 'bulan' => now()->month]))
-                    ->openUrlInNewTab(),
-                \Filament\Actions\Action::make('downloadExcelYear')
-                    ->label('Excel Tahunan')
-                    ->icon('heroicon-o-table-cells')
-                    ->color('warning')
-                    ->url(fn () => route('laporan.pesanan.excel', ['tahun' => now()->year]))
-                    ->openUrlInNewTab(),
             ]);
     }
 }

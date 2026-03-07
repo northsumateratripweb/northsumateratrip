@@ -66,6 +66,10 @@ class BusinessProfileSettings extends Page implements HasForms
             'cta_title' => Setting::get('cta_title', 'Siap Memulai Petualangan?'),
             'cta_subtitle' => Setting::get('cta_subtitle', 'Hubungi kami sekarang untuk konsultasi perjalanan gratis.'),
             'cta_button_text' => Setting::get('cta_button_text', 'Hubungi Kami'),
+            // Language & Currency
+            'default_locale' => Setting::get('default_locale', 'id'),
+            'exchange_rate_sgd' => Setting::get('exchange_rate_sgd', '0.000085'),
+            'exchange_rate_myr' => Setting::get('exchange_rate_myr', '0.00029'),
         ]);
     }
 
@@ -228,6 +232,68 @@ class BusinessProfileSettings extends Page implements HasForms
                                             ->label('Upload QRIS')
                                             ->image()
                                             ->directory('payment'),
+                                    ]),
+                            ]),
+
+                        Schemas\Tabs\Tab::make('Bahasa & Kurs')
+                            ->icon('heroicon-o-language')
+                            ->schema([
+                                Schemas\Section::make('Bahasa Default & Terjemahan')
+                                    ->description('Pilih bahasa default website dan aktifkan fitur multi-bahasa.')
+                                    ->schema([
+                                        Forms\Components\Select::make('default_locale')
+                                            ->label('Bahasa Default')
+                                            ->options([
+                                                'id' => '🇮🇩 Bahasa Indonesia',
+                                                'en' => '🇺🇸 English',
+                                                'ms' => '🇲🇾 Bahasa Melayu',
+                                            ])
+                                            ->default('id')
+                                            ->helperText('Bahasa yang digunakan secara default saat pengunjung pertama kali membuka website.'),
+                                    ]),
+                                Schemas\Section::make('Kurs Mata Uang')
+                                    ->description('Atur kurs konversi dari IDR (Rupiah) ke mata uang lain. Digunakan untuk menampilkan harga dalam bahasa Inggris (SGD) dan Melayu (MYR).')
+                                    ->schema([
+                                        Schemas\Grid::make(2)
+                                            ->schema([
+                                                Forms\Components\TextInput::make('exchange_rate_sgd')
+                                                    ->label('Kurs IDR → SGD (Dolar Singapura)')
+                                                    ->numeric()
+                                                    ->step(0.000001)
+                                                    ->default('0.000085')
+                                                    ->prefix('1 IDR =')
+                                                    ->suffix('SGD')
+                                                    ->helperText('Contoh: 0.000085 artinya 1 IDR = 0.000085 SGD (≈ Rp 11.800/SGD)'),
+                                                Forms\Components\TextInput::make('exchange_rate_myr')
+                                                    ->label('Kurs IDR → MYR (Ringgit Malaysia)')
+                                                    ->numeric()
+                                                    ->step(0.000001)
+                                                    ->default('0.00029')
+                                                    ->prefix('1 IDR =')
+                                                    ->suffix('MYR')
+                                                    ->helperText('Contoh: 0.00029 artinya 1 IDR = 0.00029 MYR (≈ Rp 3.400/MYR)'),
+                                            ]),
+                                        Schemas\Section::make('Panduan Kurs Saat Ini')
+                                            ->description('Referensi kurs umum (update manual sesuai kurs terkini):')
+                                            ->schema([
+                                                Forms\Components\Placeholder::make('kurs_info')
+                                                    ->label('')
+                                                    ->content(new \Illuminate\Support\HtmlString('
+                                                        <div class="grid grid-cols-2 gap-4 text-sm">
+                                                            <div class="bg-blue-50 dark:bg-blue-900/20 rounded-lg p-3">
+                                                                <div class="font-bold text-blue-700 dark:text-blue-300">🇺🇸 IDR → SGD</div>
+                                                                <div class="text-gray-600 dark:text-gray-400">Kurs saat ini: ~Rp 11.800/SGD</div>
+                                                                <div class="text-xs text-gray-500">Masukkan: 0.000085</div>
+                                                            </div>
+                                                            <div class="bg-red-50 dark:bg-red-900/20 rounded-lg p-3">
+                                                                <div class="font-bold text-red-700 dark:text-red-300">🇲🇾 IDR → MYR</div>
+                                                                <div class="text-gray-600 dark:text-gray-400">Kurs saat ini: ~Rp 3.400/MYR</div>
+                                                                <div class="text-xs text-gray-500">Masukkan: 0.00029</div>
+                                                            </div>
+                                                        </div>
+                                                    ')),
+                                            ])
+                                            ->compact(),
                                     ]),
                             ]),
 

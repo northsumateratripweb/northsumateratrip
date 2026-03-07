@@ -55,34 +55,37 @@ class TripSchedulesTable
                         'completed' => 'Selesai',
                         'cancelled' => 'Dibatalkan',
                     ]),
+                \Filament\Tables\Filters\Filter::make('trip_date_month')
+                    ->form([
+                        \Filament\Forms\Components\Select::make('month')
+                            ->label('Bulan')
+                            ->options([
+                                1 => 'Januari', 2 => 'Februari', 3 => 'Maret', 4 => 'April', 5 => 'Mei', 6 => 'Juni',
+                                7 => 'Juli', 8 => 'Agustus', 9 => 'September', 10 => 'Oktober', 11 => 'November', 12 => 'Desember',
+                            ]),
+                    ])
+                    ->query(function ($query, array $data) {
+                        return $query->when($data['month'], fn ($query, $month) => $query->whereMonth('trip_date', $month));
+                    }),
+                \Filament\Tables\Filters\Filter::make('trip_date_year')
+                    ->form([
+                        \Filament\Forms\Components\Select::make('year')
+                            ->label('Tahun')
+                            ->options(array_combine(range(now()->year, now()->year - 5), range(now()->year, now()->year - 5)))
+                            ->default(now()->year),
+                    ])
+                    ->query(function ($query, array $data) {
+                        return $query->when($data['year'], fn ($query, $year) => $query->whereYear('trip_date', $year));
+                    }),
             ])
             ->recordActions([
                 EditAction::make(),
                 DeleteAction::make(),
             ])
-            ->toolbarActions([
-                CreateAction::make(),
+            ->bulkActions([
                 BulkActionGroup::make([
                     DeleteBulkAction::make(),
                 ]),
-                \Filament\Actions\Action::make('viewLaporan')
-                    ->label('View Laporan')
-                    ->icon('heroicon-o-eye')
-                    ->color('info')
-                    ->url(fn () => route('laporan.pesanan'))
-                    ->openUrlInNewTab(),
-                \Filament\Actions\Action::make('downloadCsv')
-                    ->label('Download CSV')
-                    ->icon('heroicon-o-arrow-down-tray')
-                    ->color('secondary')
-                    ->url(fn () => route('laporan.pesanan.csv'))
-                    ->openUrlInNewTab(),
-                \Filament\Actions\Action::make('downloadExcel')
-                    ->label('Download Excel')
-                    ->icon('heroicon-o-arrow-down-tray')
-                    ->color('success')
-                    ->url(fn () => route('laporan.pesanan.excel'))
-                    ->openUrlInNewTab(),
             ]);
     }
 }

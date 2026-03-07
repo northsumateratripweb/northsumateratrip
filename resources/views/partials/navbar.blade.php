@@ -16,30 +16,67 @@
         <!-- Main Row: Content Centered & Balanced -->
         <div class="flex items-center justify-between h-14 md:h-16 gap-2">
             
-            <!-- Left: Language & Currency Switcher -->
-            <div class="flex-1 hidden md:flex items-center gap-3">
-                <div class="flex items-center bg-gray-50 rounded-full p-1 border border-gray-100">
-                    @foreach(['id' => '🇮🇩', 'en' => '🇺🇸', 'ms' => '🇲🇾'] as $loc => $flag)
+            <!-- Left: Language & Currency Switcher (Desktop) -->
+            <div class="flex-1 hidden md:flex items-center gap-2">
+                {{-- Language Switcher --}}
+                <div class="flex items-center bg-gray-50 rounded-full p-0.5 border border-gray-100">
+                    @php
+                        $langs = ['id' => ['flag' => '🇮🇩', 'label' => 'ID'], 'en' => ['flag' => '🇺🇸', 'label' => 'EN'], 'ms' => ['flag' => '🇲🇾', 'label' => 'MY']];
+                        $currentLang = app()->getLocale();
+                    @endphp
+                    @foreach($langs as $loc => $info)
                         <a href="{{ route('lang.switch', $loc) }}" 
-                           class="px-2.5 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider transition-all {{ app()->getLocale() == $loc ? 'bg-white text-blue-600 shadow-sm' : 'text-gray-400 hover:text-gray-600' }}">
-                            {{ $flag }} {{ strtoupper($loc) }}
+                           title="{{ match($loc) { 'id' => 'Bahasa Indonesia', 'en' => 'English', 'ms' => 'Bahasa Melayu' } }}"
+                           class="px-2.5 py-1 rounded-full text-[10px] font-black tracking-wider transition-all whitespace-nowrap {{ $currentLang == $loc ? 'bg-white text-blue-600 shadow-sm' : 'text-gray-400 hover:text-gray-700' }}">
+                            {{ $info['flag'] }} {{ $info['label'] }}
                         </a>
                     @endforeach
                 </div>
-                <div class="px-2 py-1 bg-blue-50 text-blue-600 rounded-lg text-[9px] font-black uppercase tracking-widest border border-blue-100">
-                    {{ \App\Services\CurrencyService::code() }} ({{ \App\Services\CurrencyService::symbol() }})
+
+                {{-- Currency Info --}}
+                @php
+                    $currCode   = \App\Services\CurrencyService::code();
+                    $currSymbol = \App\Services\CurrencyService::symbol();
+                    $currRate   = \App\Services\CurrencyService::rate();
+                    $locale     = app()->getLocale();
+                @endphp
+                <div x-data="{ open: false }" class="relative">
+                    <button @click="open = !open" @click.away="open = false"
+                            class="flex items-center gap-1.5 px-2.5 py-1.5 bg-blue-50 text-blue-600 rounded-lg text-[9px] font-black uppercase tracking-widest border border-blue-100 hover:bg-blue-100 transition-colors cursor-pointer">
+                        <span>{{ $currCode }}</span>
+                        <span class="text-blue-400">({{ $currSymbol }})</span>
+                        <svg class="w-2.5 h-2.5 text-blue-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M19 9l-7 7-7-7" /></svg>
+                    </button>
+                    <div x-show="open" x-transition
+                         class="absolute top-full left-0 mt-2 w-56 bg-white border border-gray-100 rounded-xl shadow-xl z-50 p-3">
+                        <p class="text-[10px] font-bold text-gray-500 uppercase tracking-widest mb-2">💱 Kurs Harga</p>
+                        <div class="space-y-1.5">
+                            <div class="flex items-center justify-between p-2 rounded-lg {{ $locale == 'id' ? 'bg-blue-50 border border-blue-100' : 'bg-gray-50' }}">
+                                <span class="text-xs font-bold text-gray-700">🇮🇩 IDR (Rp)</span>
+                                <span class="text-[10px] text-gray-500">Rupiah Indonesia</span>
+                            </div>
+                            <div class="flex items-center justify-between p-2 rounded-lg {{ $locale == 'en' ? 'bg-blue-50 border border-blue-100' : 'bg-gray-50' }}">
+                                <span class="text-xs font-bold text-gray-700">🇺🇸 SGD (S$)</span>
+                                <span class="text-[10px] text-gray-500">≈ Rp {{ number_format(1 / \App\Services\CurrencyService::rate('en'), 0, ',', '.') }}</span>
+                            </div>
+                            <div class="flex items-center justify-between p-2 rounded-lg {{ $locale == 'ms' ? 'bg-blue-50 border border-blue-100' : 'bg-gray-50' }}">
+                                <span class="text-xs font-bold text-gray-700">🇲🇾 MYR (RM)</span>
+                                <span class="text-[10px] text-gray-500">≈ Rp {{ number_format(1 / \App\Services\CurrencyService::rate('ms'), 0, ',', '.') }}</span>
+                            </div>
+                        </div>
+                        <p class="text-[9px] text-gray-400 mt-2 text-center">Ganti bahasa untuk mengubah mata uang</p>
+                    </div>
                 </div>
             </div>
 
-            <!-- Left: Mobile Lang Toggle (Small) -->
+            <!-- Left: Mobile Lang Toggle -->
             <div class="md:hidden flex items-center">
-                <div class="flex items-center bg-gray-50 rounded-lg p-0.5 border border-gray-100">
-                    @foreach(['id' => '🇮🇩', 'en' => '🇺🇸'] as $loc => $flag)
-                        @if(app()->getLocale() != $loc)
-                        <a href="{{ route('lang.switch', $loc) }}" class="p-1.5 text-[10px] grayscale hover:grayscale-0 transition-all">
+                <div class="flex items-center bg-gray-50 rounded-lg p-0.5 border border-gray-100 gap-0.5">
+                    @foreach(['id' => '🇮🇩', 'en' => '🇺🇸', 'ms' => '🇲🇾'] as $loc => $flag)
+                        <a href="{{ route('lang.switch', $loc) }}" 
+                           class="px-1.5 py-1 rounded text-sm transition-all {{ app()->getLocale() == $loc ? 'bg-white shadow-sm' : 'opacity-50 hover:opacity-80' }}">
                             {{ $flag }}
                         </a>
-                        @endif
                     @endforeach
                 </div>
             </div>

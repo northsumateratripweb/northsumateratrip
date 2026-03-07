@@ -118,4 +118,5 @@ Route::middleware(['auth'])->prefix('laporan')->group(function () {
     Route::get('/pesanan', [App\Http\Controllers\LaporanPesananController::class, 'laporan'])->name('laporan.pesanan');
     Route::get('/pesanan/export-csv', [App\Http\Controllers\LaporanPesananController::class, 'exportCsv'])->name('laporan.pesanan.csv');
     Route::get('/pesanan/export-excel', [App\Http\Controllers\LaporanPesananController::class, 'exportExcel'])->name('laporan.pesanan.excel');
+    Route::post('/trip-import', [App\Http\Controllers\TripImportController::class, 'import'])->name('trip.import');
 });
