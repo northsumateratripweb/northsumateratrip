@@ -39,7 +39,10 @@ class BlogResource extends Resource
                             ->unique(ignoreRecord: true)
                             ->maxLength(255),
                         Forms\Components\FileUpload::make('featured_image')
+                            ->label('Banner Artikel / Slider')
                             ->image()
+                            ->multiple()
+                            ->reorderable()
                             ->disk('public')
                             ->directory('blog')
                             ->visibility('public')

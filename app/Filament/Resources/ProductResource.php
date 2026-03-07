@@ -92,14 +92,16 @@ class ProductResource extends Resource
                     ->columns(2)
                     ->schema([
                         Forms\Components\FileUpload::make('featured_image')
-                            ->label('Foto Utama *')
+                            ->label('Banner Utama (Bisa Lebih dari 1)')
                             ->disk('public')
                             ->directory('products')
                             ->visibility('public')
                             ->image()
+                            ->multiple()
+                            ->reorderable()
                             ->imagePreviewHeight('200')
                             ->required()
-                            ->helperText('Foto yang tampil di kartu listing dan bagian atas halaman detail'),
+                            ->helperText('Jika lebih dari satu, akan tampil sebagai slider di halaman detail'),
 
                         Forms\Components\FileUpload::make('gallery_images')
                             ->label('Galeri Foto')

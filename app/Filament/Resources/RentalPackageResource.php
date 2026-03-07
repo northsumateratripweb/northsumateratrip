@@ -84,11 +84,13 @@ class RentalPackageResource extends Resource
                 Schemas\Components\Section::make('Media')
                     ->schema([
                         Forms\Components\FileUpload::make('featured_image')
-                            ->label('Gambar Utama')
+                            ->label('Banner Utama (Bisa Lebih dari 1)')
                             ->disk('public')
                             ->directory('rental-packages')
                             ->visibility('public')
                             ->image()
+                            ->multiple()
+                            ->reorderable()
                             ->required(),
                     ]),
                 

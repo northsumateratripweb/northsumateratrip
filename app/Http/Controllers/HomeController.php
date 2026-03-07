@@ -16,17 +16,17 @@ class HomeController extends Controller
         $featuredProducts = Product::active()
             ->featured()
             ->orderBy('sort_order')
-            ->take(12)
+            ->take(6)
             ->get();
 
         $carRentalProducts = \App\Models\CarRental::available()
             ->orderBy('sort_order')
-            ->take(12)
+            ->take(4)
             ->get();
 
         $rentalPackageProducts = \App\Models\RentalPackage::where('is_active', true)
             ->orderBy('sort_order')
-            ->take(12)
+            ->take(4)
             ->get();
 
         $galleryProducts = Product::active()

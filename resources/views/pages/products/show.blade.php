@@ -54,17 +54,12 @@
                 </div>
                 
                 <!-- Thumbnail Gallery -->
-                @if($product->gallery_images && count($product->gallery_images) > 0)
-                <div class="flex gap-2 overflow-x-auto pb-2">
-                    <button onclick="changeImage(event, '{{ $product->image_url }}')" 
-                            class="thumbnail-btn flex-shrink-0 w-20 h-20 rounded-xl overflow-hidden border-2 border-blue-600">
-                        <img src="{{ $product->image_url }}" 
-                             alt="{{ $product->name }}" 
-                             class="w-full h-full object-cover">
-                    </button>
-                    @foreach($product->gallery_urls as $imageUrl)
+                @php $allImages = $product->all_image_urls; @endphp
+                @if(count($allImages) > 1)
+                <div class="flex gap-2 overflow-x-auto pb-2 no-scrollbar">
+                    @foreach($allImages as $index => $imageUrl)
                     <button onclick="changeImage(event, '{{ $imageUrl }}')"
-                            class="thumbnail-btn flex-shrink-0 w-20 h-20 rounded-xl overflow-hidden border-2 border-transparent hover:border-blue-600 transition-colors">
+                            class="thumbnail-btn flex-shrink-0 w-20 h-20 rounded-xl overflow-hidden border-2 {{ $index === 0 ? 'border-blue-600' : 'border-transparent' }} hover:border-blue-600 transition-colors">
                         <img src="{{ $imageUrl }}"
                              alt="{{ $product->name }}"
                              class="w-full h-full object-cover">

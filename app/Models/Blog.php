@@ -26,6 +26,7 @@ class Blog extends Model
 
     protected $casts = [
         'gallery_images' => 'array',
+        'featured_image' => 'array',
         'published_at' => 'datetime',
         'is_published' => 'boolean',
     ];
@@ -54,6 +55,20 @@ class Blog extends Model
     public function getImageUrlAttribute(): string
     {
         return self::resolveImagePath($this->featured_image, 'images/blogs');
+    }
+
+    public function getAllImageUrlsAttribute(): array
+    {
+        $images = [];
+        if (is_array($this->featured_image)) {
+            foreach ($this->featured_image as $img) $images[] = self::resolveImagePath($img, 'images/blogs');
+        } elseif ($this->featured_image) {
+            $images[] = self::resolveImagePath($this->featured_image, 'images/blogs');
+        }
+        if (is_array($this->gallery_images)) {
+            foreach ($this->gallery_images as $img) $images[] = self::resolveImagePath($img, 'images/blogs');
+        }
+        return array_values(array_unique($images));
     }
 
     public function getGalleryUrlsAttribute(): array

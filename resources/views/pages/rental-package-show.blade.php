@@ -27,12 +27,27 @@
 
                     <h1 class="text-3xl md:text-5xl font-extrabold text-slate-900 dark:text-white leading-tight tracking-tight mb-8">{{ $package->name }}</h1>
 
+                    @php $allImages = $package->all_image_urls; @endphp
                     <!-- Main Image -->
-                    <div class="relative group rounded-2xl overflow-hidden bg-white border border-slate-100 cursor-zoom-in" onclick="openLightbox('{{ $package->image_url }}', '{{ $package->name }}')">
+                    <div class="relative group rounded-2xl overflow-hidden bg-white border border-slate-100 cursor-zoom-in" onclick="openLightbox('{{ $allImages[0] ?? $package->image_url }}', '{{ $package->name }}')">
                         <div class="aspect-video overflow-hidden rounded-2xl">
-                            <img src="{{ $package->image_url }}" alt="{{ $package->name }}" class="w-full h-full object-cover transition-transform duration-[2s] group-hover:scale-110" loading="lazy">
+                            <img src="{{ $allImages[0] ?? $package->image_url }}" alt="{{ $package->name }}" class="w-full h-full object-cover transition-transform duration-[2s] group-hover:scale-110" loading="lazy">
                         </div>
                     </div>
+
+                    {{-- Gallery Images --}}
+                    @if(count($allImages) > 1)
+                    <div class="grid grid-cols-4 gap-4 mt-6">
+                        @foreach(array_slice($allImages, 1) as $galleryUrl)
+                        <div class="aspect-video rounded-xl md:rounded-2xl overflow-hidden border border-slate-100 cursor-zoom-in shadow-sm hover:shadow-md transition-shadow" onclick="openLightbox('{{ $galleryUrl }}', '{{ $package->name }}')">
+                            <img src="{{ $galleryUrl }}"
+                                 alt="{{ $package->name }}"
+                                 class="w-full h-full object-cover hover:scale-110 transition-transform duration-700"
+                                 loading="lazy">
+                        </div>
+                        @endforeach
+                    </div>
+                    @endif
                 </div>
 
                 {{-- Stats Row --}}

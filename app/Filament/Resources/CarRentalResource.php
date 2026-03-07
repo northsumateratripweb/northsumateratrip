@@ -79,10 +79,6 @@ class CarRentalResource extends Resource
                             ->numeric()
                             ->prefix('Rp')
                             ->required(),
-                        Forms\Components\TextInput::make('price_per_12_hours')
-                            ->label('Harga 12 Jam')
-                            ->numeric()
-                            ->prefix('Rp'),
                         Forms\Components\TextInput::make('price_with_driver')
                             ->label('Harga + Driver')
                             ->numeric()
@@ -140,15 +136,18 @@ class CarRentalResource extends Resource
                 Schemas\Components\Section::make('Media')
                     ->schema([
                         Forms\Components\FileUpload::make('featured_image')
-                            ->label('Gambar Utama')
+                            ->label('Banner Utama (Bisa Lebih dari 1)')
                             ->disk('public')
                             ->directory('car-rentals')
                             ->visibility('public')
                             ->image()
+                            ->multiple()
+                            ->reorderable()
                             ->acceptedFileTypes(['image/jpeg','image/png','image/webp'])
-                            ->required(),
+                            ->required()
+                            ->helperText('Akan tampil sebagai slider di halaman detail'),
                         Forms\Components\FileUpload::make('gallery_images')
-                            ->label('Galeri Foto')
+                            ->label('Galeri Pendukung')
                             ->disk('public')
                             ->directory('car-rentals/gallery')
                             ->visibility('public')

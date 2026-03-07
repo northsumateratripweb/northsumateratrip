@@ -4,13 +4,13 @@ namespace App\Filament\Pages;
 
 use App\Models\Setting;
 use Filament\Actions\Action;
-use Filament\Forms\Components as Forms;
-use Filament\Schemas\Components as Schemas;
+use Filament\Forms;
 use Filament\Notifications\Notification;
 use Filament\Pages\Page;
 use Filament\Schemas\Schema;
 use Filament\Forms\Contracts\HasForms;
 use Filament\Forms\Concerns\InteractsWithForms;
+use Filament\Schemas\Components as Schemas;
 
 class BusinessProfileSettings extends Page implements HasForms
 {
@@ -69,244 +69,181 @@ class BusinessProfileSettings extends Page implements HasForms
         ]);
     }
 
-    public function form(\Filament\Schemas\Schema $form): \Filament\Schemas\Schema
+    public function form(Schema $schema): Schema
     {
-        return $form
+        return $schema
             ->schema([
                 Schemas\Tabs::make('Settings')
                     ->tabs([
-                        Schemas\Tabs\Tab::make('Informasi Bisnis')
+                        Schemas\Tabs\Tab::make('Identitas & Kontak')
                             ->icon('heroicon-o-building-office')
                             ->schema([
-                                Schemas\Section::make('Profil Perusahaan')
+                                Schemas\Grid::make(3)
                                     ->schema([
-                                        Forms\TextInput::make('site_name')
-                                            ->label('Nama Perusahaan')
-                                            ->required()
-                                            ->maxLength(255),
-                                        Forms\TextInput::make('whatsapp_number')
-                                            ->label('Nomor WhatsApp')
-                                            ->required()
-                                            ->tel()
-                                            ->maxLength(20),
-                                        Forms\TextInput::make('site_email')
-                                            ->label('Email Bisnis')
-                                            ->required()
-                                            ->email()
-                                            ->maxLength(255),
-                                        Forms\Textarea::make('site_address')
-                                            ->label('Alamat Kantor')
-                                            ->rows(3)
-                                            ->columnSpanFull(),
-                                    ])->columns(2),
-                                
-                                Schemas\Section::make('Jam Operasional & Waktu')
-                                    ->schema([
-                                        Forms\TextInput::make('working_hours')
-                                            ->label('Jam Kerja (e.g. 08:00 - 17:00)')
-                                            ->placeholder('08:00 - 17:00'),
-                                        Forms\Select::make('timezone')
-                                            ->label('Timezone')
-                                            ->options([
-                                                'Asia/Jakarta' => 'WIB (Asia/Jakarta)',
-                                                'Asia/Makassar' => 'WITA (Asia/Makassar)',
-                                                'Asia/Jayapura' => 'WIT (Asia/Jayapura)',
-                                            ])
-                                            ->default('Asia/Jakarta'),
-                                    ])->columns(2),
+                                        Schemas\Section::make('Informasi Dasar')
+                                            ->columnSpan(2)
+                                            ->schema([
+                                                Forms\Components\TextInput::make('site_name')
+                                                    ->label('Nama Website / Bisnis')
+                                                    ->required()
+                                                    ->helperText('Nama ini akan muncul di judul browser dan footer.'),
+                                                Schemas\Grid::make(2)
+                                                    ->schema([
+                                                        Forms\Components\TextInput::make('whatsapp_number')
+                                                            ->label('WhatsApp (Tanpa +)')
+                                                            ->placeholder('628123456789')
+                                                            ->required()
+                                                            ->tel(),
+                                                        Forms\Components\TextInput::make('site_email')
+                                                            ->label('Email Publik')
+                                                            ->required()
+                                                            ->email(),
+                                                    ]),
+                                                Forms\Components\Textarea::make('site_address')
+                                                    ->label('Alamat Lengkap')
+                                                    ->rows(3),
+                                            ]),
+                                        Schemas\Section::make('Operasional')
+                                            ->columnSpan(1)
+                                            ->schema([
+                                                Forms\Components\TextInput::make('working_hours')
+                                                    ->label('Jam Operasional')
+                                                    ->placeholder('Setiap Hari, 08:00 - 21:00'),
+                                                Forms\Components\Select::make('timezone')
+                                                    ->label('Zona Waktu')
+                                                    ->options([
+                                                        'Asia/Jakarta' => 'WIB (Jakarta)',
+                                                        'Asia/Makassar' => 'WITA (Makassar)',
+                                                        'Asia/Jayapura' => 'WIT (Jayapura)',
+                                                    ])
+                                                    ->default('Asia/Jakarta'),
+                                            ]),
+                                    ]),
                             ]),
                         
-                        Schemas\Tabs\Tab::make('Media Sosial')
-                            ->icon('heroicon-o-share')
-                            ->schema([
-                                Schemas\Section::make('SOSMED')
-                                    ->description('Masukkan URL lengkap akun media sosial Anda')
-                                    ->schema([
-                                        Forms\TextInput::make('facebook_url')
-                                            ->label('Facebook')
-                                            ->url()
-                                            ->placeholder('https://facebook.com/username'),
-                                        Forms\TextInput::make('instagram_url')
-                                            ->label('Instagram')
-                                            ->url()
-                                            ->placeholder('https://instagram.com/username'),
-                                        Forms\TextInput::make('tiktok_url')
-                                            ->label('TikTok')
-                                            ->url()
-                                            ->placeholder('https://tiktok.com/@username'),
-                                        Forms\TextInput::make('youtube_url')
-                                            ->label('YouTube')
-                                            ->url()
-                                            ->placeholder('https://youtube.com/@channel'),
-                                        Forms\TextInput::make('twitter_url')
-                                            ->label('Twitter / X')
-                                            ->url()
-                                            ->placeholder('https://twitter.com/username'),
-                                    ])->columns(1),
-                            ]),
-
-                        Schemas\Tabs\Tab::make('Branding & UI')
+                        Schemas\Tabs\Tab::make('Visual & Branding')
                             ->icon('heroicon-o-swatch')
                             ->schema([
-                                Schemas\Section::make('Logo & Favicon')
+                                Schemas\Grid::make(2)
                                     ->schema([
-                                        Forms\FileUpload::make('site_logo')
-                                            ->label('Logo Website')
-                                            ->image()
-                                            ->disk('public')
-                                            ->visibility('public')
-                                            ->directory('settings')
-                                            ->maxSize(2048)
-                                            ->imagePreviewHeight('100'),
-                                        Forms\FileUpload::make('site_favicon')
-                                            ->label('Favicon (32x32)')
-                                            ->image()
-                                            ->disk('public')
-                                            ->visibility('public')
-                                            ->directory('settings')
-                                            ->maxSize(512),
-                                        Forms\FileUpload::make('default_hero_image')
-                                            ->label('Banner Carousel (Hero Images)')
-                                            ->helperText('Upload satu atau lebih gambar untuk slider. Gunakan format JPG/PNG/WebP (HEIC tidak didukung oleh browser).')
-                                            ->image()
-                                            ->disk('public')
-                                            ->visibility('public')
-                                            ->directory('settings')
-                                            ->multiple()
-                                            ->reorderable()
-                                            ->maxSize(5120)
-                                            ->columnSpanFull(),
-                                    ])->columns(2),
-                                
-                                Schemas\Section::make('Warna Tema')
-                                    ->schema([
-                                        Forms\ColorPicker::make('primary_color')
-                                            ->label('Warna Utama')
-                                            ->default('#1D4ED8'),
-                                        Forms\ColorPicker::make('secondary_color')
-                                            ->label('Warna Sekunder')
-                                            ->default('#10B981'),
-                                    ])->columns(2),
-                            ]),
-
-                        Schemas\Tabs\Tab::make('SEO & Analytics')
-                            ->icon('heroicon-o-magnifying-glass')
-                            ->schema([
-                                Schemas\Section::make('Meta Tags')
-                                    ->schema([
-                                        Forms\TextInput::make('meta_title')
-                                            ->label('Meta Title')
-                                            ->maxLength(60)
-                                            ->columnSpanFull(),
-                                        Forms\Textarea::make('meta_description')
-                                            ->label('Meta Description')
-                                            ->maxLength(160)
-                                            ->rows(3)
-                                            ->columnSpanFull(),
-                                        Forms\Textarea::make('meta_keywords')
-                                            ->label('Meta Keywords (pisahkan dengan koma)')
-                                            ->rows(2)
-                                            ->columnSpanFull(),
+                                        Schemas\Section::make('Aset Gambar')
+                                            ->schema([
+                                                Schemas\Grid::make(2)
+                                                    ->schema([
+                                                        Forms\Components\FileUpload::make('site_logo')
+                                                            ->label('Logo Utama')
+                                                            ->image()
+                                                            ->directory('settings')
+                                                            ->imagePreviewHeight('80'),
+                                                        Forms\Components\FileUpload::make('site_favicon')
+                                                            ->label('Favicon')
+                                                            ->image()
+                                                            ->directory('settings'),
+                                                    ]),
+                                                Forms\Components\FileUpload::make('default_hero_image')
+                                                    ->label('Carousel / Banner Utama')
+                                                    ->image()
+                                                    ->multiple()
+                                                    ->reorderable()
+                                                    ->directory('settings')
+                                                    ->maxSize(2048)
+                                                    ->columnSpanFull(),
+                                            ]),
+                                        Schemas\Section::make('Skema Warna')
+                                            ->schema([
+                                                Forms\Components\ColorPicker::make('primary_color')
+                                                    ->label('Warna Primer')
+                                                    ->default('#1D4ED8'),
+                                                Forms\Components\ColorPicker::make('secondary_color')
+                                                    ->label('Warna Sekunder')
+                                                    ->default('#10B981'),
+                                                Forms\Components\Placeholder::make('tip')
+                                                    ->content('Warna ini akan digunakan pada tombol dan elemen aksen website.'),
+                                            ]),
                                     ]),
-                                
-                                Schemas\Section::make('Scripts')
-                                    ->schema([
-                                        Forms\TextInput::make('google_analytics_id')
-                                            ->label('Google Analytics ID / Tag')
-                                            ->placeholder('G-XXXXXXXXXX atau UA-XXXXXXXXX-X'),
-                                    ]),
-                            ]),
-
-                        Schemas\Tabs\Tab::make('Integrasi & Pembayaran')
-                            ->icon('heroicon-o-credit-card')
-                            ->schema([
-                                Schemas\Section::make('Rekening Bank & Pembayaran Manual')
-                                    ->description('Detail rekening yang akan ditampilkan kepada pelanggan untuk transfer bank manual.')
-                                    ->schema([
-                                        Forms\TextInput::make('bank_name_1')
-                                            ->label('Nama Bank 1')
-                                            ->placeholder('BCA, Mandiri, BNI, dll'),
-                                        Forms\TextInput::make('bank_account_1')
-                                            ->label('Nomor Rekening 1')
-                                            ->placeholder('1234567890'),
-                                        Forms\TextInput::make('bank_holder_1')
-                                            ->label('Atas Nama 1')
-                                            ->placeholder('Nama Pemilik Rekening'),
-                                        Forms\TextInput::make('bank_name_2')
-                                            ->label('Nama Bank 2')
-                                            ->placeholder('BCA, Mandiri, BNI, dll'),
-                                        Forms\TextInput::make('bank_account_2')
-                                            ->label('Nomor Rekening 2')
-                                            ->placeholder('1234567890'),
-                                        Forms\TextInput::make('bank_holder_2')
-                                            ->label('Atas Nama 2')
-                                            ->placeholder('Nama Pemilik Rekening'),
-                                        Forms\FileUpload::make('qris_image')
-                                            ->label('Gambar QRIS')
-                                            ->image()
-                                            ->disk('public')
-                                            ->visibility('public')
-                                            ->directory('payment')
-                                            ->maxSize(2048)
-                                            ->columnSpanFull(),
-                                    ])->columns(3),
-                                
-                                Schemas\Section::make('Email Configuration (SMTP)')
-                                    ->schema([
-                                        Forms\TextInput::make('mail_host')
-                                            ->label('Mail Host')
-                                            ->placeholder('smtp.gmail.com'),
-                                        Forms\TextInput::make('mail_port')
-                                            ->label('Mail Port')
-                                            ->placeholder('587')
-                                            ->numeric(),
-                                        Forms\TextInput::make('mail_username')
-                                            ->label('Mail Username')
-                                            ->placeholder('your-email@gmail.com'),
-                                        Forms\TextInput::make('mail_password')
-                                            ->label('Mail Password')
-                                            ->password()
-                                            ->revealable(),
-                                    ])->columns(2),
                             ]),
 
                         Schemas\Tabs\Tab::make('Konten Landing Page')
                             ->icon('heroicon-o-document-text')
                             ->schema([
-                                Schemas\Section::make('Hero Section')
+                                Schemas\Section::make('Hero Section (Bagian Atas)')
                                     ->schema([
-                                        Forms\TextInput::make('hero_badge_text')
-                                            ->label('Badge Text (atas judul)')
-                                            ->placeholder('Layanan Premium')
-                                            ->maxLength(100),
-                                        Forms\TextInput::make('hero_title')
-                                            ->label('Judul Utama (Hero Title)')
-                                            ->placeholder('Jelajahi Keindahan Sumatera Utara')
-                                            ->maxLength(255)
-                                            ->columnSpanFull(),
-                                        Forms\Textarea::make('hero_subtitle')
-                                            ->label('Sub-judul (Hero Subtitle)')
-                                            ->placeholder('Nikmati pengalaman wisata terbaik...')
-                                            ->rows(3)
-                                            ->columnSpanFull(),
+                                        Forms\Components\TextInput::make('hero_badge_text')
+                                            ->label('Badge Text')
+                                            ->placeholder('E.g. #1 di Sumatera Utara'),
+                                        Forms\Components\TextInput::make('hero_title')
+                                            ->label('Headline Utama')
+                                            ->required(),
+                                        Forms\Components\Textarea::make('hero_subtitle')
+                                            ->label('Sub-headline')
+                                            ->rows(3),
                                     ]),
-                                
-                                Schemas\Section::make('CTA Section (Bawah)')
+                                Schemas\Section::make('CTA Section (Bagian Bawah)')
                                     ->schema([
-                                        Forms\TextInput::make('cta_title')
-                                            ->label('Judul CTA')
-                                            ->placeholder('Siap Memulai Petualangan?')
-                                            ->maxLength(255),
-                                        Forms\Textarea::make('cta_subtitle')
-                                            ->label('Sub-judul CTA')
-                                            ->placeholder('Hubungi kami sekarang untuk...')
-                                            ->rows(2)
-                                            ->columnSpanFull(),
-                                        Forms\TextInput::make('cta_button_text')
-                                            ->label('Teks Tombol CTA')
-                                            ->placeholder('Hubungi Kami')
-                                            ->maxLength(50),
+                                        Schemas\Grid::make(2)
+                                            ->schema([
+                                                Forms\Components\TextInput::make('cta_title')
+                                                    ->label('Judul Ajakan'),
+                                                Forms\Components\TextInput::make('cta_button_text')
+                                                    ->label('Teks Tombol'),
+                                            ]),
+                                        Forms\Components\Textarea::make('cta_subtitle')
+                                            ->label('Sub-judul Ajakan')
+                                            ->rows(2),
+                                    ]),
+                            ]),
+                        
+                        Schemas\Tabs\Tab::make('Media Sosial')
+                            ->icon('heroicon-o-share')
+                            ->schema([
+                                Schemas\Section::make('Tautan Sosial')
+                                    ->description('Masukkan link profil lengkap Anda')
+                                    ->schema([
+                                        Forms\Components\TextInput::make('facebook_url')->label('Facebook')->url(),
+                                        Forms\Components\TextInput::make('instagram_url')->label('Instagram')->url(),
+                                        Forms\Components\TextInput::make('tiktok_url')->label('TikTok')->url(),
+                                        Forms\Components\TextInput::make('youtube_url')->label('YouTube')->url(),
+                                        Forms\Components\TextInput::make('twitter_url')->label('Twitter / X')->url(),
                                     ])->columns(2),
+                            ]),
+
+                        Schemas\Tabs\Tab::make('Pembayaran')
+                            ->icon('heroicon-o-credit-card')
+                            ->schema([
+                                Schemas\Section::make('Rekening Bank')
+                                    ->schema([
+                                        Schemas\Grid::make(3)
+                                            ->schema([
+                                                Forms\Components\TextInput::make('bank_name_1')->label('Bank 1'),
+                                                Forms\Components\TextInput::make('bank_account_1')->label('No Rek 1'),
+                                                Forms\Components\TextInput::make('bank_holder_1')->label('Atas Nama 1'),
+                                                Forms\Components\TextInput::make('bank_name_2')->label('Bank 2'),
+                                                Forms\Components\TextInput::make('bank_account_2')->label('No Rek 2'),
+                                                Forms\Components\TextInput::make('bank_holder_2')->label('Atas Nama 2'),
+                                            ]),
+                                    ]),
+                                Schemas\Section::make('QRIS')
+                                    ->schema([
+                                        Forms\Components\FileUpload::make('qris_image')
+                                            ->label('Upload QRIS')
+                                            ->image()
+                                            ->directory('payment'),
+                                    ]),
+                            ]),
+
+                        Schemas\Tabs\Tab::make('SEO & Advanced')
+                            ->icon('heroicon-o-cog-6-tooth')
+                            ->schema([
+                                Schemas\Section::make('Meta Tags (SEO)')
+                                    ->schema([
+                                        Forms\Components\TextInput::make('meta_title')->label('Halaman Meta Title'),
+                                        Forms\Components\Textarea::make('meta_description')->label('Meta Description')->rows(3),
+                                        Forms\Components\TextInput::make('meta_keywords')->label('Keywords (koma)'),
+                                    ]),
+                                Schemas\Section::make('Analytics')
+                                    ->schema([
+                                        Forms\Components\TextInput::make('google_analytics_id')->label('Google Analytics ID'),
+                                    ]),
                             ]),
                     ])->columnSpanFull(),
             ])
@@ -316,48 +253,17 @@ class BusinessProfileSettings extends Page implements HasForms
     protected function getHeaderActions(): array
     {
         return [
-            Action::make('create_setting')
-                ->label('Tambah Pengaturan')
-                ->url(fn () => \App\Filament\Resources\SettingResource::getUrl('create'))
-                ->icon('heroicon-o-plus-circle')
-                ->color('success'),
-            Action::make('manage_settings')
-                ->label('Kelola Semua')
-                ->url(fn () => \App\Filament\Resources\SettingResource::getUrl('index'))
-                ->icon('heroicon-o-cog-6-tooth')
-                ->color('info'),
-            Action::make('delete_section')
-                ->label('Hapus Pengaturan')
-                ->icon('heroicon-o-trash')
-                ->color('danger')
-                ->form([
-                    Forms\Select::make('settings_to_delete')
-                        ->label('Pilih pengaturan yang akan dihapus')
-                        ->multiple()
-                        ->options(fn () => Setting::orderBy('key')->pluck('key', 'key')->toArray())
-                        ->required()
-                        ->searchable(),
-                ])
-                ->action(function (array $data): void {
-                    Setting::whereIn('key', $data['settings_to_delete'])->delete();
-                    \Illuminate\Support\Facades\Cache::forget('site_settings');
-                    \Illuminate\Support\Facades\Cache::forget('app_settings');
-                    Notification::make()
-                        ->title('Pengaturan berhasil dihapus')
-                        ->success()
-                        ->send();
-                    $this->mount();
-                })
-                ->requiresConfirmation()
-                ->modalHeading('Hapus Pengaturan')
-                ->modalDescription('Apakah Anda yakin ingin menghapus pengaturan yang dipilih? Tindakan ini tidak dapat dibatalkan.')
-                ->modalSubmitActionLabel('Ya, Hapus'),
             Action::make('view_site')
                 ->label('Lihat Website')
                 ->url(url('/'))
                 ->openUrlInNewTab()
                 ->color('gray')
                 ->icon('heroicon-o-arrow-top-right-on-square'),
+            Action::make('manage_settings')
+                ->label('Advanced Settings')
+                ->url(fn () => \App\Filament\Resources\SettingResource::getUrl('index'))
+                ->icon('heroicon-o-cog-6-tooth')
+                ->color('info'),
         ];
     }
 
@@ -367,7 +273,8 @@ class BusinessProfileSettings extends Page implements HasForms
             Action::make('save')
                 ->label('Simpan Perubahan')
                 ->submit('save')
-                ->color('success'),
+                ->color('success')
+                ->icon('heroicon-o-check-circle'),
         ];
     }
 
@@ -375,21 +282,7 @@ class BusinessProfileSettings extends Page implements HasForms
     {
         $data = $this->form->getState();
 
-        // File fields - Filament sudah handle upload ke disk('public')
-        // getState() mengembalikan path string (single) atau array path (multiple)
-        $singleFileFields = ['site_logo', 'site_favicon', 'qris_image'];
-
         foreach ($data as $key => $value) {
-            // Single file fields: Filament returns array with one entry, extract the path
-            if (in_array($key, $singleFileFields) && is_array($value)) {
-                $value = !empty($value) ? array_values($value)[0] : null;
-            }
-
-            // Multiple file field (hero): Filament returns associative array, normalize to indexed
-            if ($key === 'default_hero_image' && is_array($value)) {
-                $value = array_values($value);
-            }
-
             Setting::set($key, $value);
         }
 
@@ -397,5 +290,8 @@ class BusinessProfileSettings extends Page implements HasForms
             ->title('Pengaturan berhasil disimpan')
             ->success()
             ->send();
+            
+        \Illuminate\Support\Facades\Cache::forget('site_settings');
+        \Illuminate\Support\Facades\Cache::forget('app_settings');
     }
 }

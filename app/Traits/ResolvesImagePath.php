@@ -13,9 +13,25 @@ trait ResolvesImagePath
      * - Path with slash (e.g. products/file.jpg) → stored via Filament → storage/
      * - Bare filename (e.g. file.jpg) → legacy demo image → {fallbackDir}/
      */
-    public static function resolveImagePath(?string $path, string $fallbackDir = 'images', string $placeholder = ''): string
+    public static function resolveImagePath(string|array|null $path, string $fallbackDir = 'images', string $placeholder = ''): string
     {
-        if (!$path) {
+        // Handle JSON string (Filament multiple saves as JSON array in a string if not cast)
+        if (is_string($path) && (str_starts_with($path, '[') || str_starts_with($path, '{'))) {
+            try {
+                $decoded = json_decode($path, true);
+                if (is_array($decoded)) {
+                    $path = $decoded;
+                }
+            } catch (\Exception $e) {}
+        }
+
+        // Handle array (multiple uploads) — take first image as main
+        if (is_array($path)) {
+            $path = !empty($path) ? $path[0] : null;
+        }
+
+        // Handle empty or literal '[]' (common in malformed JSON data)
+        if (!$path || $path === '[]') {
             return $placeholder ?: 'https://placehold.co/800x600/3B82F6/white?text=No+Image';
         }
 
@@ -23,24 +39,45 @@ trait ResolvesImagePath
             return $path;
         }
 
-        // Uploaded via Filament (path contains directory prefix like "products/file.jpg")
-        $storagePath = public_path('storage/' . $path);
-        if (file_exists($storagePath)) {
+        // List of possible extensions to check if the exact path fails
+        $extensions = ['webp', 'jpg', 'jpeg', 'png', 'HEIC'];
+        $pathWithoutExt = pathinfo($path, PATHINFO_DIRNAME) . '/' . pathinfo($path, PATHINFO_FILENAME);
+        if (str_starts_with($pathWithoutExt, './')) {
+            $pathWithoutExt = substr($pathWithoutExt, 2);
+        }
+
+        // Try exact path in storage
+        if (file_exists(public_path('storage/' . $path))) {
             return asset('storage/' . $path);
         }
 
-        // Legacy/demo: bare filename in public/{fallbackDir}/
-        $publicPath = public_path($fallbackDir . '/' . $path);
-        if (file_exists($publicPath)) {
+        // Try alternative extensions in storage
+        foreach ($extensions as $ext) {
+            $candidate = $pathWithoutExt . '.' . $ext;
+            if (file_exists(public_path('storage/' . $candidate))) {
+                return asset('storage/' . $candidate);
+            }
+        }
+
+        // Try exact path in public/{fallbackDir}
+        if (file_exists(public_path($fallbackDir . '/' . $path))) {
             return asset($fallbackDir . '/' . $path);
         }
 
-        // Try storage path without directory check (for paths like "products/abc.jpg")
+        // Try alternative extensions in public/{fallbackDir}
+        foreach ($extensions as $ext) {
+            $candidate = $pathWithoutExt . '.' . $ext;
+            if (file_exists(public_path($fallbackDir . '/' . $candidate))) {
+                return asset($fallbackDir . '/' . $candidate);
+            }
+        }
+
+        // Fallback for paths with slashes (even if file doesn't exist yet/locally)
         if (str_contains($path, '/')) {
             return asset('storage/' . $path);
         }
 
-        // File not found anywhere — return placeholder
+        // File not found anywhere — return placeholder with the filename for debugging
         return $placeholder ?: 'https://placehold.co/800x600/3B82F6/white?text=' . urlencode(basename($path));
     }
 }

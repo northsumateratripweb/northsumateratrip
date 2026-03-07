@@ -13,6 +13,7 @@ return [
 
     // Hero / Home
     'hero_badge'         => 'Layanan Premium',
+    'popular_trip'       => 'Paket Trip Populer',
     'popular_trips'      => 'Paket Trip Populer',
     'popular_trips_sub'  => 'Pilih paket terbaik untuk liburan Anda',
     'view_all_packages'  => 'Lihat Semua Paket',

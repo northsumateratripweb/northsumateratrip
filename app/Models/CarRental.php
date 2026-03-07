@@ -68,6 +68,7 @@ class CarRental extends Model
         'features' => 'array',
         'includes' => 'array',
         'gallery_images' => 'array',
+        'featured_image' => 'array',
         'pricing_details' => 'array',
         'is_available' => 'boolean',
         'is_featured' => 'boolean',
@@ -97,6 +98,20 @@ class CarRental extends Model
     public function getImageUrlAttribute(): string
     {
         return self::resolveImagePath($this->featured_image, 'images/car-rentals');
+    }
+
+    public function getAllImageUrlsAttribute(): array
+    {
+        $images = [];
+        if (is_array($this->featured_image)) {
+            foreach ($this->featured_image as $img) $images[] = self::resolveImagePath($img, 'images/car-rentals');
+        } elseif ($this->featured_image) {
+            $images[] = self::resolveImagePath($this->featured_image, 'images/car-rentals');
+        }
+        if (is_array($this->gallery_images)) {
+            foreach ($this->gallery_images as $img) $images[] = self::resolveImagePath($img, 'images/car-rentals');
+        }
+        return array_values(array_unique($images));
     }
 
     public function getGalleryUrlsAttribute(): array

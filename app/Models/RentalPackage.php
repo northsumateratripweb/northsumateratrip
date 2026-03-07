@@ -43,6 +43,7 @@ class RentalPackage extends Model
     protected $casts = [
         'includes' => 'array',
         'excludes' => 'array',
+        'featured_image' => 'array',
         'is_active' => 'boolean',
         'price_per_day' => 'integer',
         'min_rental_days' => 'integer',
@@ -52,6 +53,17 @@ class RentalPackage extends Model
     public function getImageUrlAttribute(): string
     {
         return self::resolveImagePath($this->featured_image, 'images/rental-packages');
+    }
+
+    public function getAllImageUrlsAttribute(): array
+    {
+        $images = [];
+        if (is_array($this->featured_image)) {
+            foreach ($this->featured_image as $img) $images[] = self::resolveImagePath($img, 'images/rental-packages');
+        } elseif ($this->featured_image) {
+            $images[] = self::resolveImagePath($this->featured_image, 'images/rental-packages');
+        }
+        return array_values(array_unique($images));
     }
 
     public function scopeActive($query)

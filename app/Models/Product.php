@@ -90,6 +90,7 @@ class Product extends Model
         'child_price' => 'decimal:2',
         'drone_price' => 'decimal:2',
         'rating' => 'decimal:1',
+        'featured_image' => 'array',
         'gallery_images' => 'array',
         'trip_options' => 'array',
         'pricing_details' => 'array',
@@ -132,6 +133,29 @@ class Product extends Model
     public function getImageUrlAttribute(): string
     {
         return self::resolveImagePath($this->featured_image, 'images/products');
+    }
+
+    public function getAllImageUrlsAttribute(): array
+    {
+        $images = [];
+        
+        // Add all featured images
+        if (is_array($this->featured_image)) {
+            foreach ($this->featured_image as $img) {
+                $images[] = self::resolveImagePath($img, 'images/products');
+            }
+        } elseif ($this->featured_image) {
+            $images[] = self::resolveImagePath($this->featured_image, 'images/products');
+        }
+
+        // Add gallery images
+        if (is_array($this->gallery_images)) {
+            foreach ($this->gallery_images as $img) {
+                $images[] = self::resolveImagePath($img, 'images/products');
+            }
+        }
+
+        return array_values(array_unique($images));
     }
 
     public function getGalleryUrlsAttribute(): array

@@ -94,10 +94,11 @@
     </div>
 </section>
 
+@php $allImages = $blog->all_image_urls; @endphp
 <!-- Featured Image Full Width -->
 <section class="max-w-7xl mx-auto px-6 mb-20">
-    <div class="aspect-[21/9] rounded-2xl overflow-hidden shadow-xl shadow-blue-900/[0.06] border border-slate-100 dark:border-slate-800 cursor-zoom-in" onclick="openLightbox('{{ $blog->image_url }}', '{{ $blog->title }}')">
-        <img src="{{ $blog->image_url }}" alt="{{ $blog->title }}" class="w-full h-full object-cover">
+    <div class="aspect-[21/9] rounded-2xl overflow-hidden shadow-xl shadow-blue-900/[0.06] border border-slate-100 dark:border-slate-800 cursor-zoom-in" onclick="openLightbox('{{ $allImages[0] ?? $blog->image_url }}', '{{ $blog->title }}')">
+        <img src="{{ $allImages[0] ?? $blog->image_url }}" alt="{{ $blog->title }}" class="w-full h-full object-cover">
     </div>
 </section>
 
@@ -109,12 +110,12 @@
         </div>
 
         <!-- Gallery Section -->
-        @if($blog->gallery_images && count($blog->gallery_images) > 0)
+        @if(count($allImages) > 1)
         <div class="mt-20 pt-20 border-t border-slate-100 dark:border-slate-800">
             <h3 class="text-xl font-extrabold text-slate-900 dark:text-white mb-8">Visual Moments</h3>
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                @foreach($blog->gallery_urls as $galleryImageUrl)
-                <div class="aspect-video rounded-2xl overflow-hidden border border-slate-100 hover:shadow-lg hover:shadow-blue-900/[0.06] hover:-translate-y-1 transition-all duration-500">
+            <div class="grid grid-cols-2 md:grid-cols-3 gap-6">
+                @foreach(array_slice($allImages, 1) as $galleryImageUrl)
+                <div class="aspect-video rounded-2xl overflow-hidden border border-slate-100 hover:shadow-lg hover:shadow-blue-900/[0.06] hover:-translate-y-1 transition-all duration-500 cursor-zoom-in" onclick="openLightbox('{{ $galleryImageUrl }}', '{{ $blog->title }}')">
                     <img src="{{ $galleryImageUrl }}" alt="{{ $blog->title }}" class="w-full h-full object-cover">
                 </div>
                 @endforeach
