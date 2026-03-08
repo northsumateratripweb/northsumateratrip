@@ -1,0 +1,1 @@
+<?php try { require "vendor/autoload.php"; $app = require_once "bootstrap/app.php"; $app->make(Illuminate\Contracts\Console\Kernel::class)->bootstrap(); } catch (\Throwable $e) { file_put_contents("error_clean.txt", "ERROR: " . $e->getMessage() . "\nFILE: " . $e->getFile() . ":" . $e->getLine()); }

@@ -319,6 +319,40 @@ class ProductResource extends Resource
                             ->maxLength(160)
                             ->placeholder('Deskripsi singkat untuk Google (maks. 160 karakter)'),
                     ]),
+
+                // ─────────────────────────────────────────────────────────────
+                // 10. TERJEMAHAN (Bahasa Asing)
+                // ─────────────────────────────────────────────────────────────
+                Schemas\Components\Section::make('Terjemahan (Bahasa Asing)')
+                    ->description('Isi konten dalam bahasa Inggris dan Melayu.')
+                    ->collapsed()
+                    ->schema([
+                        Schemas\Components\Tabs::make('Translations')
+                            ->tabs([
+                                Schemas\Components\Tabs\Tab::make('English (EN)')
+                                    ->schema([
+                                        Forms\Components\TextInput::make('translations.en.name')->label('Judul Paket (EN)'),
+                                        Forms\Components\TextInput::make('translations.en.duration')->label('Durasi (EN)'),
+                                        Forms\Components\Textarea::make('translations.en.short_description')->label('Deskripsi Singkat (EN)'),
+                                        Forms\Components\RichEditor::make('translations.en.description')->label('Deskripsi Lengkap (EN)'),
+                                        Forms\Components\TagsInput::make('translations.en.includes')->label('Includes (EN)'),
+                                        Forms\Components\TagsInput::make('translations.en.excludes')->label('Excludes (EN)'),
+                                        Forms\Components\Textarea::make('translations.en.notes')->label('Catatan/Notes (EN)'),
+                                        Forms\Components\RichEditor::make('translations.en.itinerary_text')->label('Isi Itinerary Text (EN)'),
+                                    ]),
+                                Schemas\Components\Tabs\Tab::make('Malaysia (MS)')
+                                    ->schema([
+                                        Forms\Components\TextInput::make('translations.ms.name')->label('Judul Paket (MS)'),
+                                        Forms\Components\TextInput::make('translations.ms.duration')->label('Durasi (MS)'),
+                                        Forms\Components\Textarea::make('translations.ms.short_description')->label('Deskripsi Singkat (MS)'),
+                                        Forms\Components\RichEditor::make('translations.ms.description')->label('Deskripsi Lengkap (MS)'),
+                                        Forms\Components\TagsInput::make('translations.ms.includes')->label('Includes (MS)'),
+                                        Forms\Components\TagsInput::make('translations.ms.excludes')->label('Excludes (MS)'),
+                                        Forms\Components\Textarea::make('translations.ms.notes')->label('Catatan/Notes (MS)'),
+                                        Forms\Components\RichEditor::make('translations.ms.itinerary_text')->label('Isi Itinerary Text (MS)'),
+                                    ]),
+                            ])->columnSpanFull()
+                    ]),
             ]);
     }
 

@@ -40,15 +40,15 @@
             <!-- Image -->
             <div class="relative h-52 overflow-hidden">
                 <img src="{{ $product->image_url }}" 
-                     alt="{{ $product->name }}" 
+                     alt="{{ $product->translate('name') }}" 
                      class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700 ease-out">
                 <div class="absolute inset-0 bg-gradient-to-t from-slate-900/50 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
                 
-                @if($product->duration)
+                @if($product->translate('duration'))
                 <div class="absolute top-4 left-4">
                     <span class="px-3.5 py-1.5 bg-white/90 dark:bg-slate-900/90 backdrop-blur-sm rounded-xl text-xs font-bold text-slate-700 dark:text-slate-300 border border-white/20 shadow-sm flex items-center gap-1.5">
                         <svg class="w-3.5 h-3.5 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
-                        {{ $product->duration }}
+                        {{ $product->translate('duration') }}
                     </span>
                 </div>
                 @endif
@@ -65,7 +65,7 @@
             <!-- Content -->
             <div class="flex-1 flex flex-col p-5">
                 <h3 class="font-bold text-slate-900 dark:text-white text-base mb-2 line-clamp-2 group-hover:text-blue-600 transition-colors leading-snug">
-                    {{ $product->name }}
+                    {{ $product->translate('name') }}
                 </h3>
                 
                 <!-- Rating -->

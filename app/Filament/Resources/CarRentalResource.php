@@ -181,6 +181,36 @@ class CarRentalResource extends Resource
                             ->rows(2)
                             ->columnSpanFull(),
                     ]),
+
+                // ─────────────────────────────────────────────────────────────
+                // TERJEMAHAN (Bahasa Asing)
+                // ─────────────────────────────────────────────────────────────
+                Schemas\Components\Section::make('Terjemahan (Bahasa Asing)')
+                    ->description('Isi konten dalam bahasa Inggris dan Melayu.')
+                    ->collapsed()
+                    ->schema([
+                        Schemas\Components\Tabs::make('Translations')
+                            ->tabs([
+                                Schemas\Components\Tabs\Tab::make('English (EN)')
+                                    ->schema([
+                                        Forms\Components\TextInput::make('translations.en.name')->label('Nama Mobil (EN)'),
+                                        Forms\Components\TextInput::make('translations.en.category')->label('Kategori (EN)'),
+                                        Forms\Components\RichEditor::make('translations.en.description')->label('Deskripsi (EN)'),
+                                        Forms\Components\TagsInput::make('translations.en.features')->label('Fitur Kendaraan (EN)'),
+                                        Forms\Components\TagsInput::make('translations.en.includes')->label('Termasuk (EN)'),
+                                        Forms\Components\Textarea::make('translations.en.terms')->label('Syarat & Ketentuan (EN)'),
+                                    ]),
+                                Schemas\Components\Tabs\Tab::make('Malaysia (MS)')
+                                    ->schema([
+                                        Forms\Components\TextInput::make('translations.ms.name')->label('Nama Mobil (MS)'),
+                                        Forms\Components\TextInput::make('translations.ms.category')->label('Kategori (MS)'),
+                                        Forms\Components\RichEditor::make('translations.ms.description')->label('Deskripsi (MS)'),
+                                        Forms\Components\TagsInput::make('translations.ms.features')->label('Fitur Kendaraan (MS)'),
+                                        Forms\Components\TagsInput::make('translations.ms.includes')->label('Termasuk (MS)'),
+                                        Forms\Components\Textarea::make('translations.ms.terms')->label('Syarat & Ketentuan (MS)'),
+                                    ]),
+                            ])->columnSpanFull()
+                    ]),
             ]);
     }
 

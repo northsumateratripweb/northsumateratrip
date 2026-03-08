@@ -6,7 +6,7 @@
     
     // ── Resolve item details ─────────────────────────────────
     if ($isItinerary) {
-        $itemName   = $product->name ?? 'Paket Wifi';
+        $itemName   = $product->translate('name') ?? 'Paket Wifi';
         $itemMeta   = ($product->location ?? 'Sumatera');
         $itemPrice  = $product->price ?? 0;
         $itemQty    = 1;

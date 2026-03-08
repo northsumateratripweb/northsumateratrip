@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Traits\ResolvesImagePath;
+use App\Traits\HasTranslations;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -49,7 +50,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  */
 class Product extends Model
 {
-    use HasFactory, ResolvesImagePath, \App\Traits\OptimizesImages;
+    use HasFactory, ResolvesImagePath, \App\Traits\OptimizesImages, HasTranslations;
 
     protected $fillable = [
         'category_id',
@@ -82,6 +83,7 @@ class Product extends Model
         'sort_order',
         'is_featured',
         'is_active',
+        'translations',
     ];
 
     protected $casts = [
@@ -99,6 +101,7 @@ class Product extends Model
         'itinerary' => 'array',
         'is_featured' => 'boolean',
         'is_active' => 'boolean',
+        'translations' => 'array',
     ];
 
     public function category(): BelongsTo

@@ -1,7 +1,7 @@
 @extends('layouts.main')
 
-@section('title', ($blog->meta_title ?? $blog->title) . ' - NorthSumateraTrip')
-@section('meta_description', $blog->meta_description ?? $blog->excerpt)
+@section('title', ($blog->meta_title ?? $blog->translate('title')) . ' - NorthSumateraTrip')
+@section('meta_description', $blog->meta_description ?? $blog->translate('excerpt'))
 @section('og_image', $blog->image_url)
 @section('canonical', route('blog.show', $blog->slug))
 
@@ -11,7 +11,7 @@
     {
       "@context": "https://schema.org",
       "@type": "BlogPosting",
-      "headline": "{{ $blog->title }}",
+      "headline": "{{ $blog->translate('title') }}",
       "image": "{{ $blog->image_url }}",
       "author": {
         "@type": "Organization",
@@ -68,7 +68,7 @@
         </div>
 
         <h1 class="text-3xl md:text-5xl font-extrabold text-slate-900 dark:text-white leading-tight tracking-tight mb-6">
-            {{ $blog->title }}
+            {{ $blog->translate('title') }}
         </h1>
 
         <div class="flex flex-wrap items-center justify-between gap-6 pt-8 border-t border-slate-100 dark:border-slate-800">
@@ -97,8 +97,8 @@
 @php $allImages = $blog->all_image_urls; @endphp
 <!-- Featured Image Full Width -->
 <section class="max-w-7xl mx-auto px-6 mb-20">
-    <div class="aspect-[21/9] rounded-2xl overflow-hidden shadow-xl shadow-blue-900/[0.06] border border-slate-100 dark:border-slate-800 cursor-zoom-in" onclick="openLightbox('{{ $allImages[0] ?? $blog->image_url }}', '{{ $blog->title }}')">
-        <img src="{{ $allImages[0] ?? $blog->image_url }}" alt="{{ $blog->title }}" class="w-full h-full object-cover">
+    <div class="aspect-[21/9] rounded-2xl overflow-hidden shadow-xl shadow-blue-900/[0.06] border border-slate-100 dark:border-slate-800 cursor-zoom-in" onclick="openLightbox('{{ $allImages[0] ?? $blog->image_url }}', '{{ $blog->translate('title') }}')">
+        <img src="{{ $allImages[0] ?? $blog->image_url }}" alt="{{ $blog->translate('title') }}" class="w-full h-full object-cover">
     </div>
 </section>
 
@@ -106,7 +106,7 @@
 <section class="bg-white dark:bg-slate-950 pb-24">
     <div class="max-w-4xl mx-auto px-6">
         <div class="blog-content prose prose-lg prose-slate dark:prose-invert max-w-none">
-            {!! $blog->content !!}
+            {!! $blog->translate('content') !!}
         </div>
 
         <!-- Gallery Section -->
@@ -115,8 +115,8 @@
             <h3 class="text-xl font-extrabold text-slate-900 dark:text-white mb-8">Visual Moments</h3>
             <div class="grid grid-cols-2 md:grid-cols-3 gap-6">
                 @foreach(array_slice($allImages, 1) as $galleryImageUrl)
-                <div class="aspect-video rounded-2xl overflow-hidden border border-slate-100 hover:shadow-lg hover:shadow-blue-900/[0.06] hover:-translate-y-1 transition-all duration-500 cursor-zoom-in" onclick="openLightbox('{{ $galleryImageUrl }}', '{{ $blog->title }}')">
-                    <img src="{{ $galleryImageUrl }}" alt="{{ $blog->title }}" class="w-full h-full object-cover">
+                <div class="aspect-video rounded-2xl overflow-hidden border border-slate-100 hover:shadow-lg hover:shadow-blue-900/[0.06] hover:-translate-y-1 transition-all duration-500 cursor-zoom-in" onclick="openLightbox('{{ $galleryImageUrl }}', '{{ $blog->translate('title') }}')">
+                    <img src="{{ $galleryImageUrl }}" alt="{{ $blog->translate('title') }}" class="w-full h-full object-cover">
                 </div>
                 @endforeach
             </div>

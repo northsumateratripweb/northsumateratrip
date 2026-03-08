@@ -1,7 +1,7 @@
 @extends('layouts.main')
 
-@section('title', $category->name . ' - NorthSumateraTrip')
-@section('meta_description', $category->meta_description ?? $category->description)
+@section('title', $category->translate('name') . ' - NorthSumateraTrip')
+@section('meta_description', $category->meta_description ?? $category->translate('description'))
 
 @section('content')
 <div class="pt-32 md:pt-40 pb-20 max-w-7xl mx-auto px-6 lg:px-8">
@@ -10,14 +10,14 @@
     <div class="text-center mb-12 max-w-2xl mx-auto">
         <div class="inline-flex items-center gap-2 mb-5">
             <div class="w-8 h-0.5 bg-blue-600"></div>
-            <span class="text-xs font-bold text-blue-600 uppercase tracking-[0.2em]">{{ $category->name }}</span>
+            <span class="text-xs font-bold text-blue-600 uppercase tracking-[0.2em]">{{ $category->translate('name') }}</span>
             <div class="w-8 h-0.5 bg-blue-600"></div>
         </div>
         <h1 class="text-4xl md:text-5xl font-extrabold text-slate-900 dark:text-white tracking-tight leading-tight mb-4">
-            {{ $category->name }}
+            {{ $category->translate('name') }}
         </h1>
         <p class="text-slate-500 dark:text-slate-400 text-base leading-relaxed max-w-xl mx-auto">
-            {{ $category->description }}
+            {{ $category->translate('description') }}
         </p>
     </div>
 
@@ -45,14 +45,14 @@
             <!-- Image -->
             <div class="relative h-52 overflow-hidden">
                 <img src="{{ $product->image_url }}" 
-                     alt="{{ $product->name }}" 
+                     alt="{{ $product->translate('name') }}" 
                      class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700 ease-out">
                 <div class="absolute inset-0 bg-gradient-to-t from-slate-900/40 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
                 
-                @if($product->duration)
+                @if($product->translate('duration'))
                 <div class="absolute top-4 left-4 px-3 py-1.5 bg-blue-600/90 backdrop-blur-sm text-white text-xs font-bold rounded-xl flex items-center gap-1.5">
                     <i class="fas fa-calendar-day text-[0.6rem]"></i>
-                    {{ $product->duration }}
+                    {{ $product->translate('duration') }}
                 </div>
                 @endif
                 
@@ -69,7 +69,7 @@
                     {{ $product->formatted_price }}
                 </div>
                 <h3 class="font-bold text-slate-900 dark:text-white mb-3 line-clamp-2 group-hover:text-blue-600 transition-colors leading-snug">
-                    {{ $product->name }}
+                    {{ $product->translate('name') }}
                 </h3>
                 
                 <!-- Rating -->

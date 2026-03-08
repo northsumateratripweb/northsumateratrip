@@ -5,10 +5,11 @@ namespace App\Models;
 use App\Traits\ResolvesImagePath;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use App\Traits\HasTranslations;
 
 class Blog extends Model
 {
-    use HasFactory, ResolvesImagePath, \App\Traits\OptimizesImages;
+    use HasFactory, ResolvesImagePath, \App\Traits\OptimizesImages, HasTranslations;
 
     protected $fillable = [
         'title',
@@ -22,6 +23,7 @@ class Blog extends Model
         'view_count',
         'published_at',
         'is_published',
+        'translations',
     ];
 
     protected $casts = [
@@ -29,6 +31,7 @@ class Blog extends Model
         'featured_image' => 'array',
         'published_at' => 'datetime',
         'is_published' => 'boolean',
+        'translations' => 'array',
     ];
 
     public function getRouteKeyName(): string

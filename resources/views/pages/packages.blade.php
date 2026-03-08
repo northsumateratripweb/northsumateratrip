@@ -67,7 +67,7 @@
                     <a href="{{ route('products.show', [$product->category?->slug ?? 'uncategorized', $product->slug]) }}" class="group flex flex-col h-full bg-white dark:bg-slate-900 rounded-2xl border border-slate-100 dark:border-slate-800 transition-all duration-500 hover:shadow-xl hover:shadow-blue-900/[0.06] hover:-translate-y-1 overflow-hidden block cursor-pointer">
                         <!-- Image Container -->
                         <div class="relative h-52 overflow-hidden">
-                            <img src="{{ $product->image_url }}" alt="{{ $product->name }}" class="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-110">
+                            <img src="{{ $product->image_url }}" alt="{{ $product->translate('name') }}" class="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-110">
                             <div class="absolute inset-0 bg-gradient-to-t from-slate-900/50 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
                             
                             <!-- Badges -->
@@ -83,13 +83,13 @@
                         <!-- Content -->
                         <div class="flex-1 flex flex-col p-5">
                             <h3 class="font-bold text-slate-900 dark:text-white text-base leading-snug mb-3 line-clamp-2 group-hover:text-blue-600 transition-colors">
-                                {{ $product->name }}
+                                {{ $product->translate('name') }}
                             </h3>
                             
                             <div class="flex items-center gap-2 mb-4">
                                 <span class="flex items-center gap-1.5 px-2.5 py-1 bg-slate-50 dark:bg-slate-800 rounded-lg text-xs font-medium text-slate-400 border border-slate-100 dark:border-slate-700">
                                     <svg class="w-3 h-3 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
-                                    {{ $product->duration ?? '-' }}
+                                    {{ $product->translate('duration') ?? '-' }}
                                 </span>
                             </div>
 

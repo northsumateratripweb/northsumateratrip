@@ -1,6 +1,6 @@
 @extends('layouts.main')
 
-@section('title', $package->name . ' - NorthSumateraTrip')
+@section('title', $package->translate('name') . ' - NorthSumateraTrip')
 @section('canonical', route('rental-package.show', $package->slug))
 
 @push('schema')
@@ -8,7 +8,7 @@
     {!! \App\Helpers\SchemaHelper::breadcrumbs([
         'Home' => route('home'),
         'Paket Rental' => route('rental-package'),
-        $package->name => url()->current()
+        $package->translate('name') => url()->current()
     ]) !!}
 @endpush
 
@@ -25,13 +25,13 @@
                         <span class="text-xs font-medium text-slate-400 uppercase tracking-wider">Penawaran Eksklusif</span>
                     </div>
 
-                    <h1 class="text-3xl md:text-5xl font-extrabold text-slate-900 dark:text-white leading-tight tracking-tight mb-8">{{ $package->name }}</h1>
+                    <h1 class="text-3xl md:text-5xl font-extrabold text-slate-900 dark:text-white leading-tight tracking-tight mb-8">{{ $package->translate('name') }}</h1>
 
                     @php $allImages = $package->all_image_urls; @endphp
                     <!-- Main Image -->
-                    <div class="relative group rounded-2xl overflow-hidden bg-white border border-slate-100 cursor-zoom-in" onclick="openLightbox('{{ $allImages[0] ?? $package->image_url }}', '{{ $package->name }}')">
+                    <div class="relative group rounded-2xl overflow-hidden bg-white border border-slate-100 cursor-zoom-in" onclick="openLightbox('{{ $allImages[0] ?? $package->image_url }}', '{{ $package->translate('name') }}')">
                         <div class="aspect-video overflow-hidden rounded-2xl">
-                            <img src="{{ $allImages[0] ?? $package->image_url }}" alt="{{ $package->name }}" class="w-full h-full object-cover transition-transform duration-[2s] group-hover:scale-110" loading="lazy">
+                            <img src="{{ $allImages[0] ?? $package->image_url }}" alt="{{ $package->translate('name') }}" class="w-full h-full object-cover transition-transform duration-[2s] group-hover:scale-110" loading="lazy">
                         </div>
                     </div>
 
@@ -39,9 +39,9 @@
                     @if(count($allImages) > 1)
                     <div class="grid grid-cols-4 gap-4 mt-6">
                         @foreach(array_slice($allImages, 1) as $galleryUrl)
-                        <div class="aspect-video rounded-xl md:rounded-2xl overflow-hidden border border-slate-100 cursor-zoom-in shadow-sm hover:shadow-md transition-shadow" onclick="openLightbox('{{ $galleryUrl }}', '{{ $package->name }}')">
+                        <div class="aspect-video rounded-xl md:rounded-2xl overflow-hidden border border-slate-100 cursor-zoom-in shadow-sm hover:shadow-md transition-shadow" onclick="openLightbox('{{ $galleryUrl }}', '{{ $package->translate('name') }}')">
                             <img src="{{ $galleryUrl }}"
-                                 alt="{{ $package->name }}"
+                                 alt="{{ $package->translate('name') }}"
                                  class="w-full h-full object-cover hover:scale-110 transition-transform duration-700"
                                  loading="lazy">
                         </div>
@@ -68,14 +68,14 @@
 
                 <div class="space-y-16">
                     {{-- Includes --}}
-                    @if(!empty($package->includes) && count($package->includes) > 0)
+                    @if(!empty($package->translate('includes')) && count($package->translate('includes')) > 0)
                     <section>
                         <h2 class="text-base font-bold text-slate-900 dark:text-white uppercase tracking-wide mb-8 flex items-center gap-3">
                             <span class="w-8 h-0.5 bg-emerald-500"></span>
                             {{ __('ui.include') }}
                         </h2>
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                            @foreach($package->includes as $include)
+                            @foreach($package->translate('includes') as $include)
                                 <div class="flex items-center gap-4 p-5 bg-emerald-50 dark:bg-emerald-900/20 rounded-2xl border border-emerald-100 dark:border-emerald-800/40">
                                     <div class="w-10 h-10 bg-emerald-500/10 rounded-xl flex items-center justify-center text-emerald-600">
                                         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"></path></svg>
@@ -88,27 +88,27 @@
                     @endif
 
                     {{-- Description --}}
-                    @if($package->description)
+                    @if($package->translate('description'))
                     <section>
                         <h2 class="text-base font-bold text-slate-900 dark:text-white uppercase tracking-wide mb-8 flex items-center gap-3">
                             <span class="w-8 h-0.5 bg-blue-600"></span>
                             {{ __('ui.description') }}
                         </h2>
                         <div class="prose prose-blue dark:prose-invert max-w-none font-medium text-slate-500 dark:text-slate-400 leading-relaxed">
-                            {!! $package->description !!}
+                            {!! $package->translate('description') !!}
                         </div>
                     </section>
                     @endif
 
                     {{-- Excludes --}}
-                    @if(!empty($package->excludes) && count($package->excludes) > 0)
+                    @if(!empty($package->translate('excludes')) && count($package->translate('excludes')) > 0)
                     <section>
                         <h2 class="text-base font-bold text-slate-900 dark:text-white uppercase tracking-wide mb-8 flex items-center gap-3">
                             <span class="w-8 h-0.5 bg-rose-500"></span>
                             {{ __('ui.exclude') }}
                         </h2>
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
-                            @foreach($package->excludes as $exclude)
+                            @foreach($package->translate('excludes') as $exclude)
                                 <div class="flex items-center gap-3 p-4 bg-rose-50 dark:bg-rose-900/20 rounded-xl border border-rose-100 dark:border-rose-800/40">
                                     <svg class="w-5 h-5 text-rose-600 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M6 18L18 6M6 6l12 12"></path></svg>
                                     <span class="font-bold text-slate-700 dark:text-slate-300">{{ $exclude }}</span>

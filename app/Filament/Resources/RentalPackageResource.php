@@ -105,6 +105,34 @@ class RentalPackageResource extends Resource
                             ->numeric()
                             ->default(0),
                     ]),
+
+                // ─────────────────────────────────────────────────────────────
+                // TERJEMAHAN (Bahasa Asing)
+                // ─────────────────────────────────────────────────────────────
+                Schemas\Components\Section::make('Terjemahan (Bahasa Asing)')
+                    ->description('Isi konten dalam bahasa Inggris dan Melayu.')
+                    ->collapsed()
+                    ->schema([
+                        Schemas\Components\Tabs::make('Translations')
+                            ->tabs([
+                                Schemas\Components\Tabs\Tab::make('English (EN)')
+                                    ->schema([
+                                        Forms\Components\TextInput::make('translations.en.name')->label('Nama Paket (EN)'),
+                                        Forms\Components\TextInput::make('translations.en.category')->label('Kategori (EN)'),
+                                        Forms\Components\Textarea::make('translations.en.description')->label('Deskripsi (EN)'),
+                                        Forms\Components\TagsInput::make('translations.en.includes')->label('Termasuk (EN)'),
+                                        Forms\Components\TagsInput::make('translations.en.excludes')->label('Tidak Termasuk (EN)'),
+                                    ]),
+                                Schemas\Components\Tabs\Tab::make('Malaysia (MS)')
+                                    ->schema([
+                                        Forms\Components\TextInput::make('translations.ms.name')->label('Nama Paket (MS)'),
+                                        Forms\Components\TextInput::make('translations.ms.category')->label('Kategori (MS)'),
+                                        Forms\Components\Textarea::make('translations.ms.description')->label('Deskripsi (MS)'),
+                                        Forms\Components\TagsInput::make('translations.ms.includes')->label('Termasuk (MS)'),
+                                        Forms\Components\TagsInput::make('translations.ms.excludes')->label('Tidak Termasuk (MS)'),
+                                    ]),
+                            ])->columnSpanFull()
+                    ]),
             ]);
     }
 

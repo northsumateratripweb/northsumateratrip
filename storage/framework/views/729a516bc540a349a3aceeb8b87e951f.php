@@ -122,7 +122,7 @@
             <div class="flex-shrink-0 w-[280px] md:w-[380px] snap-start group">
                 <a href="<?php echo e(route('products.show', ['category' => $product->category?->slug, 'product' => $product->slug])); ?>" class="block">
                     <div class="relative aspect-[4/3] rounded-[1rem] md:rounded-[1.5rem] overflow-hidden shadow-sm md:shadow-lg transition-transform duration-500 group-hover:-translate-y-2">
-                        <img src="<?php echo e($product->image_url); ?>" alt="<?php echo e($product->name); ?>" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110">
+                        <img src="<?php echo e($product->image_url); ?>" alt="<?php echo e($product->translate('name')); ?>" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110">
                         <div class="absolute top-2 right-2 md:top-4 md:right-4 bg-white/95 backdrop-blur px-3 py-1.5 md:px-4 md:py-2 rounded-xl shadow-sm border border-gray-100">
                             <p class="text-blue-600 font-extrabold text-[10px] md:text-sm">
                                 <?php echo e($product->formatted_price); ?>
@@ -132,7 +132,7 @@
                     </div>
                     <div class="mt-4 md:mt-6">
                         <h3 class="text-xs md:text-lg font-black text-gray-900 group-hover:text-blue-600 transition-colors uppercase tracking-tight line-clamp-1 leading-tight md:leading-snug">
-                            <?php echo e($product->name); ?>
+                            <?php echo e($product->translate('name')); ?>
 
                         </h3>
                         <div class="flex items-center justify-between mt-3">
@@ -144,9 +144,9 @@
                                 </div>
                                 <span class="text-gray-400 text-[8px] md:text-xs font-bold">(<?php echo e($product->review_count ?? 0); ?>)</span>
                             </div>
-                            <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if($product->duration): ?>
+                            <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if($product->translate('duration')): ?>
                             <div class="flex items-center gap-2 text-gray-500 text-[9px] font-black uppercase tracking-widest">
-                                <?php echo e($product->duration); ?>
+                                <?php echo e($product->translate('duration')); ?>
 
                             </div>
                             <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
@@ -176,10 +176,10 @@
             <div class="flex-shrink-0 w-[240px] md:w-[320px] snap-start bg-white rounded-2xl md:rounded-3xl overflow-hidden shadow-sm hover:shadow-xl transition-all group border border-gray-100">
                 <a href="<?php echo e(route('car.detail', $car->slug)); ?>" class="block">
                     <div class="aspect-video overflow-hidden bg-gray-100">
-                        <img src="<?php echo e($car->image_url); ?>" alt="<?php echo e($car->name); ?>" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110">
+                        <img src="<?php echo e($car->image_url); ?>" alt="<?php echo e($car->translate('name')); ?>" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110">
                     </div>
                     <div class="p-5">
-                        <h3 class="font-black text-gray-900 uppercase tracking-tight text-xs md:text-base mb-3 line-clamp-1 group-hover:text-blue-600 transition-colors"><?php echo e($car->name); ?></h3>
+                        <h3 class="font-black text-gray-900 uppercase tracking-tight text-xs md:text-base mb-3 line-clamp-1 group-hover:text-blue-600 transition-colors"><?php echo e($car->translate('name')); ?></h3>
                         <div class="flex items-center justify-between">
                             <p class="text-blue-600 font-black text-xs md:text-sm uppercase"><?php echo e(currency($car->price_per_day)); ?><span class="text-gray-400 font-bold ml-1 text-[10px]">/ <?php echo e(__('ui.days')); ?></span></p>
                             <span class="text-[8px] md:text-[10px] bg-gray-100 text-gray-500 px-2 py-1 rounded-full font-bold uppercase"><?php echo e($car->capacity); ?> <?php echo e(__('ui.person')); ?></span>
@@ -216,9 +216,9 @@
         <div class="flex gap-4 md:gap-6 overflow-x-auto no-scrollbar pb-6 snap-x">
             <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php $__currentLoopData = $rentalPackageProducts; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $package): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
             <div class="flex-shrink-0 w-[280px] md:w-[450px] snap-start relative rounded-3xl overflow-hidden group h-64 md:h-72 shadow-lg">
-                <img src="<?php echo e($package->image_url); ?>" alt="<?php echo e($package->name); ?>" class="absolute inset-0 w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110">
+                <img src="<?php echo e($package->image_url); ?>" alt="<?php echo e($package->translate('name')); ?>" class="absolute inset-0 w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110">
                 <div class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent p-6 md:p-10 flex flex-col justify-end">
-                    <h3 class="text-white text-lg md:text-3xl font-black uppercase tracking-tight mb-2 group-hover:text-blue-400 transition-colors"><?php echo e($package->name); ?></h3>
+                    <h3 class="text-white text-lg md:text-3xl font-black uppercase tracking-tight mb-2 group-hover:text-blue-400 transition-colors"><?php echo e($package->translate('name')); ?></h3>
                     <div class="flex items-center justify-between mt-2 md:mt-4">
                         <p class="text-blue-400 font-black uppercase tracking-widest text-xs md:text-xl"><?php echo e(currency($package->price_per_day)); ?><span class="text-white/60 text-[10px] md:text-xs ml-2">/ <?php echo e(__('ui.days')); ?></span></p>
                         <a href="<?php echo e(route('rental-package.show', $package->slug)); ?>" class="bg-white/10 hover:bg-white text-white hover:text-blue-600 backdrop-blur-md px-6 py-2.5 rounded-full text-[10px] md:text-xs font-black uppercase tracking-widest transition-all">Details &rarr;</a>
@@ -255,7 +255,7 @@
     <div class="flex gap-4 overflow-x-auto no-scrollbar px-4 pb-4">
         <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php $__currentLoopData = $galleryProducts; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $product): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
         <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if($product->image_url): ?>
-        <div class="flex-shrink-0 w-48 h-48 md:w-64 md:h-64 rounded-3xl overflow-hidden cursor-zoom-in group" onclick="openLightbox('<?php echo e($product->image_url); ?>', '<?php echo e($product->name); ?>')">
+        <div class="flex-shrink-0 w-48 h-48 md:w-64 md:h-64 rounded-3xl overflow-hidden cursor-zoom-in group" onclick="openLightbox('<?php echo e($product->image_url); ?>', '<?php echo e($product->translate('name')); ?>')">
             <img src="<?php echo e($product->image_url); ?>" alt="Gallery" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110 grayscale hover:grayscale-0">
         </div>
         <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
@@ -328,10 +328,10 @@
             <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php $__currentLoopData = $latestBlogs; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $blog): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
             <a href="<?php echo e(route('blog.show', $blog->slug)); ?>" class="group">
                 <div class="aspect-square rounded-3xl overflow-hidden shadow-md mb-4 bg-gray-100">
-                    <img src="<?php echo e($blog->image_url); ?>" alt="<?php echo e($blog->title); ?>" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110">
+                    <img src="<?php echo e($blog->image_url); ?>" alt="<?php echo e($blog->translate('title')); ?>" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110">
                 </div>
                 <h3 class="text-sm font-black text-gray-900 group-hover:text-blue-600 transition-colors line-clamp-2 uppercase tracking-tight">
-                    <?php echo e($blog->title); ?>
+                    <?php echo e($blog->translate('title')); ?>
 
                 </h3>
                 <p class="text-[10px] text-gray-400 font-bold uppercase mt-2 tracking-widest"><?php echo e($blog->formatted_date); ?></p>

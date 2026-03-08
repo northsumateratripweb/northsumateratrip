@@ -64,6 +64,30 @@ class BlogResource extends Resource
                         Forms\Components\TextInput::make('meta_title')->maxLength(255)->columnSpanFull(),
                         Forms\Components\Textarea::make('meta_description')->rows(2)->columnSpanFull(),
                     ]),
+
+                // ─────────────────────────────────────────────────────────────
+                // TERJEMAHAN (Bahasa Asing)
+                // ─────────────────────────────────────────────────────────────
+                Schemas\Components\Section::make('Terjemahan (Bahasa Asing)')
+                    ->description('Isi konten dalam bahasa Inggris dan Melayu.')
+                    ->collapsed()
+                    ->schema([
+                        Schemas\Components\Tabs::make('Translations')
+                            ->tabs([
+                                Schemas\Components\Tabs\Tab::make('English (EN)')
+                                    ->schema([
+                                        Forms\Components\TextInput::make('translations.en.title')->label('Judul Artikel (EN)'),
+                                        Forms\Components\Textarea::make('translations.en.excerpt')->label('Kutipan Singkat (EN)'),
+                                        Forms\Components\RichEditor::make('translations.en.content')->label('Isi Artikel (EN)'),
+                                    ]),
+                                Schemas\Components\Tabs\Tab::make('Malaysia (MS)')
+                                    ->schema([
+                                        Forms\Components\TextInput::make('translations.ms.title')->label('Judul Artikel (MS)'),
+                                        Forms\Components\Textarea::make('translations.ms.excerpt')->label('Kutipan Singkat (MS)'),
+                                        Forms\Components\RichEditor::make('translations.ms.content')->label('Isi Artikel (MS)'),
+                                    ]),
+                            ])->columnSpanFull()
+                    ]),
             ]);
     }
 

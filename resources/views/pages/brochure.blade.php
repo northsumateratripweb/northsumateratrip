@@ -35,7 +35,7 @@
 <html lang="id">
 <head>
     <meta charset="UTF-8">
-    <title>Brosur - {{ $product->name }}</title>
+    <title>Brosur - {{ $product->translate('name') }}</title>
     <style>
         @page { margin: 0; }
         * { margin:0; padding:0; box-sizing:border-box; }
@@ -198,10 +198,10 @@
             <img src="{{ $featuredImage }}" class="hero-img">
         @endif
         <div class="hero-overlay">
-            <div class="badge">{{ $category->name ?? 'Wisata Terpopuler' }}</div>
-            <h1 class="title">{{ $product->name }}</h1>
+            <div class="badge">{{ $category->translate('name') ?? 'Wisata Terpopuler' }}</div>
+            <h1 class="title">{{ $product->translate('name') }}</h1>
             <div class="meta-header">
-                📍 {{ $product->location }} &bull; ⏱️ {{ $product->duration ?? '-' }} Hari
+                📍 {{ $product->location }} &bull; ⏱️ {{ $product->translate('duration') ?? '-' }} Hari
             </div>
         </div>
     </div>
@@ -231,15 +231,15 @@
                 </div>
 
                 <div class="section-title">Sudah Termasuk (Inclusion)</div>
-                @if($product->includes)
-                    @foreach($product->includes as $item)
+                @if($product->translate('includes'))
+                    @foreach($product->translate('includes') as $item)
                     <div class="list-item">{{ $item }}</div>
                     @endforeach
                 @endif
 
                 <div class="section-title">Belum Termasuk (Exclusion)</div>
-                @if($product->excludes)
-                    @foreach($product->excludes as $item)
+                @if($product->translate('excludes'))
+                    @foreach($product->translate('excludes') as $item)
                     <div class="list-item exclude">{{ $item }}</div>
                     @endforeach
                 @endif

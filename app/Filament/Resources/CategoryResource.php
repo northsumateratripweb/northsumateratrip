@@ -51,6 +51,28 @@ class CategoryResource extends Resource
                         Forms\Components\TextInput::make('sort_order')->numeric(),
                         Forms\Components\Toggle::make('is_active')->default(true),
                     ]),
+
+                // ─────────────────────────────────────────────────────────────
+                // TERJEMAHAN (Bahasa Asing)
+                // ─────────────────────────────────────────────────────────────
+                Schemas\Components\Section::make('Terjemahan (Bahasa Asing)')
+                    ->description('Isi konten dalam bahasa Inggris dan Melayu.')
+                    ->collapsed()
+                    ->schema([
+                        Schemas\Components\Tabs::make('Translations')
+                            ->tabs([
+                                Schemas\Components\Tabs\Tab::make('English (EN)')
+                                    ->schema([
+                                        Forms\Components\TextInput::make('translations.en.name')->label('Nama Kategori (EN)'),
+                                        Forms\Components\Textarea::make('translations.en.description')->label('Deskripsi (EN)'),
+                                    ]),
+                                Schemas\Components\Tabs\Tab::make('Malaysia (MS)')
+                                    ->schema([
+                                        Forms\Components\TextInput::make('translations.ms.name')->label('Nama Kategori (MS)'),
+                                        Forms\Components\Textarea::make('translations.ms.description')->label('Deskripsi (MS)'),
+                                    ]),
+                            ])->columnSpanFull()
+                    ]),
             ]);
     }
 

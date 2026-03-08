@@ -5,6 +5,7 @@ namespace App\Models;
 use App\Traits\ResolvesImagePath;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use App\Traits\HasTranslations;
 
 /**
  * @property int $id
@@ -36,7 +37,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  */
 class CarRental extends Model
 {
-    use ResolvesImagePath, \App\Traits\OptimizesImages;
+    use ResolvesImagePath, \App\Traits\OptimizesImages, HasTranslations;
 
     protected $fillable = [
         'vehicle_id',
@@ -62,6 +63,7 @@ class CarRental extends Model
         'meta_title',
         'meta_description',
         'pricing_details',
+        'translations',
     ];
 
     protected $casts = [
@@ -78,6 +80,7 @@ class CarRental extends Model
         'capacity' => 'integer',
         'year' => 'integer',
         'sort_order' => 'integer',
+        'translations' => 'array',
     ];
 
     public function vehicle(): BelongsTo

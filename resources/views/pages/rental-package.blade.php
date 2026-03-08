@@ -24,13 +24,13 @@
         <a href="{{ route('rental-package.show', $package->slug) }}" class="group flex flex-col h-full bg-white dark:bg-slate-900 rounded-2xl border border-slate-100 dark:border-slate-800 overflow-hidden transition-all duration-500 hover:shadow-xl hover:shadow-blue-900/[0.06] hover:-translate-y-1 block cursor-pointer">
             <div class="relative h-52 overflow-hidden">
                 <img src="{{ $package->image_url }}"
-                     alt="{{ $package->name }}"
+                     alt="{{ $package->translate('name') }}"
                      class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700 ease-out">
                 <div class="absolute inset-0 bg-gradient-to-t from-slate-900/50 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
             </div>
             <div class="flex-1 flex flex-col p-5">
                 <h3 class="font-bold text-slate-900 dark:text-white text-base mb-3 line-clamp-2 group-hover:text-blue-600 transition-colors leading-snug">
-                    {{ $package->name }}
+                    {{ $package->translate('name') }}
                 </h3>
                 
                 @if($package->min_rental_days)

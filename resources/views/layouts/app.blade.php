@@ -61,11 +61,7 @@
     @include('partials.footer')
     
     <!-- WhatsApp Floating Button -->
-    <a href="https://wa.me/{{ $settings['whatsapp_number'] ?? '6281298622143' }}?text=Halo%20NorthSumateraTrip"
-       target="_blank"
-       class="fixed bottom-6 right-6 z-50 bg-green-500 hover:bg-green-600 text-white rounded-full p-4 shadow-lg transition-all duration-300 hover:scale-110">
-        <i class="fab fa-whatsapp text-2xl"></i>
-    </a>
+    <x-whatsapp-floating />
     
     <!-- Custom JS -->
     <script src="{{ asset('js/app.js') }}"></script>

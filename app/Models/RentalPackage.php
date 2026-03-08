@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Traits\ResolvesImagePath;
 use Illuminate\Database\Eloquent\Model;
+use App\Traits\HasTranslations;
 
 /**
  * @property int $id
@@ -23,7 +24,7 @@ use Illuminate\Database\Eloquent\Model;
  */
 class RentalPackage extends Model
 {
-    use ResolvesImagePath;
+    use ResolvesImagePath, HasTranslations;
 
     protected $fillable = [
         'name',
@@ -38,6 +39,7 @@ class RentalPackage extends Model
         'featured_image',
         'is_active',
         'sort_order',
+        'translations',
     ];
 
     protected $casts = [
@@ -49,6 +51,7 @@ class RentalPackage extends Model
         'min_rental_days' => 'integer',
         'max_rental_days' => 'integer',
         'sort_order' => 'integer',
+        'translations' => 'array',
     ];
     public function getImageUrlAttribute(): string
     {

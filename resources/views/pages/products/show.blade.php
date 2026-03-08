@@ -1,7 +1,7 @@
 @extends('layouts.main')
 
-@section('title', $product->name . ' - NorthSumateraTrip')
-@section('meta_description', $product->meta_description ?? $product->short_description)
+@section('title', $product->translate('name') . ' - NorthSumateraTrip')
+@section('meta_description', $product->meta_description ?? $product->translate('short_description'))
 @section('og_image', $product->image_url)
 @section('canonical', route('products.show', [$product->category?->slug ?? 'uncategorized', $product->slug]))
 
@@ -10,7 +10,7 @@
     {!! \App\Helpers\SchemaHelper::breadcrumbs([
         'Home' => route('home'),
         $product->category?->name ?? 'Paket' => route('products.category', $product->category?->slug ?? 'uncategorized'),
-        $product->name => url()->current()
+        $product->translate('name') => url()->current()
     ]) !!}
 @endpush
 
@@ -18,6 +18,78 @@
 <style>
     [x-cloak] { display: none !important; }
     .image-fade { transition: opacity 0.3s ease-in-out; }
+    
+    /* Modern Timeline Style for Rich Text Itinerary */
+    .itinerary-timeline {
+        position: relative;
+        padding-left: 1.5rem;
+    }
+    .itinerary-timeline::before {
+        content: '';
+        position: absolute;
+        left: 0.5rem;
+        top: 2rem;
+        bottom: 2rem;
+        width: 2px;
+        background: #E2E8F0; /* slate-200 */
+        border-radius: 4px;
+    }
+    .itinerary-timeline h2, .itinerary-timeline h3, .itinerary-timeline h4 {
+        position: relative;
+        color: #1E40AF !important; /* blue-800 */
+        font-weight: 800 !important;
+        margin-top: 2.5rem !important;
+        margin-bottom: 1rem !important;
+        padding-left: 1rem;
+    }
+    .itinerary-timeline h2:first-child, .itinerary-timeline h3:first-child, .itinerary-timeline h4:first-child {
+        margin-top: 0 !important;
+    }
+    .itinerary-timeline h2::before, .itinerary-timeline h3::before, .itinerary-timeline h4::before {
+        content: '';
+        position: absolute;
+        left: -1.35rem; /* align with the vertical line */
+        top: 50%;
+        transform: translateY(-50%);
+        width: 1.25rem;
+        height: 1.25rem;
+        background-color: #3B82F6; /* blue-500 */
+        border: 4px solid #DBEAFE; /* blue-100 */
+        border-radius: 50%;
+        z-index: 10;
+        box-shadow: 0 0 0 4px white;
+    }
+    .itinerary-timeline p, .itinerary-timeline ul, .itinerary-timeline ol {
+        background: #F8FAFC; /* slate-50 */
+        padding: 1.25rem;
+        border-radius: 0.75rem;
+        border: 1px solid #F1F5F9; /* slate-100 */
+        margin-bottom: 1rem;
+        margin-left: 1rem;
+        color: #475569;
+        line-height: 1.7;
+    }
+    .itinerary-timeline ul {
+        list-style-type: none !important;
+        padding-left: 2rem !important;
+    }
+    .itinerary-timeline ul li {
+        position: relative;
+        margin-bottom: 0.5rem;
+    }
+    .itinerary-timeline ul li::before {
+        content: '\f10c'; /* FontAwesome circle */
+        font-family: 'Font Awesome 6 Free';
+        font-weight: 400;
+        font-size: 0.5rem;
+        position: absolute;
+        left: -1.25rem;
+        top: 0.5rem;
+        color: #3B82F6; /* blue-500 */
+    }
+    .itinerary-timeline strong {
+        color: #0F172A;
+    }
 </style>
 <!-- Breadcrumb -->
 <div class="pt-28 pb-4">
@@ -27,7 +99,7 @@
             <i class="fas fa-chevron-right text-[8px] text-slate-300"></i>
             <a href="{{ route('products.category', $product->category?->slug ?? 'uncategorized') }}" class="hover:text-blue-600 transition-colors">{{ $product->category?->name ?? 'Paket' }}</a>
             <i class="fas fa-chevron-right text-[8px] text-slate-300"></i>
-            <span class="text-slate-700 font-semibold">{{ $product->name }}</span>
+            <span class="text-slate-700 font-semibold">{{ $product->translate('name') }}</span>
         </nav>
     </div>
 </div>
@@ -39,10 +111,10 @@
             <!-- Image Gallery -->
             <div>
                 <!-- Main Image -->
-                <div class="relative rounded-2xl overflow-hidden mb-4 cursor-zoom-in" onclick="openLightbox(document.getElementById('main-image').src, '{{ $product->name }}')">
+                <div class="relative rounded-2xl overflow-hidden mb-4 cursor-zoom-in" onclick="openLightbox(document.getElementById('main-image').src, '{{ $product->translate('name') }}')">
                     <img id="main-image" 
                          src="{{ $product->image_url }}" 
-                         alt="{{ $product->name }}" 
+                         alt="{{ $product->translate('name') }}" 
                          class="w-full h-96 object-cover image-fade opacity-100">
                     
                     @if($product->location_tag)
@@ -61,7 +133,7 @@
                     <button onclick="changeImage(event, '{{ $imageUrl }}')"
                             class="thumbnail-btn flex-shrink-0 w-20 h-20 rounded-xl overflow-hidden border-2 {{ $index === 0 ? 'border-blue-600' : 'border-transparent' }} hover:border-blue-600 transition-colors">
                         <img src="{{ $imageUrl }}"
-                             alt="{{ $product->name }}"
+                             alt="{{ $product->translate('name') }}"
                              class="w-full h-full object-cover">
                     </button>
                     @endforeach
@@ -79,7 +151,7 @@
                 @endif
                 
                 <!-- Title -->
-                <h1 class="text-2xl md:text-4xl font-bold text-slate-900 dark:text-white tracking-tight mb-4">{{ $product->name }}</h1>
+                <h1 class="text-2xl md:text-4xl font-bold text-slate-900 dark:text-white tracking-tight mb-4">{{ $product->translate('name') }}</h1>
                 
                 <!-- Rating -->
                 <div class="flex items-center mb-4">
@@ -335,7 +407,7 @@
                             <div class="bg-white rounded-xl border border-slate-200 p-4 text-sm space-y-2">
                                 <div class="flex justify-between">
                                     <span class="text-slate-500">{{ __('ui.nav_packages') }}</span>
-                                    <span class="font-semibold text-slate-800 text-right max-w-[55%]">{{ $product->name }}</span>
+                                    <span class="font-semibold text-slate-800 text-right max-w-[55%]">{{ $product->translate('name') }}</span>
                                 </div>
                                 <div class="flex justify-between">
                                     <span class="text-slate-500">Jumlah Dewasa (Adult)</span>
@@ -428,7 +500,7 @@
                             </button>
 
                             <a id="wa-direct-link"
-                               href="https://wa.me/{{ \App\Models\Setting::get('whatsapp_number','6281298622143') }}?text={{ urlencode('Halo, saya ingin tanya tentang paket '.$product->name) }}"
+                               href="https://wa.me/{{ \App\Models\Setting::get('whatsapp_number','6281298622143') }}?text={{ urlencode('Halo, saya ingin tanya tentang paket '.$product->translate('name')) }}"
                                target="_blank"
                                class="w-full flex items-center justify-center gap-2 bg-green-500 hover:bg-green-600 text-white font-bold py-3 rounded-xl transition-colors text-sm">
                                 <i class="fab fa-whatsapp text-lg"></i>
@@ -497,9 +569,9 @@
                 {{-- End Booking Panel --}}
                 
                 <!-- Short Description -->
-                @if($product->short_description)
+                @if($product->translate('short_description'))
                 <div class="prose max-w-none text-slate-600">
-                    <p>{{ $product->short_description }}</p>
+                    <p>{{ $product->translate('short_description') }}</p>
                 </div>
                 @endif
             </div>
@@ -532,9 +604,9 @@
         <div class="tab-content">
             <!-- Itinerary Tab -->
             <div id="tab-itinerary" class="tab-pane active">
-                @if($product->itinerary_text)
-                <div class="bg-white rounded-2xl border border-slate-100 p-6 prose max-w-none">
-                    {!! $product->itinerary_text !!}
+                @if($product->translate('itinerary_text'))
+                <div class="bg-white rounded-2xl border border-slate-100 p-6 prose max-w-none itinerary-timeline">
+                    {!! $product->translate('itinerary_text') !!}
                 </div>
                 @else
                 <div class="text-center py-12 text-slate-500">
@@ -667,9 +739,9 @@
             <!-- Notes Tab -->
             <div id="tab-notes" class="tab-pane hidden">
                 <div class="bg-white rounded-2xl border border-slate-100 p-6">
-                    @if($product->notes)
+                    @if($product->translate('notes'))
                     <div class="prose max-w-none text-slate-600">
-                        {!! nl2br(e($product->notes)) !!}
+                        {!! nl2br(e($product->translate('notes'))) !!}
                     </div>
                     @else
                     <div class="text-center py-8 text-slate-500">
@@ -678,22 +750,22 @@
                     </div>
                     @endif
                     
-                    @if($product->includes && count($product->includes) > 0)
+                    @if($product->translate('includes') && count($product->translate('includes')) > 0)
                     <div class="mt-6">
                         <h4 class="font-semibold text-slate-900 mb-3">Termasuk:</h4>
                         <ul class="list-disc list-inside text-slate-600 space-y-1">
-                            @foreach($product->includes as $include)
+                            @foreach($product->translate('includes') as $include)
                             <li>{{ $include }}</li>
                             @endforeach
                         </ul>
                     </div>
                     @endif
                     
-                    @if($product->excludes && count($product->excludes) > 0)
+                    @if($product->translate('excludes') && count($product->translate('excludes')) > 0)
                     <div class="mt-6">
                         <h4 class="font-semibold text-slate-900 mb-3">Tidak Termasuk:</h4>
                         <ul class="list-disc list-inside text-slate-600 space-y-1">
-                            @foreach($product->excludes as $exclude)
+                            @foreach($product->translate('excludes') as $exclude)
                             <li>{{ $exclude }}</li>
                             @endforeach
                         </ul>

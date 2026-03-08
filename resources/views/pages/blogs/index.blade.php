@@ -63,7 +63,7 @@
                 @foreach($blogs as $blog)
                 <a href="{{ route('blog.show', $blog->slug) }}" class="group flex flex-col h-full bg-white dark:bg-slate-900 rounded-2xl border border-slate-100 dark:border-slate-800 overflow-hidden transition-all duration-500 hover:shadow-xl hover:shadow-blue-900/[0.06] hover:-translate-y-1 block cursor-pointer">
                     <div class="relative h-48 overflow-hidden">
-                        <img src="{{ $blog->image_url }}" alt="{{ $blog->title }}" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700 ease-out">
+                        <img src="{{ $blog->image_url }}" alt="{{ $blog->translate('title') }}" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700 ease-out">
                         <div class="absolute inset-0 bg-gradient-to-t from-slate-900/50 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
                     </div>
                     
@@ -74,11 +74,11 @@
                             <span class="text-xs font-medium text-slate-400">{{ $blog->read_time }}</span>
                         </div>
                         <h3 class="font-bold text-slate-900 dark:text-white text-base mb-3 leading-snug group-hover:text-blue-600 transition-colors line-clamp-2">
-                            {{ $blog->title }}
+                            {{ $blog->translate('title') }}
                         </h3>
-                        @if($blog->excerpt)
+                        @if($blog->translate('excerpt'))
                         <p class="text-slate-400 mb-4 line-clamp-2 text-sm leading-relaxed">
-                            {{ $blog->excerpt }}
+                            {{ $blog->translate('excerpt') }}
                         </p>
                         @endif
                         <span class="mt-auto inline-flex items-center gap-2 text-xs font-bold text-slate-400 group-hover:text-blue-600 transition-all group-hover:gap-3">
