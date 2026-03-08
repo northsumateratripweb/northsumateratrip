@@ -7,6 +7,8 @@ use Filament\Schemas\Components\Section;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Toggle;
+use Filament\Forms\Components\Select;
+use Filament\Forms\Get;
 use Filament\Schemas\Schema;
 use Illuminate\Support\Str;
 
@@ -25,7 +27,25 @@ class StaticPageForm
                     ->required()
                     ->unique(ignoreRecord: true)
                     ->maxLength(255),
+                Select::make('content_type')
+                    ->label('Tipe Konten')
+                    ->options([
+                        'text' => 'Teks Standar (Rich Editor)',
+                        'html' => 'Kode HTML Kustom (Bisa berisi CSS/JS dll)'
+                    ])
+                    ->default('text')
+                    ->reactive()
+                    ->required()
+                    ->columnSpanFull(),
                 RichEditor::make('content')
+                    ->label('Konten Teks')
+                    ->hidden(fn ($get) => $get('content_type') === 'html')
+                    ->columnSpanFull(),
+                Textarea::make('html_content')
+                    ->label('Konten HTML')
+                    ->placeholder('Masukkan kode HTML lengkap, termasuk tag <style> atau <script> jika diperlukan...')
+                    ->rows(20)
+                    ->hidden(fn ($get) => $get('content_type') !== 'html')
                     ->columnSpanFull(),
                 Toggle::make('is_published')
                     ->default(false),

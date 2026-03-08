@@ -12,6 +12,10 @@ class StaticPageController extends Controller
             ->where('is_published', true)
             ->firstOrFail();
 
+        if ($page->content_type === 'html') {
+            return response($page->html_content);
+        }
+
         return view('pages.static-page', compact('page'));
     }
 }
