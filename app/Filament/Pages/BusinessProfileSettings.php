@@ -137,11 +137,13 @@ class BusinessProfileSettings extends Page implements HasForms
                                                         Forms\Components\FileUpload::make('site_logo')
                                                             ->label('Logo Utama')
                                                             ->image()
+                                                            ->disk('public')
                                                             ->directory('settings')
                                                             ->imagePreviewHeight('80'),
                                                         Forms\Components\FileUpload::make('site_favicon')
                                                             ->label('Favicon')
                                                             ->image()
+                                                            ->disk('public')
                                                             ->directory('settings'),
                                                     ]),
                                                 Forms\Components\FileUpload::make('default_hero_image')
@@ -149,6 +151,7 @@ class BusinessProfileSettings extends Page implements HasForms
                                                     ->image()
                                                     ->multiple()
                                                     ->reorderable()
+                                                    ->disk('public')
                                                     ->directory('settings')
                                                     ->maxSize(2048)
                                                     ->columnSpanFull(),
@@ -231,6 +234,7 @@ class BusinessProfileSettings extends Page implements HasForms
                                         Forms\Components\FileUpload::make('qris_image')
                                             ->label('Upload QRIS')
                                             ->image()
+                                            ->disk('public')
                                             ->directory('payment'),
                                     ]),
                             ]),

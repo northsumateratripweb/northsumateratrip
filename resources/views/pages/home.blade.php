@@ -28,27 +28,77 @@
 
 {{-- Slider Hero Section (Clean Image Gallery) --}}
 <section class="bg-white pt-4 pb-6 md:pt-6 md:pb-12">
-    <div class="max-w-7xl mx-auto px-3 md:px-4">
+        @php 
+            $heroRaw = \App\Models\Setting::get('default_hero_image');
+            $heroImagesRaw = is_array($heroRaw) ? $heroRaw : ($heroRaw ? [$heroRaw] : []);
+            
+            // Filter only existing images
+            $heroImages = array_filter($heroImagesRaw, function($img) {
+                if(str_starts_with($img, 'http')) return true;
+                // Check in storage
+                if(str_contains($img, '/')) {
+                    if(file_exists(storage_path('app/public/' . $img))) return true;
+                }
+                // Check in public/images
+                if(file_exists(public_path('images/' . $img))) return true;
+                return false;
+            });
+
+            // Built-in defaults if none configured OR not found
+            if(empty($heroImages)) {
+                $builtinDefaults = ['images/default-hero.jpg', 'images/default-hero-2.jpg'];
+                $heroImages = array_filter($builtinDefaults, fn($f) => file_exists(public_path($f)));
+                if(empty($heroImages)) $heroImages = []; // Will show gradient fallback
+            }
+        @endphp
+
+        @if(!empty($heroImages))
+        {{-- Image Slider --}}
         <div class="swiper heroSwiper relative overflow-hidden rounded-[1.25rem] md:rounded-[2.5rem] shadow-2xl group border-[4px] md:border-[8px] border-white ring-1 ring-gray-100">
             <div class="swiper-wrapper">
-                @php 
-                    $heroRaw = \App\Models\Setting::get('default_hero_image');
-                    $heroImages = is_array($heroRaw) ? $heroRaw : ($heroRaw ? [$heroRaw] : []);
-                    if(empty($heroImages)) $heroImages = ['images/default-hero.jpg'];
-                @endphp
                 @foreach($heroImages as $image)
                 <div class="swiper-slide aspect-[2.1/1] md:aspect-[3/1] relative overflow-hidden">
-                    <img src="{{ \App\Models\Product::resolveImagePath($image, 'settings') }}" alt="Hero" class="w-full h-full object-cover shadow-inner">
+                    <img src="{{ str_starts_with($image, 'images/') ? asset($image) : \App\Models\Product::resolveImagePath($image, 'settings') }}" alt="Wisata Sumatera Utara" class="w-full h-full object-cover shadow-inner">
                 </div>
                 @endforeach
             </div>
-            {{-- Navigation Arrows (Minimal) --}}
+            {{-- Navigation Arrows --}}
             <div class="swiper-button-next !text-white !w-8 !h-8 md:!w-12 md:!h-12 bg-black/10 hover:bg-black/30 backdrop-blur rounded-full after:!text-[10px] md:after:!text-xl transition-all opacity-0 group-hover:opacity-100"></div>
             <div class="swiper-button-prev !text-white !w-8 !h-8 md:!w-12 md:!h-12 bg-black/10 hover:bg-black/30 backdrop-blur rounded-full after:!text-[10px] md:after:!text-xl transition-all opacity-0 group-hover:opacity-100"></div>
             <div class="swiper-pagination"></div>
         </div>
+        @else
+        {{-- Gradient Fallback Hero (when no images uploaded yet) --}}
+        <div class="relative overflow-hidden rounded-[1.25rem] md:rounded-[2.5rem] shadow-2xl border-[4px] md:border-[8px] border-white ring-1 ring-gray-100 aspect-[2.1/1] md:aspect-[3/1]"
+             style="background: linear-gradient(135deg, #0f172a 0%, #1e3a5f 30%, #1d4ed8 65%, #3b82f6 100%);">
+            {{-- Decorative circles --}}
+            <div style="position:absolute; top:-80px; right:-80px; width:400px; height:400px; border-radius:50%; background:rgba(255,255,255,0.04);"></div>
+            <div style="position:absolute; bottom:-60px; left:-60px; width:300px; height:300px; border-radius:50%; background:rgba(255,255,255,0.03);"></div>
+            {{-- Content --}}
+            <div style="position:absolute; inset:0; display:flex; flex-direction:column; align-items:center; justify-content:center; text-align:center; padding:2rem; color:white;">
+                <div style="font-size:2rem; margin-bottom:0.75rem;">🏔️</div>
+                <h2 style="font-size:clamp(1.25rem, 4vw, 2.5rem); font-weight:900; text-transform:uppercase; letter-spacing:-0.03em; line-height:1.1; margin-bottom:0.5rem; text-shadow:0 2px 16px rgba(0,0,0,0.3);">
+                    Jelajahi Sumatera Utara
+                </h2>
+                <p style="font-size:clamp(0.65rem, 1.5vw, 0.85rem); opacity:0.75; font-weight:600; text-transform:uppercase; letter-spacing:0.15em; margin-bottom:1.5rem;">
+                    Danau Toba • Berastagi • Nias • Sibolga • Dan Lebih Banyak Lagi
+                </p>
+                <a href="{{ route('products.index') }}" 
+                   style="display:inline-block; padding:0.6rem 1.5rem; background:white; color:#1d4ed8; border-radius:99px; font-weight:800; font-size:0.8rem; text-decoration:none; text-transform:uppercase; letter-spacing:0.08em; box-shadow:0 4px 16px rgba(0,0,0,0.2);">
+                    Lihat Paket Wisata →
+                </a>
+            </div>
+            {{-- Upload hint for admin --}}
+            @auth
+            <div style="position:absolute; bottom:12px; right:12px; background:rgba(255,255,255,0.15); backdrop-filter:blur(8px); padding:4px 12px; border-radius:99px; font-size:0.65rem; color:white; font-weight:600;">
+                💡 Upload hero image di Profil Bisnis
+            </div>
+            @endauth
+        </div>
+        @endif
     </div>
 </section>
+
 
 {{-- Popular Trips (Horizontal Swipe) --}}
 <section class="py-10 md:py-16 bg-white overflow-hidden" id="popular-trips">
@@ -66,7 +116,7 @@
         <div class="flex gap-4 md:gap-8 overflow-x-auto no-scrollbar pb-6 snap-x">
             @foreach($featuredProducts as $product)
             <div class="flex-shrink-0 w-[280px] md:w-[380px] snap-start group">
-                <a href="{{ route('products.show', ['category' => $product->category->slug, 'product' => $product->slug]) }}" class="block">
+                <a href="{{ route('products.show', ['category' => $product->category?->slug, 'product' => $product->slug]) }}" class="block">
                     <div class="relative aspect-[4/3] rounded-[1rem] md:rounded-[1.5rem] overflow-hidden shadow-sm md:shadow-lg transition-transform duration-500 group-hover:-translate-y-2">
                         <img src="{{ $product->image_url }}" alt="{{ $product->name }}" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110">
                         <div class="absolute top-2 right-2 md:top-4 md:right-4 bg-white/95 backdrop-blur px-3 py-1.5 md:px-4 md:py-2 rounded-xl shadow-sm border border-gray-100">
@@ -103,7 +153,6 @@
 </section>
 
 {{-- Car Rental Section (Horizontal Swipe) --}}
-@if($carRentalProducts->count() > 0)
 <section class="py-12 md:py-16 bg-gray-50 overflow-hidden">
     <div class="max-w-7xl mx-auto px-4">
         <div class="flex items-center justify-between mb-8">
@@ -114,6 +163,7 @@
             <a href="{{ route('car-rental') }}" class="text-[10px] font-black text-blue-600 hover:text-gray-900 uppercase tracking-widest transition-colors">{{ __('ui.view_all_cars') }} &rarr;</a>
         </div>
 
+        @if($carRentalProducts->count() > 0)
         <div class="flex gap-4 md:gap-6 overflow-x-auto no-scrollbar pb-6 snap-x">
             @foreach($carRentalProducts as $car)
             <div class="flex-shrink-0 w-[240px] md:w-[320px] snap-start bg-white rounded-2xl md:rounded-3xl overflow-hidden shadow-sm hover:shadow-xl transition-all group border border-gray-100">
@@ -132,12 +182,19 @@
             </div>
             @endforeach
         </div>
+        @else
+        <div class="flex flex-col items-center justify-center py-16 text-center">
+            <div class="w-20 h-20 bg-blue-50 rounded-3xl flex items-center justify-center mb-5 shadow-sm">
+                <i class="fas fa-car text-blue-300 text-3xl"></i>
+            </div>
+            <p class="text-gray-400 font-black uppercase tracking-widest text-xs">{{ __('ui.coming_soon') ?? 'Segera Hadir' }}</p>
+            <a href="{{ route('car-rental') }}" class="mt-6 inline-block px-8 py-3 bg-blue-600 text-white font-black text-[10px] rounded-full uppercase tracking-widest hover:bg-gray-900 transition-all">{{ __('ui.view_all_cars') }} &rarr;</a>
+        </div>
+        @endif
     </div>
 </section>
-@endif
 
 {{-- Rental Packages Section (Horizontal Swipe) --}}
-@if($rentalPackageProducts->count() > 0)
 <section class="py-12 md:py-16 bg-white overflow-hidden">
     <div class="max-w-7xl mx-auto px-4">
         <div class="flex items-center justify-between mb-8">
@@ -148,6 +205,7 @@
             <a href="{{ route('rental-package') }}" class="text-[10px] font-black text-blue-600 hover:text-gray-900 uppercase tracking-widest transition-colors">{{ __('ui.view_all_rental') }} &rarr;</a>
         </div>
 
+        @if($rentalPackageProducts->count() > 0)
         <div class="flex gap-4 md:gap-6 overflow-x-auto no-scrollbar pb-6 snap-x">
             @foreach($rentalPackageProducts as $package)
             <div class="flex-shrink-0 w-[280px] md:w-[450px] snap-start relative rounded-3xl overflow-hidden group h-64 md:h-72 shadow-lg">
@@ -162,17 +220,31 @@
             </div>
             @endforeach
         </div>
+        @else
+        <div class="flex flex-col items-center justify-center py-16 text-center">
+            <div class="w-20 h-20 bg-blue-50 rounded-3xl flex items-center justify-center mb-5 shadow-sm">
+                <i class="fas fa-route text-blue-300 text-3xl"></i>
+            </div>
+            <p class="text-gray-400 font-black uppercase tracking-widest text-xs">{{ __('ui.coming_soon') ?? 'Segera Hadir' }}</p>
+            <a href="{{ route('rental-package') }}" class="mt-6 inline-block px-8 py-3 bg-blue-600 text-white font-black text-[10px] rounded-full uppercase tracking-widest hover:bg-gray-900 transition-all">{{ __('ui.view_all_rental') }} &rarr;</a>
+        </div>
+        @endif
     </div>
 </section>
-@endif
 
 {{-- Mini Gallery Section --}}
 <section class="py-16 bg-gray-900 overflow-hidden">
-    <div class="max-w-7xl mx-auto px-4 mb-10 text-center">
-        <h2 class="text-2xl md:text-3xl font-black text-white uppercase tracking-tighter">{{ __('ui.gallery_title') }}</h2>
-        <div class="w-12 h-1 bg-blue-600 mx-auto mt-2"></div>
+    <div class="max-w-7xl mx-auto px-4 mb-10">
+        <div class="flex items-center justify-between">
+            <div>
+                <h2 class="text-2xl md:text-3xl font-black text-white uppercase tracking-tighter">{{ __('ui.gallery_title') }}</h2>
+                <div class="w-12 h-1 bg-blue-600 mt-2"></div>
+            </div>
+            <a href="{{ route('gallery') }}" class="text-[10px] font-black text-white/50 hover:text-blue-400 uppercase tracking-widest transition-colors">{{ __('ui.read_more') ?? 'Lihat Semua' }} &rarr;</a>
+        </div>
     </div>
     
+    @if($galleryProducts->count() > 0)
     <div class="flex gap-4 overflow-x-auto no-scrollbar px-4 pb-4">
         @foreach($galleryProducts as $product)
         @if($product->image_url)
@@ -182,9 +254,15 @@
         @endif
         @endforeach
     </div>
-    <div class="text-center mt-8">
-        <a href="{{ route('gallery') }}" class="text-[10px] font-black text-white/50 hover:text-blue-400 uppercase tracking-[0.3em] transition-colors">- {{ __('ui.read_more') }} -</a>
+    @else
+    <div class="flex flex-col items-center justify-center py-12 text-center px-4">
+        <div class="w-20 h-20 bg-white/10 rounded-3xl flex items-center justify-center mb-5">
+            <i class="fas fa-images text-white/30 text-3xl"></i>
+        </div>
+        <p class="text-white/30 font-black uppercase tracking-widest text-xs">{{ __('ui.coming_soon') ?? 'Segera Hadir' }}</p>
+        <a href="{{ route('gallery') }}" class="mt-6 inline-block px-8 py-3 bg-white/10 hover:bg-blue-600 text-white font-black text-[10px] rounded-full uppercase tracking-widest transition-all">{{ __('ui.read_more') ?? 'Lihat Semua' }} &rarr;</a>
     </div>
+    @endif
 </section>
 
 {{-- Services Section --}}

@@ -66,12 +66,26 @@
         </div>
 
         @if($carRentals->isEmpty())
-            <div class="py-24 text-center bg-slate-50 dark:bg-slate-900/50 rounded-3xl border-2 border-dashed border-slate-200 dark:border-slate-800">
-                <div class="w-16 h-16 bg-slate-100 rounded-2xl flex items-center justify-center mx-auto mb-6 text-slate-300">
-                    <i class="fas fa-car text-2xl"></i>
+            <div class="relative overflow-hidden rounded-[2.5rem] border-2 border-dashed border-slate-200 dark:border-slate-800 p-12 md:p-24 text-center bg-white dark:bg-slate-900 shadow-sm mt-10">
+                {{-- Decorative element --}}
+                <div class="absolute -top-24 -left-24 w-64 h-64 bg-blue-50/50 dark:bg-blue-900/10 rounded-full blur-3xl"></div>
+                
+                <div class="relative z-10">
+                    <div class="w-20 h-20 bg-gradient-to-br from-slate-800 to-slate-900 dark:from-blue-600 dark:to-indigo-700 rounded-3xl flex items-center justify-center mx-auto mb-8 shadow-xl shadow-slate-500/10 -rotate-3">
+                        <i class="fas fa-car-side text-3xl text-white"></i>
+                    </div>
+                    <h3 class="text-2xl font-black text-slate-900 dark:text-white uppercase tracking-tight mb-3">Tidak ada unit tersedia</h3>
+                    <p class="text-slate-400 font-medium max-w-sm mx-auto mb-10">Semua armada kami saat ini sedang dalam perjalanan atau sedang diproses. Silakan ubah filter pencarian Anda atau hubungi kami langsung.</p>
+                    
+                    <div class="flex flex-col sm:flex-row items-center justify-center gap-4">
+                        <a href="{{ route('car-rental') }}" class="w-full sm:w-auto px-8 py-3.5 bg-blue-600 text-white rounded-full text-xs font-black uppercase tracking-widest transition-all hover:scale-105 hover:bg-blue-700 shadow-lg shadow-blue-500/25">
+                            Lihat Semua Armada
+                        </a>
+                        <a href="{{ route('contact') }}" class="w-full sm:w-auto px-8 py-3.5 bg-white dark:bg-slate-800 text-slate-900 dark:text-white border border-slate-200 dark:border-slate-700 rounded-full text-xs font-black uppercase tracking-widest transition-all hover:bg-slate-50">
+                            Hubungi Admin
+                        </a>
+                    </div>
                 </div>
-                <p class="text-slate-400 font-bold uppercase tracking-wider text-sm">{{ __('ui.no_packages') }}</p>
-                <a href="{{ route('car-rental') }}" class="inline-block mt-5 text-blue-600 font-bold text-xs uppercase tracking-wider hover:underline">Lihat Semua Armada</a>
             </div>
         @else
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">

@@ -55,7 +55,7 @@
 
     @foreach ($products as $product)
     <url>
-        <loc>{{ route('products.show', ['category' => $product->category->slug, 'product' => $product->slug]) }}</loc>
+        <loc>{{ route('products.show', ['category' => $product->category?->slug ?? 'uncategorized', 'product' => $product->slug]) }}</loc>
         <lastmod>{{ $product->updated_at->toAtomString() }}</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.9</priority>

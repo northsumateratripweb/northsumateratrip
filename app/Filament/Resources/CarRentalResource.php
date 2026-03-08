@@ -159,6 +159,7 @@ class CarRentalResource extends Resource
                     ]),
                 
                 Schemas\Components\Section::make('Status & SEO')
+                    ->collapsed()
                     ->columns(2)
                     ->schema([
                         Forms\Components\Toggle::make('is_available')

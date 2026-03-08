@@ -5,6 +5,7 @@ namespace App\Filament\Resources;
 use App\Filament\Resources\PartnerResource\Pages;
 use App\Models\Partner;
 use Filament\Forms;
+use Filament\Schemas;
 use Filament\Resources\Resource;
 use Filament\Actions\BulkActionGroup;
 use Filament\Actions\DeleteBulkAction;
@@ -23,17 +24,25 @@ class PartnerResource extends Resource
     {
         return $schema
             ->schema([
-                Forms\Components\TextInput::make('name')->required()->maxLength(255),
-                Forms\Components\FileUpload::make('logo')
-                    ->image()
-                    ->disk('public')
-                    ->directory('partners')
-                    ->visibility('public')
-                    ->required(),
-                Forms\Components\TextInput::make('website')->maxLength(255)->url(),
-                Forms\Components\Textarea::make('description')->rows(3),
-                Forms\Components\TextInput::make('sort_order')->numeric(),
-                Forms\Components\Toggle::make('is_active')->default(true),
+                Schemas\Components\Section::make('Informasi Partner')
+                    ->columns(2)
+                    ->schema([
+                        Forms\Components\TextInput::make('name')->required()->maxLength(255),
+                        Forms\Components\FileUpload::make('logo')
+                            ->image()
+                            ->disk('public')
+                            ->directory('partners')
+                            ->visibility('public')
+                            ->required(),
+                        Forms\Components\TextInput::make('website')->maxLength(255)->url(),
+                        Forms\Components\Textarea::make('description')->rows(3)->columnSpanFull(),
+                    ]),
+                Schemas\Components\Section::make('Pengaturan')
+                    ->columns(2)
+                    ->schema([
+                        Forms\Components\TextInput::make('sort_order')->numeric(),
+                        Forms\Components\Toggle::make('is_active')->default(true),
+                    ]),
             ]);
     }
 

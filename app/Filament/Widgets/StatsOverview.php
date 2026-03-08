@@ -6,6 +6,7 @@ use App\Models\Order;
 use App\Models\RentalSchedule;
 use Filament\Widgets\StatsOverviewWidget as BaseWidget;
 use Filament\Widgets\StatsOverviewWidget\Stat;
+use Illuminate\Support\Facades\DB;
 
 class StatsOverview extends BaseWidget
 {
@@ -17,24 +18,27 @@ class StatsOverview extends BaseWidget
         $now   = now();
         $year  = $now->year;
         $month = $now->month;
+        $yearStr  = $now->format('Y');
+        $monthStr = $now->format('m');
 
         // ── This month ────────────────────────────────────────────────────────
-        $monthlyQ = Order::whereYear('created_at', $year)->whereMonth('created_at', $month);
+        $monthlyQ = Order::whereRaw("strftime('%Y', created_at) = ?", [$yearStr])
+            ->whereRaw("strftime('%m', created_at) = ?", [$monthStr]);
 
         $totalOrdersBulan = (clone $monthlyQ)->count();
         $revenueBulan     = (clone $monthlyQ)->where('status', '!=', 'cancelled')->sum('total_price');
 
         // vs last month
         $lastMonth      = $now->copy()->subMonth();
-        $lastMonthTotal = Order::whereYear('created_at', $lastMonth->year)
-            ->whereMonth('created_at', $lastMonth->month)
+        $lastMonthTotal = Order::whereRaw("strftime('%Y', created_at) = ?", [$lastMonth->format('Y')])
+            ->whereRaw("strftime('%m', created_at) = ?", [$lastMonth->format('m')])
             ->count();
         $changeOrders   = $lastMonthTotal > 0
             ? round((($totalOrdersBulan - $lastMonthTotal) / $lastMonthTotal) * 100)
             : 0;
 
         // ── This year ─────────────────────────────────────────────────────────
-        $yearlyQ        = Order::whereYear('created_at', $year);
+        $yearlyQ          = Order::whereRaw("strftime('%Y', created_at) = ?", [$yearStr]);
         $totalOrdersTahun = (clone $yearlyQ)->count();
         $revenueTahun     = (clone $yearlyQ)->where('status', '!=', 'cancelled')->sum('total_price');
 
@@ -52,12 +56,20 @@ class StatsOverview extends BaseWidget
         $rentalCount = (clone $monthlyQ)->whereNotNull('rental_package_id')->count();
         $carCount    = (clone $monthlyQ)->whereNotNull('vehicle_id')->count();
 
+        // Chart data (last 6 months)
+        $chartData = [];
+        for ($m = max(1, $month - 5); $m <= $month; $m++) {
+            $chartData[] = Order::whereRaw("strftime('%Y', created_at) = ?", [$yearStr])
+                ->whereRaw("strftime('%m', created_at) = ?", [str_pad($m, 2, '0', STR_PAD_LEFT)])
+                ->count();
+        }
+
         return [
             Stat::make('Pesanan Bulan Ini', $totalOrdersBulan)
                 ->description(($changeOrders >= 0 ? '↑ +' : '↓ ') . $changeOrders . '% dari bulan lalu')
                 ->descriptionIcon($changeOrders >= 0 ? 'heroicon-m-arrow-trending-up' : 'heroicon-m-arrow-trending-down')
                 ->color($changeOrders >= 0 ? 'success' : 'warning')
-                ->chart(array_map(fn ($m) => Order::whereYear('created_at', $year)->whereMonth('created_at', $m)->count(), range(max(1, $month - 5), $month))),
+                ->chart($chartData),
 
             Stat::make('Pendapatan Bulan Ini', 'Rp ' . number_format($revenueBulan, 0, ',', '.'))
                 ->description('Wisata: ' . $tourCount . ' | Rental: ' . $rentalCount . ' | Mobil: ' . $carCount)

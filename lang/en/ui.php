@@ -40,6 +40,7 @@ return [
     'reviews'            => 'reviews',
     'available'          => 'Available',
     'not_available'      => 'Not Available',
+    'coming_soon'        => 'Coming Soon',
     'capacity'           => 'Capacity',
     'person'             => 'Person',
     'duration'           => 'Duration',

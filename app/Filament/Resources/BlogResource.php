@@ -26,7 +26,7 @@ class BlogResource extends Resource
     {
         return $schema
             ->schema([
-                Schemas\Components\Section::make('Basic')
+                Schemas\Components\Section::make('Informasi Dasar')
                     ->columns(2)
                     ->schema([
                         Forms\Components\TextInput::make('title')
@@ -54,7 +54,8 @@ class BlogResource extends Resource
                             ->required()
                             ->columnSpanFull(),
                     ]),
-                Schemas\Components\Section::make('Publish & Meta')
+                Schemas\Components\Section::make('Status & SEO')
+                    ->collapsed()
                     ->columns(3)
                     ->schema([
                         Forms\Components\Toggle::make('is_published')->default(false),

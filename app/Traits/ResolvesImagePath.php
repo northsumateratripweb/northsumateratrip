@@ -72,9 +72,11 @@ trait ResolvesImagePath
             }
         }
 
-        // Fallback for paths with slashes (even if file doesn't exist yet/locally)
+        // Check if path with slash exists in storage
         if (str_contains($path, '/')) {
-            return asset('storage/' . $path);
+            if (file_exists(storage_path('app/public/' . $path))) {
+                return asset('storage/' . $path);
+            }
         }
 
         // File not found anywhere — return placeholder with the filename for debugging

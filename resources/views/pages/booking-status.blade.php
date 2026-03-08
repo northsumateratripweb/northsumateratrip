@@ -86,8 +86,22 @@
                 </div>
                 <div class="flex justify-between border-b pb-2">
                     <span class="text-slate-500">Paket / Kendaraan</span>
-                    <span class="font-semibold">{{ $order->product->name ?? ($order->vehicle->name ?? '-') }}</span>
+                    <span class="font-semibold">{{ $order->product?->name ?? $order->vehicle?->name ?? '-' }}</span>
+                </div> REPLACE
+<<<<<<< SEARCH
+                @if($order->tripSchedule->vehicle)
+                <div class="flex justify-between border-b border-blue-100 pb-2">
+                    <span class="text-blue-600 font-medium">Kendaraan</span>
+                    <span class="font-semibold text-slate-800">{{ $order->tripSchedule->vehicle->name }} ({{ $order->tripSchedule->vehicle->license_plate ?? '-' }})</span>
                 </div>
+                @endif
+=======
+                @if($order->tripSchedule?->vehicle)
+                <div class="flex justify-between border-b border-blue-100 pb-2">
+                    <span class="text-blue-600 font-medium">Kendaraan</span>
+                    <span class="font-semibold text-slate-800">{{ $order->tripSchedule->vehicle->name }} ({{ $order->tripSchedule->vehicle->license_plate ?? '-' }})</span>
+                </div>
+                @endif
                 @if($order->notes)
                 <div class="flex justify-between border-b pb-2">
                     <span class="text-slate-500">Catatan</span>

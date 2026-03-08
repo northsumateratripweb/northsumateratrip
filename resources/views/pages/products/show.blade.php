@@ -3,13 +3,13 @@
 @section('title', $product->name . ' - NorthSumateraTrip')
 @section('meta_description', $product->meta_description ?? $product->short_description)
 @section('og_image', $product->image_url)
-@section('canonical', route('products.show', [$product->category->slug, $product->slug]))
+@section('canonical', route('products.show', [$product->category?->slug ?? 'uncategorized', $product->slug]))
 
 @push('schema')
     {!! \App\Helpers\SchemaHelper::product($product) !!}
     {!! \App\Helpers\SchemaHelper::breadcrumbs([
         'Home' => route('home'),
-        $product->category->name => route('products.category', $product->category->slug),
+        $product->category?->name ?? 'Paket' => route('products.category', $product->category?->slug ?? 'uncategorized'),
         $product->name => url()->current()
     ]) !!}
 @endpush
@@ -25,7 +25,7 @@
         <nav class="flex items-center gap-2 text-xs font-medium text-slate-400">
             <a href="{{ route('home') }}" class="hover:text-blue-600 transition-colors">Home</a>
             <i class="fas fa-chevron-right text-[8px] text-slate-300"></i>
-            <a href="{{ route('products.category', $product->category->slug) }}" class="hover:text-blue-600 transition-colors">{{ $product->category->name }}</a>
+            <a href="{{ route('products.category', $product->category?->slug ?? 'uncategorized') }}" class="hover:text-blue-600 transition-colors">{{ $product->category?->name ?? 'Paket' }}</a>
             <i class="fas fa-chevron-right text-[8px] text-slate-300"></i>
             <span class="text-slate-700 font-semibold">{{ $product->name }}</span>
         </nav>
@@ -648,7 +648,7 @@
                         <div class="p-4">
                             <div class="text-blue-600 font-bold text-sm mb-1">{{ $related->formatted_price }}</div>
                             <h3 class="font-semibold text-slate-900 text-sm line-clamp-2 hover:text-blue-600 transition-colors">
-                                <a href="{{ route('products.show', ['category' => $related->category->slug, 'product' => $related->slug]) }}">
+                                <a href="{{ route('products.show', ['category' => $related->category?->slug ?? 'uncategorized', 'product' => $related->slug]) }}">
                                     {{ $related->name }}
                                 </a>
                             </h3>

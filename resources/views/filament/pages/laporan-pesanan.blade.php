@@ -1,20 +1,20 @@
 <x-filament-panels::page>
     {{-- ─── HEADER FILTERS ──────────────────────────────────────── --}}
-    <div class="flex flex-wrap gap-4 items-end mb-6 p-4 bg-white dark:bg-gray-800 rounded-xl shadow border border-gray-100 dark:border-gray-700">
-        <div class="flex flex-col gap-1">
-            <label class="text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider">Tahun</label>
+    <div style="display:flex; flex-wrap:wrap; gap:1rem; align-items:flex-end; margin-bottom:1.5rem; padding:1rem; background:white; border-radius:0.75rem; box-shadow:0 1px 3px rgba(0,0,0,.1); border:1px solid #e5e7eb;">
+        <div style="display:flex; flex-direction:column; gap:0.25rem;">
+            <label style="font-size:0.7rem; font-weight:700; color:#6b7280; text-transform:uppercase; letter-spacing:0.05em;">Tahun</label>
             <select wire:model.live="selectedYear"
-                    class="rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-800 dark:text-gray-100 px-3 py-2 text-sm shadow-sm focus:ring-2 focus:ring-blue-500">
+                    style="border-radius:0.5rem; border:1px solid #d1d5db; background:white; padding:0.4rem 0.75rem; font-size:0.875rem;">
                 @foreach($this->getAvailableYears() as $yr)
                     <option value="{{ $yr }}">{{ $yr }}</option>
                 @endforeach
             </select>
         </div>
 
-        <div class="flex flex-col gap-1">
-            <label class="text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider">Bulan</label>
+        <div style="display:flex; flex-direction:column; gap:0.25rem;">
+            <label style="font-size:0.7rem; font-weight:700; color:#6b7280; text-transform:uppercase; letter-spacing:0.05em;">Bulan</label>
             <select wire:model.live="selectedMonth"
-                    class="rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-800 dark:text-gray-100 px-3 py-2 text-sm shadow-sm focus:ring-2 focus:ring-blue-500">
+                    style="border-radius:0.5rem; border:1px solid #d1d5db; background:white; padding:0.4rem 0.75rem; font-size:0.875rem;">
                 <option value="">— Semua Bulan —</option>
                 @php
                 $namaBulan = [1=>'Januari',2=>'Februari',3=>'Maret',4=>'April',5=>'Mei',6=>'Juni',
@@ -27,22 +27,22 @@
         </div>
 
         {{-- Download Buttons --}}
-        <div class="flex gap-2 ml-auto flex-wrap items-center">
+        <div style="display:flex; gap:0.5rem; margin-left:auto; flex-wrap:wrap; align-items:center;">
             <button wire:click="$set('showImportForm', !$showImportForm)"
-                    class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-purple-600 hover:bg-purple-700 text-white text-sm font-semibold transition">
-                <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"/></svg>
+                    style="display:inline-flex; align-items:center; gap:0.5rem; padding:0.4rem 1rem; border-radius:0.5rem; background:#9333ea; color:white; font-size:0.875rem; font-weight:600; border:none; cursor:pointer;">
+                <svg style="width:16px; height:16px; flex-shrink:0;" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"/></svg>
                 Import CSV Trip
             </button>
             <a href="{{ route('laporan.pesanan.csv', ['tahun' => $selectedYear, 'bulan' => $selectedMonth]) }}"
                target="_blank"
-               class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-gray-600 hover:bg-gray-700 text-white text-sm font-semibold transition">
-                <x-heroicon-o-document-text class="w-4 h-4"/>
+               style="display:inline-flex; align-items:center; gap:0.5rem; padding:0.4rem 1rem; border-radius:0.5rem; background:#4b5563; color:white; font-size:0.875rem; font-weight:600; text-decoration:none;">
+                <svg style="width:16px; height:16px; flex-shrink:0;" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
                 CSV {{ $selectedMonth ? 'Bulan Ini' : 'Tahunan' }}
             </a>
             <a href="{{ route('laporan.pesanan.excel', ['tahun' => $selectedYear, 'bulan' => $selectedMonth]) }}"
                target="_blank"
-               class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-green-600 hover:bg-green-700 text-white text-sm font-semibold transition">
-                <x-heroicon-o-table-cells class="w-4 h-4"/>
+               style="display:inline-flex; align-items:center; gap:0.5rem; padding:0.4rem 1rem; border-radius:0.5rem; background:#16a34a; color:white; font-size:0.875rem; font-weight:600; text-decoration:none;">
+                <svg style="width:16px; height:16px; flex-shrink:0;" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h18M3 14h18m-9-4v8m-7 0h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"/></svg>
                 Excel {{ $selectedMonth ? 'Bulan Ini' : 'Tahunan' }}
             </a>
         </div>
@@ -104,148 +104,146 @@
     @endphp
 
     {{-- Monthly Stats - Orders from System --}}
-    <div class="mb-2">
-        <h2 class="text-sm font-bold text-gray-500 dark:text-gray-400 uppercase tracking-wider mb-3">
+    <div style="margin-bottom:0.5rem;">
+        <h2 style="font-size:0.75rem; font-weight:700; color:#6b7280; text-transform:uppercase; letter-spacing:0.07em; margin-bottom:0.75rem;">
             📅 Ringkasan {{ $selectedMonth ? $namaBulanLabel . ' ' . $selectedYear : 'Semua Bulan ' . $selectedYear }}
         </h2>
 
         {{-- System Orders --}}
-        <p class="text-xs uppercase tracking-widest text-blue-500 font-bold mb-2">📲 Pesanan Website</p>
-        <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3 mb-4">
+        <p style="font-size:0.7rem; text-transform:uppercase; letter-spacing:0.1em; color:#3b82f6; font-weight:700; margin-bottom:0.5rem;">📲 Pesanan Website</p>
+        <div style="display:grid; grid-template-columns:repeat(auto-fill, minmax(160px, 1fr)); gap:0.75rem; margin-bottom:1rem;">
             @php
                 $statCards = [
-                    ['label' => 'Total Pesanan', 'value' => $monthly['total'], 'icon' => '📋', 'color' => 'blue'],
-                    ['label' => 'Total Pendapatan', 'value' => 'Rp ' . number_format($monthly['revenue'],0,',','.'), 'icon' => '💰', 'color' => 'green'],
-                    ['label' => 'Paket Wisata', 'value' => $monthly['tour'], 'icon' => '🏔️', 'color' => 'indigo'],
-                    ['label' => 'Paket Rental', 'value' => $monthly['rental'], 'icon' => '🗺️', 'color' => 'purple'],
-                    ['label' => 'Rental Mobil', 'value' => $monthly['car'], 'icon' => '🚗', 'color' => 'orange'],
+                    ['label' => 'Total Pesanan', 'value' => $monthly['total'], 'icon' => '📋'],
+                    ['label' => 'Total Pendapatan', 'value' => 'Rp ' . number_format($monthly['revenue'],0,',','.'), 'icon' => '💰'],
+                    ['label' => 'Paket Wisata', 'value' => $monthly['tour'], 'icon' => '🏔️'],
+                    ['label' => 'Paket Rental', 'value' => $monthly['rental'], 'icon' => '🗺️'],
+                    ['label' => 'Rental Mobil', 'value' => $monthly['car'], 'icon' => '🚗'],
                 ];
             @endphp
             @foreach($statCards as $card)
-            <div class="bg-white dark:bg-gray-800 rounded-xl p-4 shadow border border-gray-100 dark:border-gray-700 flex flex-col gap-1">
-                <span class="text-2xl">{{ $card['icon'] }}</span>
-                <span class="text-xs text-gray-500 dark:text-gray-400">{{ $card['label'] }}</span>
-                <span class="text-xl font-bold text-gray-800 dark:text-white">{{ $card['value'] }}</span>
+            <div style="background:white; border-radius:0.75rem; padding:1rem; box-shadow:0 1px 3px rgba(0,0,0,.08); border:1px solid #f3f4f6; display:flex; flex-direction:column; gap:0.25rem;">
+                <span style="font-size:1.5rem;">{{ $card['icon'] }}</span>
+                <span style="font-size:0.72rem; color:#6b7280;">{{ $card['label'] }}</span>
+                <span style="font-size:1.25rem; font-weight:800; color:#111827;">{{ $card['value'] }}</span>
             </div>
             @endforeach
         </div>
 
         {{-- CSV Import Stats --}}
         @if($monthly['csv_total'] > 0)
-        <p class="text-xs uppercase tracking-widest text-purple-500 font-bold mb-2">📂 Data Impor CSV</p>
-        <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-4">
-            <div class="bg-purple-50 dark:bg-purple-900/20 rounded-xl p-4 border border-purple-100 dark:border-purple-800 flex flex-col gap-1">
-                <span class="text-2xl">📂</span>
-                <span class="text-xs text-purple-500">Total Data CSV</span>
-                <span class="text-xl font-bold text-purple-700 dark:text-purple-300">{{ $monthly['csv_total'] }}</span>
+        <p style="font-size:0.7rem; text-transform:uppercase; letter-spacing:0.1em; color:#9333ea; font-weight:700; margin-bottom:0.5rem;">📂 Data Impor CSV</p>
+        <div style="display:grid; grid-template-columns:repeat(auto-fill, minmax(160px, 1fr)); gap:0.75rem; margin-bottom:1rem;">
+            <div style="background:#faf5ff; border-radius:0.75rem; padding:1rem; border:1px solid #e9d5ff; display:flex; flex-direction:column; gap:0.25rem;">
+                <span style="font-size:1.5rem;">📂</span>
+                <span style="font-size:0.72rem; color:#9333ea;">Total Data CSV</span>
+                <span style="font-size:1.25rem; font-weight:800; color:#7e22ce;">{{ $monthly['csv_total'] }}</span>
             </div>
-            <div class="bg-purple-50 dark:bg-purple-900/20 rounded-xl p-4 border border-purple-100 dark:border-purple-800 flex flex-col gap-1">
-                <span class="text-2xl">💵</span>
-                <span class="text-xs text-purple-500">Total Harga CSV</span>
-                <span class="text-xl font-bold text-purple-700 dark:text-purple-300">Rp {{ number_format($monthly['csv_revenue'],0,',','.') }}</span>
+            <div style="background:#faf5ff; border-radius:0.75rem; padding:1rem; border:1px solid #e9d5ff; display:flex; flex-direction:column; gap:0.25rem;">
+                <span style="font-size:1.5rem;">💵</span>
+                <span style="font-size:0.72rem; color:#9333ea;">Total Harga CSV</span>
+                <span style="font-size:1.25rem; font-weight:800; color:#7e22ce;">Rp {{ number_format($monthly['csv_revenue'],0,',','.') }}</span>
             </div>
-            <div class="bg-purple-50 dark:bg-purple-900/20 rounded-xl p-4 border border-purple-100 dark:border-purple-800 flex flex-col gap-1">
-                <span class="text-2xl">🏔️</span>
-                <span class="text-xs text-purple-500">Paket Trip (CSV)</span>
-                <span class="text-xl font-bold text-purple-700 dark:text-purple-300">{{ $monthly['csv_paket_trip'] }}</span>
+            <div style="background:#faf5ff; border-radius:0.75rem; padding:1rem; border:1px solid #e9d5ff; display:flex; flex-direction:column; gap:0.25rem;">
+                <span style="font-size:1.5rem;">🏔️</span>
+                <span style="font-size:0.72rem; color:#9333ea;">Paket Trip (CSV)</span>
+                <span style="font-size:1.25rem; font-weight:800; color:#7e22ce;">{{ $monthly['csv_paket_trip'] }}</span>
             </div>
-            <div class="bg-purple-50 dark:bg-purple-900/20 rounded-xl p-4 border border-purple-100 dark:border-purple-800 flex flex-col gap-1">
-                <span class="text-2xl">🚗</span>
-                <span class="text-xs text-purple-500">Sewa Mobil (CSV)</span>
-                <span class="text-xl font-bold text-purple-700 dark:text-purple-300">{{ $monthly['csv_sewa_mobil'] }}</span>
+            <div style="background:#faf5ff; border-radius:0.75rem; padding:1rem; border:1px solid #e9d5ff; display:flex; flex-direction:column; gap:0.25rem;">
+                <span style="font-size:1.5rem;">🚗</span>
+                <span style="font-size:0.72rem; color:#9333ea;">Sewa Mobil (CSV)</span>
+                <span style="font-size:1.25rem; font-weight:800; color:#7e22ce;">{{ $monthly['csv_sewa_mobil'] }}</span>
             </div>
         </div>
         @endif
 
         {{-- Status breakdown --}}
-        <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-6">
+        <div style="display:grid; grid-template-columns:repeat(auto-fill, minmax(140px, 1fr)); gap:0.75rem; margin-bottom:1.5rem;">
             @php
                 $statusCards = [
-                    ['label' => 'Pending', 'value' => $monthly['pending'], 'color' => 'text-yellow-600 dark:text-yellow-400', 'bg' => 'bg-yellow-50 dark:bg-yellow-900/20'],
-                    ['label' => 'Dikonfirmasi', 'value' => $monthly['confirmed'], 'color' => 'text-blue-600 dark:text-blue-400', 'bg' => 'bg-blue-50 dark:bg-blue-900/20'],
-                    ['label' => 'Selesai', 'value' => $monthly['completed'], 'color' => 'text-green-600 dark:text-green-400', 'bg' => 'bg-green-50 dark:bg-green-900/20'],
-                    ['label' => 'Dibatalkan', 'value' => $monthly['cancelled'], 'color' => 'text-red-600 dark:text-red-400', 'bg' => 'bg-red-50 dark:bg-red-900/20'],
+                    ['label' => 'Pending',      'value' => $monthly['pending'],   'color' => '#b45309', 'bg' => '#fffbeb', 'border' => '#fde68a'],
+                    ['label' => 'Dikonfirmasi', 'value' => $monthly['confirmed'], 'color' => '#1d4ed8', 'bg' => '#eff6ff', 'border' => '#bfdbfe'],
+                    ['label' => 'Selesai',      'value' => $monthly['completed'], 'color' => '#15803d', 'bg' => '#f0fdf4', 'border' => '#bbf7d0'],
+                    ['label' => 'Dibatalkan',   'value' => $monthly['cancelled'], 'color' => '#b91c1c', 'bg' => '#fef2f2', 'border' => '#fecaca'],
                 ];
             @endphp
             @foreach($statusCards as $s)
-            <div class="rounded-xl p-3 shadow border border-gray-100 dark:border-gray-700 {{ $s['bg'] }} flex items-center gap-3">
-                <span class="text-2xl font-black {{ $s['color'] }}">{{ $s['value'] }}</span>
-                <span class="text-xs {{ $s['color'] }} font-semibold">{{ $s['label'] }}</span>
+            <div style="border-radius:0.75rem; padding:0.75rem 1rem; border:1px solid {{ $s['border'] }}; background:{{ $s['bg'] }}; display:flex; align-items:center; gap:0.75rem;">
+                <span style="font-size:1.6rem; font-weight:800; color:{{ $s['color'] }};">{{ $s['value'] }}</span>
+                <span style="font-size:0.78rem; font-weight:600; color:{{ $s['color'] }};">{{ $s['label'] }}</span>
             </div>
             @endforeach
         </div>
     </div>
 
     {{-- Yearly Summary --}}
-    <div class="mb-6 p-4 bg-gradient-to-r from-blue-600 to-indigo-600 rounded-xl text-white shadow-lg">
-        <h2 class="text-sm font-bold uppercase tracking-wider mb-3 opacity-80">📊 Ringkasan Tahunan {{ $selectedYear }}</h2>
-        <div class="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-7 gap-4">
-            <div><div class="text-2xl font-black">{{ $yearly['total'] }}</div><div class="text-xs opacity-75">Pesanan Web</div></div>
-            <div><div class="text-lg font-black">Rp {{ number_format($yearly['revenue'],0,',','.') }}</div><div class="text-xs opacity-75">Pendapatan Web</div></div>
-            <div><div class="text-2xl font-black">{{ $yearly['tour'] }}</div><div class="text-xs opacity-75">Paket Wisata</div></div>
-            <div><div class="text-2xl font-black">{{ $yearly['rental'] }}</div><div class="text-xs opacity-75">Paket Rental</div></div>
-            <div><div class="text-2xl font-black">{{ $yearly['car'] }}</div><div class="text-xs opacity-75">Rental Mobil</div></div>
-            <div><div class="text-2xl font-black">{{ $yearly['csv_total'] }}</div><div class="text-xs opacity-75">Data CSV</div></div>
-            <div><div class="text-base font-black">Rp {{ number_format($yearly['csv_revenue'],0,',','.') }}</div><div class="text-xs opacity-75">Harga CSV</div></div>
+    <div style="margin-bottom:1.5rem; padding:1.25rem 1.5rem; background:linear-gradient(135deg, #1e40af, #4f46e5); border-radius:0.75rem; color:white; box-shadow:0 4px 16px rgba(30,64,175,.25);">
+        <h2 style="font-size:0.8rem; font-weight:700; text-transform:uppercase; letter-spacing:0.07em; margin-bottom:0.85rem; opacity:0.8;">📊 Ringkasan Tahunan {{ $selectedYear }}</h2>
+        <div style="display:grid; grid-template-columns:repeat(auto-fill, minmax(130px, 1fr)); gap:1rem;">
+            <div><div style="font-size:1.5rem; font-weight:800;">{{ $yearly['total'] }}</div><div style="font-size:0.75rem; opacity:0.75;">Pesanan Web</div></div>
+            <div><div style="font-size:1rem; font-weight:800;">Rp {{ number_format($yearly['revenue'],0,',','.') }}</div><div style="font-size:0.75rem; opacity:0.75;">Pendapatan Web</div></div>
+            <div><div style="font-size:1.5rem; font-weight:800;">{{ $yearly['tour'] }}</div><div style="font-size:0.75rem; opacity:0.75;">Paket Wisata</div></div>
+            <div><div style="font-size:1.5rem; font-weight:800;">{{ $yearly['rental'] }}</div><div style="font-size:0.75rem; opacity:0.75;">Paket Rental</div></div>
+            <div><div style="font-size:1.5rem; font-weight:800;">{{ $yearly['car'] }}</div><div style="font-size:0.75rem; opacity:0.75;">Rental Mobil</div></div>
+            <div><div style="font-size:1.5rem; font-weight:800;">{{ $yearly['csv_total'] }}</div><div style="font-size:0.75rem; opacity:0.75;">Data CSV</div></div>
+            <div><div style="font-size:1rem; font-weight:800;">Rp {{ number_format($yearly['csv_revenue'],0,',','.') }}</div><div style="font-size:0.75rem; opacity:0.75;">Harga CSV</div></div>
         </div>
     </div>
 
     {{-- ─── MONTHLY CHART ───────────────────────────────────────── --}}
     @php $chartData = $this->getMonthlyChartData(); @endphp
-    <div class="bg-white dark:bg-gray-800 rounded-xl shadow border border-gray-100 dark:border-gray-700 p-5 mb-6">
-        <h3 class="font-bold text-gray-700 dark:text-gray-200 mb-4">📈 Grafik Pesanan Per Bulan — {{ $selectedYear }}</h3>
-        <div class="flex items-end gap-1 h-44 overflow-x-auto">
+    <div style="background:white; border-radius:0.75rem; box-shadow:0 1px 3px rgba(0,0,0,.08); border:1px solid #f3f4f6; padding:1.25rem; margin-bottom:1.5rem;">
+        <h3 style="font-weight:700; color:#374151; margin-bottom:1rem;">📈 Grafik Pesanan Per Bulan — {{ $selectedYear }}</h3>
+        <div style="display:flex; align-items:flex-end; gap:4px; height:160px; overflow-x:auto;">
             @php
                 $maxTotal = max(array_column($chartData, 'total')) ?: 1;
             @endphp
             @foreach($chartData as $index => $row)
-            <div class="flex flex-col items-center gap-1 flex-1 min-w-[40px]">
-                <span class="text-[10px] font-bold text-blue-600 dark:text-blue-400">{{ $row['total'] ?: '' }}</span>
-                <div class="w-full flex flex-col-reverse gap-0.5">
-                    <div class="w-full rounded-t-sm transition-all duration-500 {{ ($selectedMonth && (int)$selectedMonth === ($index+1)) ? 'bg-blue-500' : 'bg-blue-300 dark:bg-blue-600' }}"
-                         style="height: {{ max(2, ($row['orders'] / $maxTotal) * 140) }}px"
+            <div style="display:flex; flex-direction:column; align-items:center; gap:4px; flex:1; min-width:40px;">
+                <span style="font-size:10px; font-weight:700; color:#2563eb;">{{ $row['total'] ?: '' }}</span>
+                <div style="width:100%; display:flex; flex-direction:column-reverse; gap:2px;">
+                    <div style="width:100%; border-radius:2px 2px 0 0; background:{{ ($selectedMonth && (int)$selectedMonth === ($index+1)) ? '#3b82f6' : '#93c5fd' }}; height:{{ max(2, ($row['orders'] / $maxTotal) * 140) }}px;"
                          title="{{ $row['month'] }}: {{ $row['orders'] }} pesanan web"></div>
                     @if($row['csv_orders'] > 0)
-                    <div class="w-full rounded-t-sm bg-purple-400 dark:bg-purple-500 transition-all duration-500"
-                         style="height: {{ max(2, ($row['csv_orders'] / $maxTotal) * 140) }}px"
+                    <div style="width:100%; border-radius:2px 2px 0 0; background:#c084fc; height:{{ max(2, ($row['csv_orders'] / $maxTotal) * 140) }}px;"
                          title="{{ $row['month'] }}: {{ $row['csv_orders'] }} data CSV"></div>
                     @endif
                 </div>
-                <span class="text-[9px] text-gray-500 dark:text-gray-400 text-center leading-tight">{{ substr($row['month'], 0, 3) }}</span>
+                <span style="font-size:9px; color:#9ca3af; text-align:center;">{{ substr($row['month'], 0, 3) }}</span>
             </div>
             @endforeach
         </div>
-        <div class="flex gap-4 mt-3 text-xs text-gray-400">
-            <span class="flex items-center gap-1"><span class="w-3 h-3 rounded bg-blue-300 dark:bg-blue-600 inline-block"></span> Pesanan Website</span>
-            <span class="flex items-center gap-1"><span class="w-3 h-3 rounded bg-purple-400 dark:bg-purple-500 inline-block"></span> Data CSV Import</span>
+        <div style="display:flex; gap:1rem; margin-top:0.75rem; font-size:0.75rem; color:#9ca3af;">
+            <span style="display:flex; align-items:center; gap:4px;"><span style="width:12px; height:12px; border-radius:3px; background:#93c5fd; display:inline-block;"></span> Pesanan Website</span>
+            <span style="display:flex; align-items:center; gap:4px;"><span style="width:12px; height:12px; border-radius:3px; background:#c084fc; display:inline-block;"></span> Data CSV Import</span>
         </div>
     </div>
 
     {{-- ─── ORDERS TABLE (Website) ───────────────────────────────── --}}
     @php $orders = $this->getOrdersData(); @endphp
-    <div class="bg-white dark:bg-gray-800 rounded-xl shadow border border-gray-100 dark:border-gray-700 overflow-hidden mb-6">
-        <div class="p-4 border-b border-gray-100 dark:border-gray-700 flex items-center gap-3">
-            <h3 class="font-bold text-gray-700 dark:text-gray-200">
+    <div style="background:white; border-radius:0.75rem; box-shadow:0 1px 3px rgba(0,0,0,.08); border:1px solid #f3f4f6; overflow:hidden; margin-bottom:1.5rem;">
+        <div style="padding:1rem; border-bottom:1px solid #f3f4f6; display:flex; align-items:center; gap:0.75rem;">
+            <h3 style="font-weight:700; color:#374151; margin:0;">
                 📲 Pesanan Website —
                 {{ $selectedMonth ? ($namaBulan[$selectedMonth] ?? $selectedMonth) . ' ' . $selectedYear : 'Semua ' . $selectedYear }}
             </h3>
-            <span class="ml-auto text-sm text-gray-400">{{ $orders->count() }} pesanan</span>
+            <span style="margin-left:auto; font-size:0.875rem; color:#9ca3af;">{{ $orders->count() }} pesanan</span>
         </div>
-        <div class="overflow-x-auto">
-            <table class="w-full text-sm">
-                <thead class="bg-gray-50 dark:bg-gray-700/60">
+        <div style="overflow-x:auto;">
+            <table style="width:100%; font-size:0.85rem; border-collapse:collapse;">
+                <thead style="background:#f9fafb;">
                     <tr>
-                        <th class="px-4 py-3 text-left text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider whitespace-nowrap">No</th>
-                        <th class="px-4 py-3 text-left text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider whitespace-nowrap">Tgl Pesan</th>
-                        <th class="px-4 py-3 text-left text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider whitespace-nowrap">ID Transaksi</th>
-                        <th class="px-4 py-3 text-left text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider whitespace-nowrap">Tipe</th>
-                        <th class="px-4 py-3 text-left text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider">Item</th>
-                        <th class="px-4 py-3 text-left text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider whitespace-nowrap">Pelanggan</th>
-                        <th class="px-4 py-3 text-left text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider whitespace-nowrap">Tgl Trip</th>
-                        <th class="px-4 py-3 text-right text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider whitespace-nowrap">Total (IDR)</th>
-                        <th class="px-4 py-3 text-center text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider whitespace-nowrap">Status</th>
-                        <th class="px-4 py-3 text-center text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider whitespace-nowrap">Bayar</th>
-                        <th class="px-4 py-3 text-center text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider whitespace-nowrap">Aksi</th>
+                        <th style="padding:0.75rem 1rem; text-align:left; font-size:0.7rem; font-weight:600; color:#6b7280; text-transform:uppercase; letter-spacing:0.05em; white-space:nowrap;">No</th>
+                        <th style="padding:0.75rem 1rem; text-align:left; font-size:0.7rem; font-weight:600; color:#6b7280; text-transform:uppercase; letter-spacing:0.05em; white-space:nowrap;">Tgl Pesan</th>
+                        <th style="padding:0.75rem 1rem; text-align:left; font-size:0.7rem; font-weight:600; color:#6b7280; text-transform:uppercase; letter-spacing:0.05em; white-space:nowrap;">ID Transaksi</th>
+                        <th style="padding:0.75rem 1rem; text-align:left; font-size:0.7rem; font-weight:600; color:#6b7280; text-transform:uppercase; letter-spacing:0.05em; white-space:nowrap;">Tipe</th>
+                        <th style="padding:0.75rem 1rem; text-align:left; font-size:0.7rem; font-weight:600; color:#6b7280; text-transform:uppercase; letter-spacing:0.05em;">Item</th>
+                        <th style="padding:0.75rem 1rem; text-align:left; font-size:0.7rem; font-weight:600; color:#6b7280; text-transform:uppercase; letter-spacing:0.05em; white-space:nowrap;">Pelanggan</th>
+                        <th style="padding:0.75rem 1rem; text-align:left; font-size:0.7rem; font-weight:600; color:#6b7280; text-transform:uppercase; letter-spacing:0.05em; white-space:nowrap;">Tgl Trip</th>
+                        <th style="padding:0.75rem 1rem; text-align:right; font-size:0.7rem; font-weight:600; color:#6b7280; text-transform:uppercase; letter-spacing:0.05em; white-space:nowrap;">Total (IDR)</th>
+                        <th style="padding:0.75rem 1rem; text-align:center; font-size:0.7rem; font-weight:600; color:#6b7280; text-transform:uppercase; letter-spacing:0.05em; white-space:nowrap;">Status</th>
+                        <th style="padding:0.75rem 1rem; text-align:center; font-size:0.7rem; font-weight:600; color:#6b7280; text-transform:uppercase; letter-spacing:0.05em; white-space:nowrap;">Bayar</th>
+                        <th style="padding:0.75rem 1rem; text-align:center; font-size:0.7rem; font-weight:600; color:#6b7280; text-transform:uppercase; letter-spacing:0.05em; white-space:nowrap;">Aksi</th>
                     </tr>
                 </thead>
                 <tbody class="divide-y divide-gray-100 dark:divide-gray-700">
@@ -297,7 +295,7 @@
                         <td class="px-4 py-3 text-center">
                             <a href="{{ url('/admin/orders/' . $order->id . '/edit') }}"
                                class="inline-flex items-center gap-1 px-2 py-1 rounded bg-blue-100 dark:bg-blue-900/40 text-blue-600 dark:text-blue-300 text-xs hover:bg-blue-200 transition">
-                                <x-heroicon-m-pencil class="w-3 h-3"/> Edit
+                                <svg class="w-3 h-3 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/></svg> Edit
                             </a>
                         </td>
                     </tr>
@@ -325,93 +323,92 @@
         </div>
     </div>
 
-    {{-- ─── CSV IMPORT TABLE ─────────────────────────────────────── --}}
+    {{-- ─── CSV IMPORT TABLE ───────────────────────────────── --}}
     @php $tripImports = $this->getTripImportData(); @endphp
     @if($tripImports->count() > 0)
-    <div class="bg-white dark:bg-gray-800 rounded-xl shadow border border-purple-100 dark:border-purple-800 overflow-hidden">
-        <div class="p-4 border-b border-purple-100 dark:border-purple-800 bg-purple-50 dark:bg-purple-900/20 flex items-center gap-3">
-            <h3 class="font-bold text-purple-700 dark:text-purple-300">
+    <div style="background:white; border-radius:0.75rem; box-shadow:0 1px 3px rgba(0,0,0,.08); border:1px solid #f3e8ff; overflow:hidden;">
+        <div style="padding:1rem; border-bottom:1px solid #f3e8ff; background:#faf5ff; display:flex; align-items:center; gap:0.75rem;">
+            <h3 style="font-weight:700; color:#7e22ce; margin:0;">
                 📂 Data Trip CSV —
                 {{ $selectedMonth ? ($namaBulan[$selectedMonth] ?? $selectedMonth) . ' ' . $selectedYear : 'Semua ' . $selectedYear }}
             </h3>
-            <span class="ml-auto text-sm text-purple-400">{{ $tripImports->count() }} data</span>
+            <span style="margin-left:auto; font-size:0.875rem; color:#a855f7;">{{ $tripImports->count() }} data</span>
         </div>
-        <div class="overflow-x-auto">
-            <table class="w-full text-sm">
-                <thead class="bg-purple-50 dark:bg-purple-900/30">
+        <div style="overflow-x:auto;">
+            <table style="width:100%; font-size:0.82rem; border-collapse:collapse;">
+                <thead style="background:#faf5ff;">
                     <tr>
-                        <th class="px-3 py-2.5 text-left text-xs font-semibold text-purple-600 dark:text-purple-400 uppercase whitespace-nowrap">No</th>
-                        <th class="px-3 py-2.5 text-left text-xs font-semibold text-purple-600 dark:text-purple-400 uppercase whitespace-nowrap">Tanggal</th>
-                        <th class="px-3 py-2.5 text-left text-xs font-semibold text-purple-600 dark:text-purple-400 uppercase whitespace-nowrap">Pelanggan</th>
-                        <th class="px-3 py-2.5 text-left text-xs font-semibold text-purple-600 dark:text-purple-400 uppercase whitespace-nowrap">HP</th>
-                        <th class="px-3 py-2.5 text-left text-xs font-semibold text-purple-600 dark:text-purple-400 uppercase whitespace-nowrap">Layanan</th>
-                        <th class="px-3 py-2.5 text-left text-xs font-semibold text-purple-600 dark:text-purple-400 uppercase whitespace-nowrap">Driver</th>
-                        <th class="px-3 py-2.5 text-left text-xs font-semibold text-purple-600 dark:text-purple-400 uppercase whitespace-nowrap">Mobil</th>
-                        <th class="px-3 py-2.5 text-center text-xs font-semibold text-purple-600 dark:text-purple-400 uppercase whitespace-nowrap">Hari</th>
-                        <th class="px-3 py-2.5 text-center text-xs font-semibold text-purple-600 dark:text-purple-400 uppercase whitespace-nowrap">Drone</th>
-                        <th class="px-3 py-2.5 text-right text-xs font-semibold text-purple-600 dark:text-purple-400 uppercase whitespace-nowrap">Harga</th>
-                        <th class="px-3 py-2.5 text-right text-xs font-semibold text-purple-600 dark:text-purple-400 uppercase whitespace-nowrap">Deposit</th>
-                        <th class="px-3 py-2.5 text-right text-xs font-semibold text-purple-600 dark:text-purple-400 uppercase whitespace-nowrap">Pelunasan</th>
+                        <th style="padding:0.5rem 0.75rem; text-align:left; font-size:0.68rem; font-weight:600; color:#9333ea; text-transform:uppercase; white-space:nowrap;">No</th>
+                        <th style="padding:0.5rem 0.75rem; text-align:left; font-size:0.68rem; font-weight:600; color:#9333ea; text-transform:uppercase; white-space:nowrap;">Tanggal</th>
+                        <th style="padding:0.5rem 0.75rem; text-align:left; font-size:0.68rem; font-weight:600; color:#9333ea; text-transform:uppercase; white-space:nowrap;">Pelanggan</th>
+                        <th style="padding:0.5rem 0.75rem; text-align:left; font-size:0.68rem; font-weight:600; color:#9333ea; text-transform:uppercase; white-space:nowrap;">HP</th>
+                        <th style="padding:0.5rem 0.75rem; text-align:left; font-size:0.68rem; font-weight:600; color:#9333ea; text-transform:uppercase; white-space:nowrap;">Layanan</th>
+                        <th style="padding:0.5rem 0.75rem; text-align:left; font-size:0.68rem; font-weight:600; color:#9333ea; text-transform:uppercase; white-space:nowrap;">Driver</th>
+                        <th style="padding:0.5rem 0.75rem; text-align:left; font-size:0.68rem; font-weight:600; color:#9333ea; text-transform:uppercase; white-space:nowrap;">Mobil</th>
+                        <th style="padding:0.5rem 0.75rem; text-align:center; font-size:0.68rem; font-weight:600; color:#9333ea; text-transform:uppercase; white-space:nowrap;">Hari</th>
+                        <th style="padding:0.5rem 0.75rem; text-align:center; font-size:0.68rem; font-weight:600; color:#9333ea; text-transform:uppercase; white-space:nowrap;">Drone</th>
+                        <th style="padding:0.5rem 0.75rem; text-align:right; font-size:0.68rem; font-weight:600; color:#9333ea; text-transform:uppercase; white-space:nowrap;">Harga</th>
+                        <th style="padding:0.5rem 0.75rem; text-align:right; font-size:0.68rem; font-weight:600; color:#9333ea; text-transform:uppercase; white-space:nowrap;">Deposit</th>
+                        <th style="padding:0.5rem 0.75rem; text-align:right; font-size:0.68rem; font-weight:600; color:#9333ea; text-transform:uppercase; white-space:nowrap;">Pelunasan</th>
                     </tr>
                 </thead>
-                <tbody class="divide-y divide-purple-50 dark:divide-purple-900/30">
+                <tbody>
                     @foreach($tripImports as $i => $trip)
-                    <tr class="hover:bg-purple-50/50 dark:hover:bg-purple-900/10 transition-colors">
-                        <td class="px-3 py-2 text-gray-400 text-xs">{{ $i + 1 }}</td>
-                        <td class="px-3 py-2 text-gray-700 dark:text-gray-200 whitespace-nowrap text-xs">
+                    <tr style="border-top:1px solid #faf5ff;">
+                        <td style="padding:0.5rem 0.75rem; color:#9ca3af; font-size:0.72rem;">{{ $i + 1 }}</td>
+                        <td style="padding:0.5rem 0.75rem; color:#374151; font-size:0.72rem; white-space:nowrap;">
                             {{ $trip->tanggal ? $trip->tanggal->format('d M Y') : '-' }}
                         </td>
-                        <td class="px-3 py-2">
-                            <div class="font-medium text-gray-800 dark:text-gray-100 text-sm">{{ $trip->nama_pelanggan ?? '-' }}</div>
-                            @if($trip->status)<div class="text-xs text-gray-400">{{ $trip->status }}</div>@endif
+                        <td style="padding:0.5rem 0.75rem;">
+                            <div style="font-weight:600; color:#111827; font-size:0.82rem;">{{ $trip->nama_pelanggan ?? '-' }}</div>
+                            @if($trip->status)<div style="font-size:0.7rem; color:#9ca3af;">{{ $trip->status }}</div>@endif
                         </td>
-                        <td class="px-3 py-2 text-xs text-gray-500">{{ $trip->nomor_hp ?? '-' }}</td>
-                        <td class="px-3 py-2">
-                            <span class="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium
-                                {{ str_contains($trip->layanan ?? '', 'Trip') ? 'bg-green-100 text-green-700' : 'bg-orange-100 text-orange-700' }}">
+                        <td style="padding:0.5rem 0.75rem; font-size:0.72rem; color:#6b7280;">{{ $trip->nomor_hp ?? '-' }}</td>
+                        <td style="padding:0.5rem 0.75rem;">
+                            <span style="display:inline-flex; align-items:center; padding:2px 8px; border-radius:99px; font-size:0.7rem; font-weight:600; {{ str_contains($trip->layanan ?? '', 'Trip') ? 'background:#f0fdf4; color:#15803d;' : 'background:#fff7ed; color:#c2410c;' }}">
                                 {{ $trip->layanan ?? '-' }}
                             </span>
                         </td>
-                        <td class="px-3 py-2 text-xs text-gray-600 dark:text-gray-300">{{ $trip->nama_driver ?? '-' }}</td>
-                        <td class="px-3 py-2 text-xs text-gray-600 dark:text-gray-300">
+                        <td style="padding:0.5rem 0.75rem; font-size:0.72rem; color:#4b5563;">{{ $trip->nama_driver ?? '-' }}</td>
+                        <td style="padding:0.5rem 0.75rem; font-size:0.72rem; color:#4b5563;">
                             {{ $trip->jenis_mobil ?? $trip->plat_mobil ?? '-' }}
                         </td>
-                        <td class="px-3 py-2 text-center text-xs font-bold text-gray-700 dark:text-gray-200">{{ $trip->jumlah_hari ?? 1 }}</td>
-                        <td class="px-3 py-2 text-center">
+                        <td style="padding:0.5rem 0.75rem; text-align:center; font-weight:700; color:#374151; font-size:0.72rem;">{{ $trip->jumlah_hari ?? 1 }}</td>
+                        <td style="padding:0.5rem 0.75rem; text-align:center;">
                             @if($trip->drone)
-                                <span class="text-green-600 font-bold text-xs">✓</span>
+                                <span style="color:#16a34a; font-weight:700; font-size:0.72rem;">✓</span>
                             @else
-                                <span class="text-gray-300 text-xs">—</span>
+                                <span style="color:#d1d5db; font-size:0.72rem;">—</span>
                             @endif
                         </td>
-                        <td class="px-3 py-2 text-right font-semibold text-gray-800 dark:text-gray-100 whitespace-nowrap text-xs">
+                        <td style="padding:0.5rem 0.75rem; text-align:right; font-weight:600; color:#111827; white-space:nowrap; font-size:0.72rem;">
                             {{ $trip->harga > 0 ? 'Rp ' . number_format($trip->harga, 0, ',', '.') : '-' }}
                         </td>
-                        <td class="px-3 py-2 text-right text-xs text-gray-500 whitespace-nowrap">
+                        <td style="padding:0.5rem 0.75rem; text-align:right; font-size:0.72rem; color:#6b7280; white-space:nowrap;">
                             {{ $trip->deposit > 0 ? 'Rp ' . number_format($trip->deposit, 0, ',', '.') : '-' }}
                         </td>
-                        <td class="px-3 py-2 text-right text-xs text-gray-500 whitespace-nowrap">
+                        <td style="padding:0.5rem 0.75rem; text-align:right; font-size:0.72rem; color:#6b7280; white-space:nowrap;">
                             {{ $trip->pelunasan > 0 ? 'Rp ' . number_format($trip->pelunasan, 0, ',', '.') : '-' }}
                         </td>
                     </tr>
                     @endforeach
                 </tbody>
-                <tfoot class="bg-purple-50 dark:bg-purple-900/30">
+                <tfoot style="background:#faf5ff;">
                     <tr>
-                        <td colspan="9" class="px-3 py-3 text-right text-sm font-bold text-purple-700 dark:text-purple-300">Total:</td>
-                        <td class="px-3 py-3 text-right font-bold text-purple-700 dark:text-purple-300 text-sm">Rp {{ number_format($tripImports->sum('harga'),0,',','.') }}</td>
-                        <td class="px-3 py-3 text-right font-bold text-purple-600 dark:text-purple-400 text-xs">Rp {{ number_format($tripImports->sum('deposit'),0,',','.') }}</td>
-                        <td class="px-3 py-3 text-right font-bold text-purple-600 dark:text-purple-400 text-xs">Rp {{ number_format($tripImports->sum('pelunasan'),0,',','.') }}</td>
+                        <td colspan="9" style="padding:0.75rem; text-align:right; font-size:0.875rem; font-weight:700; color:#7e22ce;">Total:</td>
+                        <td style="padding:0.75rem; text-align:right; font-weight:700; color:#7e22ce; font-size:0.875rem;">Rp {{ number_format($tripImports->sum('harga'),0,',','.') }}</td>
+                        <td style="padding:0.75rem; text-align:right; font-weight:700; color:#9333ea; font-size:0.75rem;">Rp {{ number_format($tripImports->sum('deposit'),0,',','.') }}</td>
+                        <td style="padding:0.75rem; text-align:right; font-weight:700; color:#9333ea; font-size:0.75rem;">Rp {{ number_format($tripImports->sum('pelunasan'),0,',','.') }}</td>
                     </tr>
                 </tfoot>
             </table>
         </div>
     </div>
     @else
-    <div class="bg-purple-50 dark:bg-purple-900/10 border border-dashed border-purple-200 dark:border-purple-800 rounded-xl p-8 text-center">
-        <div class="text-4xl mb-3">📂</div>
-        <h4 class="font-bold text-purple-600 dark:text-purple-300 mb-1">Belum ada data CSV</h4>
-        <p class="text-sm text-gray-500">Klik tombol <strong>Import CSV Trip</strong> di atas untuk mengupload file dari Google Sheets/Excel.</p>
+    <div style="background:#faf5ff; border:2px dashed #e9d5ff; border-radius:0.75rem; padding:2rem; text-align:center;">
+        <div style="font-size:2.5rem; margin-bottom:0.75rem;">📂</div>
+        <h4 style="font-weight:700; color:#9333ea; margin-bottom:0.25rem;">Belum ada data CSV</h4>
+        <p style="font-size:0.875rem; color:#6b7280;">Klik tombol <strong>Import CSV Trip</strong> di atas untuk mengupload file dari Google Sheets/Excel.</p>
     </div>
     @endif
 

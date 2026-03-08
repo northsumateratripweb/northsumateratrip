@@ -36,7 +36,7 @@
     @if($products->count() > 0)
     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
         @foreach($products as $product)
-        <a href="{{ route('products.show', ['category' => $product->category->slug, 'product' => $product->slug]) }}" class="group flex flex-col h-full bg-white dark:bg-slate-900 rounded-2xl border border-slate-100 dark:border-slate-800 overflow-hidden transition-all duration-500 hover:shadow-xl hover:shadow-blue-900/[0.06] hover:-translate-y-1 block cursor-pointer">
+        <a href="{{ route('products.show', ['category' => $product->category?->slug ?? 'uncategorized', 'product' => $product->slug]) }}" class="group flex flex-col h-full bg-white dark:bg-slate-900 rounded-2xl border border-slate-100 dark:border-slate-800 overflow-hidden transition-all duration-500 hover:shadow-xl hover:shadow-blue-900/[0.06] hover:-translate-y-1 block cursor-pointer">
             <!-- Image -->
             <div class="relative h-52 overflow-hidden">
                 <img src="{{ $product->image_url }}" 

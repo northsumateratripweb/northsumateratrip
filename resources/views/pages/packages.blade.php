@@ -64,7 +64,7 @@
         @else
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                 @foreach($products as $product)
-                    <a href="{{ route('products.show', [$product->category->slug, $product->slug]) }}" class="group flex flex-col h-full bg-white dark:bg-slate-900 rounded-2xl border border-slate-100 dark:border-slate-800 transition-all duration-500 hover:shadow-xl hover:shadow-blue-900/[0.06] hover:-translate-y-1 overflow-hidden block cursor-pointer">
+                    <a href="{{ route('products.show', [$product->category?->slug ?? 'uncategorized', $product->slug]) }}" class="group flex flex-col h-full bg-white dark:bg-slate-900 rounded-2xl border border-slate-100 dark:border-slate-800 transition-all duration-500 hover:shadow-xl hover:shadow-blue-900/[0.06] hover:-translate-y-1 overflow-hidden block cursor-pointer">
                         <!-- Image Container -->
                         <div class="relative h-52 overflow-hidden">
                             <img src="{{ $product->image_url }}" alt="{{ $product->name }}" class="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-110">
@@ -73,7 +73,7 @@
                             <!-- Badges -->
                             <div class="absolute top-4 left-4 flex flex-col gap-2">
                                 <span class="px-3.5 py-1.5 bg-white/90 dark:bg-slate-900/90 backdrop-blur-sm rounded-xl text-xs font-bold text-blue-600 dark:text-blue-400 border border-white/20 dark:border-slate-800 shadow-sm">
-                                    {{ $product->category->name }}
+                                    {{ $product->category?->name ?? 'Paket' }}
                                 </span>
                             </div>
 

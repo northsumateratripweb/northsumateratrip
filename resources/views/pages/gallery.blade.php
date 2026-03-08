@@ -51,12 +51,21 @@
         {{ $items->appends(request()->query())->links() }}
     </div>
     @else
-    <div class="text-center py-24 bg-slate-50 dark:bg-slate-900/50 rounded-3xl border-2 border-dashed border-slate-200 dark:border-slate-800">
-        <div class="w-16 h-16 bg-slate-100 rounded-2xl flex items-center justify-center mx-auto mb-6 text-slate-300">
-            <i class="fas fa-image text-2xl"></i>
+    <div class="relative overflow-hidden rounded-[2rem] border-2 border-dashed border-slate-200 dark:border-slate-800 p-12 md:p-24 text-center bg-white dark:bg-slate-900 shadow-sm">
+        {{-- Decorative element --}}
+        <div class="absolute -top-24 -right-24 w-64 h-64 bg-blue-50/50 dark:bg-blue-900/10 rounded-full blur-3xl"></div>
+        <div class="absolute -bottom-24 -left-24 w-64 h-64 bg-slate-50/50 dark:bg-slate-800/10 rounded-full blur-3xl"></div>
+        
+        <div class="relative z-10">
+            <div class="w-20 h-20 bg-gradient-to-br from-blue-500 to-indigo-600 rounded-3xl flex items-center justify-center mx-auto mb-8 shadow-xl shadow-blue-500/20 rotate-3">
+                <i class="fas fa-camera-retro text-3xl text-white"></i>
+            </div>
+            <h3 class="text-2xl font-black text-slate-900 dark:text-white uppercase tracking-tight mb-3">Belum ada koleksi foto</h3>
+            <p class="text-slate-400 font-medium max-w-sm mx-auto mb-8">Kami sedang menyiapkan dokumentasi perjalanan terbaik untuk Anda. Silakan kembali lagi beberapa saat lagi.</p>
+            <a href="{{ route('home') }}" class="inline-flex items-center gap-2 px-8 py-3 bg-slate-900 dark:bg-white text-white dark:text-slate-900 rounded-full text-xs font-black uppercase tracking-widest transition-all hover:scale-105 hover:bg-slate-800">
+                &larr; Kembali ke Beranda
+            </a>
         </div>
-        <h3 class="text-lg font-bold text-slate-700 mb-2">Belum ada gambar</h3>
-        <p class="text-slate-400 text-sm">Silakan kembali lagi nanti.</p>
     </div>
     @endif
 </div>

@@ -6,26 +6,26 @@
     
     // ── Resolve item details ─────────────────────────────────
     if ($isItinerary) {
-        $itemName   = $product->name ?? 'Paket Wisata';
+        $itemName   = $product->name ?? 'Paket Wifi';
         $itemMeta   = ($product->location ?? 'Sumatera');
         $itemPrice  = $product->price ?? 0;
         $itemQty    = 1;
         $totalPrice = $itemPrice;
     } else if ($order->vehicle) {
-        $itemName   = $order->vehicle->name ?? 'Rental Mobil';
-        $itemMeta   = $order->vehicle->category ?? '';
+        $itemName   = $order->vehicle?->name ?? 'Rental Mobil';
+        $itemMeta   = $order->vehicle?->category ?? '';
         $itemPrice  = $order->total_price;
         $itemQty    = 1;
         $totalPrice = $order->total_price;
     } else if ($order->rentalPackage) {
-        $itemName   = $order->rentalPackage->name ?? 'Paket Rental';
-        $itemMeta   = $order->rentalPackage->category ?? '';
+        $itemName   = $order->rentalPackage?->name ?? 'Paket Rental';
+        $itemMeta   = $order->rentalPackage?->category ?? '';
         $itemPrice  = $order->total_price;
         $itemQty    = 1;
         $totalPrice = $order->total_price;
     } else {
-        $itemName   = $order->product->name ?? 'Paket Wisata';
-        $itemMeta   = ($order->product->location ?? 'Sumatera');
+        $itemName   = $order->product?->name ?? 'Paket Wifi';
+        $itemMeta   = ($order->product?->location ?? 'Sumatera');
         $itemPrice  = $order->total_price / ($order->quantity ?: 1);
         $itemQty    = $order->quantity ?? 1;
         $totalPrice = $order->total_price;

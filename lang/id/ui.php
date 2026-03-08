@@ -41,6 +41,7 @@ return [
     'reviews'            => 'ulasan',
     'available'          => 'Tersedia',
     'not_available'      => 'Tidak Tersedia',
+    'coming_soon'        => 'Segera Hadir',
     'capacity'           => 'Kapasitas',
     'person'             => 'orang',
     'duration'           => 'Durasi',

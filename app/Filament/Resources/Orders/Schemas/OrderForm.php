@@ -63,7 +63,7 @@ class OrderForm
                             ->default('pending')
                             ->required(),
                     ]),
-                \Filament\Schemas\Components\Section::make('💳 Pembayaran & Transaksi')
+                \Filament\Schemas\Components\Section::make('Pembayaran & Transaksi')
                     ->columns(2)
                     ->schema([
                         \Filament\Forms\Components\Select::make('payment_status')
@@ -86,7 +86,7 @@ class OrderForm
                             ->visibility('public')
                             ->columnSpanFull(),
                     ]),
-                \Filament\Schemas\Components\Section::make('🏨 Akomodasi & Logistik')
+                \Filament\Schemas\Components\Section::make('Akomodasi & Logistik')
                     ->columns(2)
                     ->schema([
                         \Filament\Forms\Components\Select::make('hotel_category')

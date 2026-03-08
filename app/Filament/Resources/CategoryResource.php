@@ -5,6 +5,7 @@ namespace App\Filament\Resources;
 use App\Filament\Resources\CategoryResource\Pages;
 use App\Models\Category;
 use Filament\Forms;
+use Filament\Schemas;
 use Filament\Resources\Resource;
 use Filament\Actions\BulkActionGroup;
 use Filament\Actions\DeleteBulkAction;
@@ -23,21 +24,33 @@ class CategoryResource extends Resource
     {
         return $schema
             ->schema([
-                Forms\Components\TextInput::make('name')
-                    ->required()
-                    ->maxLength(255)
-                    ->live(onBlur: true)
-                    ->afterStateUpdated(fn ($state, callable $set) => $set('slug', \Illuminate\Support\Str::slug($state))),
-                Forms\Components\TextInput::make('slug')
-                    ->required()
-                    ->unique(ignoreRecord: true)
-                    ->maxLength(255),
-                Forms\Components\TextInput::make('icon')->maxLength(255),
-                Forms\Components\Textarea::make('description')->rows(3),
-                Forms\Components\TextInput::make('meta_title')->maxLength(255),
-                Forms\Components\Textarea::make('meta_description')->rows(2),
-                Forms\Components\TextInput::make('sort_order')->numeric(),
-                Forms\Components\Toggle::make('is_active')->default(true),
+                Schemas\Components\Section::make('Informasi Kategori')
+                    ->columns(2)
+                    ->schema([
+                        Forms\Components\TextInput::make('name')
+                            ->required()
+                            ->maxLength(255)
+                            ->live(onBlur: true)
+                            ->afterStateUpdated(fn ($state, callable $set) => $set('slug', \Illuminate\Support\Str::slug($state))),
+                        Forms\Components\TextInput::make('slug')
+                            ->required()
+                            ->unique(ignoreRecord: true)
+                            ->maxLength(255),
+                        Forms\Components\TextInput::make('icon')->maxLength(255),
+                        Forms\Components\Textarea::make('description')->rows(3)->columnSpanFull(),
+                    ]),
+                Schemas\Components\Section::make('SEO')
+                    ->collapsed()
+                    ->schema([
+                        Forms\Components\TextInput::make('meta_title')->maxLength(255)->columnSpanFull(),
+                        Forms\Components\Textarea::make('meta_description')->rows(2)->columnSpanFull(),
+                    ]),
+                Schemas\Components\Section::make('Pengaturan')
+                    ->columns(2)
+                    ->schema([
+                        Forms\Components\TextInput::make('sort_order')->numeric(),
+                        Forms\Components\Toggle::make('is_active')->default(true),
+                    ]),
             ]);
     }
 

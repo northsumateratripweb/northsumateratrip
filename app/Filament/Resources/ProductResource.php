@@ -38,7 +38,7 @@ class ProductResource extends Resource
                 // ─────────────────────────────────────────────────────────────
                 // 1. IDENTITAS PAKET  (ditampilkan di kartu listing & header detail)
                 // ─────────────────────────────────────────────────────────────
-                Schemas\Components\Section::make('🗂️  Identitas Paket')
+                Schemas\Components\Section::make('Identitas Paket')
                     ->description('Informasi utama yang tampil di kartu listing dan halaman detail.')
                     ->columns(2)
                     ->schema([
@@ -87,7 +87,7 @@ class ProductResource extends Resource
                 // ─────────────────────────────────────────────────────────────
                 // 2. FOTO  (gambar utama + galeri yang tampil di halaman detail)
                 // ─────────────────────────────────────────────────────────────
-                Schemas\Components\Section::make('🖼️  Foto Paket')
+                Schemas\Components\Section::make('Foto Paket')
                     ->description('Foto utama tampil di kartu listing. Galeri tampil sebagai thumbnail di halaman detail.')
                     ->columns(2)
                     ->schema([
@@ -118,7 +118,7 @@ class ProductResource extends Resource
                 // ─────────────────────────────────────────────────────────────
                 // 3. HARGA  (tampil di kartu listing dan halaman detail)
                 // ─────────────────────────────────────────────────────────────
-                Schemas\Components\Section::make('💰  Harga')
+                Schemas\Components\Section::make('Harga')
                     ->description('Isi harga per orang untuk setiap jumlah peserta. Harga tampil di kartu listing diambil dari baris pertama dan terakhir.')
                     ->schema([
                         Forms\Components\Repeater::make('pricing_details')
@@ -186,7 +186,7 @@ class ProductResource extends Resource
                 // 4. DESKRIPSI  (tampil di halaman detail: short_description di bawah harga,
                 //                description sebagai konten utama)
                 // ─────────────────────────────────────────────────────────────
-                Schemas\Components\Section::make('📝  Deskripsi')
+                Schemas\Components\Section::make('Deskripsi')
                     ->description('Short description tampil tepat di bawah harga. Deskripsi lengkap di dalam tab.')
                     ->schema([
                         Forms\Components\Textarea::make('short_description')
@@ -210,7 +210,7 @@ class ProductResource extends Resource
                 // ─────────────────────────────────────────────────────────────
                 // 5. ITINERARY  (tab "PILIHAN TRIP" di halaman detail)
                 // ─────────────────────────────────────────────────────────────
-                Schemas\Components\Section::make('🗺️  Itinerary (Struktural)')
+                Schemas\Components\Section::make('Itinerary (Jadwal Perjalanan)')
                     ->description('Tampil di Brosur PDF dan Timeline (jika aktif). Gunakan kolom ini untuk detail hari demi hari.')
                     ->schema([
                         Forms\Components\Repeater::make('itinerary')
@@ -240,7 +240,7 @@ class ProductResource extends Resource
                 // ─────────────────────────────────────────────────────────────
                 // 5a. LAYANAN TAMBAHAN (Drone, dll)
                 // ─────────────────────────────────────────────────────────────
-                Schemas\Components\Section::make('🚁 Layanan Drone (Opsional)')
+                Schemas\Components\Section::make('Layanan Drone (Opsional)')
                     ->description('Detail untuk paket video/foto cinematic menggunakan drone.')
                     ->columns(2)
                     ->schema([
@@ -258,7 +258,7 @@ class ProductResource extends Resource
                 // ─────────────────────────────────────────────────────────────
                 // 6. FASILITAS  (tab "NOTE" di halaman detail)
                 // ─────────────────────────────────────────────────────────────
-                Schemas\Components\Section::make('✅  Fasilitas & Catatan')
+                Schemas\Components\Section::make('Fasilitas & Catatan')
                     ->description('Tampil di tab "NOTE" pada halaman detail.')
                     ->columns(2)
                     ->schema([
@@ -282,7 +282,7 @@ class ProductResource extends Resource
                 // ─────────────────────────────────────────────────────────────
                 // 7. STATUS & URUTAN  (kontrol tampil/sembunyi dan urutan di listing)
                 // ─────────────────────────────────────────────────────────────
-                Schemas\Components\Section::make('⚙️  Status & Urutan')
+                Schemas\Components\Section::make('Status & Urutan')
                     ->description('Kontrol visibilitas dan urutan tampil di halaman listing.')
                     ->columns(3)
                     ->schema([
@@ -304,9 +304,8 @@ class ProductResource extends Resource
                 // ─────────────────────────────────────────────────────────────
                 // 9. SEO  (meta title & description untuk Google)
                 // ─────────────────────────────────────────────────────────────
-                Schemas\Components\Section::make('🔍  SEO (Opsional)')
+                Schemas\Components\Section::make('SEO (Opsional)')
                     ->description('Judul dan deskripsi yang muncul di hasil pencarian Google. Kosongkan untuk menggunakan nama & short description.')
-                    ->columns(1)
                     ->collapsed()
                     ->schema([
                         Forms\Components\TextInput::make('meta_title')

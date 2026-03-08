@@ -101,6 +101,16 @@ Route::get('/page/{slug}', [StaticPageController::class, 'show'])->name('page.sh
 
 
 
+
+// ─── URL Redirects / Aliases ────────────────────────────────────────────────
+// Redirect common URL aliases to canonical URLs
+Route::redirect('/products', '/product', 301);
+Route::redirect('/wisata', '/product', 301);
+Route::redirect('/paket-wisata', '/product', 301);
+Route::redirect('/rental-packages', '/rental-package', 301);
+Route::redirect('/paket-rental', '/rental-package', 301);
+Route::redirect('/sewa-mobil', '/car-rental', 301);
+
 // Invoices & Itineraries
 Route::get('/order/{order}/invoice', [InvoiceController::class, 'orderPdf'])->name('order.invoice')->middleware(['auth', 'throttle:10,1']);
 Route::get('/product/{product}/itinerary', [InvoiceController::class, 'itineraryPdf'])->name('product.itinerary')->middleware('throttle:20,1');

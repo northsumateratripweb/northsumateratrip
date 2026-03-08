@@ -78,8 +78,16 @@
                     <div class="p-5">
                         {{-- Package Name --}}
                         <h3 class="font-extrabold text-slate-900 dark:text-white text-base leading-snug mb-4">
-                            {{ $order->product->name ?? ($order->vehicle->name ?? 'Sewa Mobil') }}
-                        </h3>
+                            {{ $order->product?->name ?? $order->vehicle?->name ?? 'Sewa Mobil' }}
+                        </h3> REPLACE
+<<<<<<< SEARCH
+                                @if($order->tripSchedule->vehicle)
+                                <p class="text-[0.6rem] text-slate-400 font-medium truncate">{{ $order->tripSchedule->vehicle->name }} - {{ $order->tripSchedule->vehicle->license_plate ?? $order->tripSchedule->vehicle->plate_number }}</p>
+                                @endif
+=======
+                                @if($order->tripSchedule?->vehicle)
+                                <p class="text-[0.6rem] text-slate-400 font-medium truncate">{{ $order->tripSchedule->vehicle->name }} - {{ $order->tripSchedule->vehicle->license_plate ?? $order->tripSchedule->vehicle->plate_number }}</p>
+                                @endif
 
                         {{-- Key Info: 2 col grid --}}
                         <div class="grid grid-cols-2 gap-3 mb-4">

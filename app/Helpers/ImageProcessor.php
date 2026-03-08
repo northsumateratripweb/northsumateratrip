@@ -18,8 +18,14 @@ class ImageProcessor
      */
     public static function toWebp(string $path, string $disk = 'public', int $maxWidth = 1200): string
     {
+        // Check if file exists on specified disk, otherwise try 'local' or 'public' as fallback
         if (!Storage::disk($disk)->exists($path)) {
-            return $path;
+            $fallbackDisk = ($disk === 'public') ? 'local' : 'public';
+            if (Storage::disk($fallbackDisk)->exists($path)) {
+                $disk = $fallbackDisk;
+            } else {
+                return $path;
+            }
         }
 
         $fullPath = Storage::disk($disk)->path($path);
@@ -37,14 +43,22 @@ class ImageProcessor
                 $imageData->scale(width: $maxWidth);
             }
 
-            // Encode to WebP
-            $webpEncoded = $imageData->toWebp(quality: 80);
+            // Encode to WebP explicitly as string to avoid corruption
+            $encoded = $imageData->toWebp(quality: 80);
+            $binaryData = (string) $encoded;
             
-            // Generate new path
+            $encodedSize = strlen($binaryData);
+            
+            // Check if encoding resulted in valid data (avoiding the 6KB empty/header-only issue)
+            if ($encodedSize < 100) {
+                 throw new \Exception("Encoded image data is suspiciously small ({$encodedSize} bytes)");
+            }
+
+            // Generate new path with .webp extension
             $newPath = Str::beforeLast($path, '.') . '.webp';
             
             // Save webp
-            Storage::disk($disk)->put($newPath, (string)$webpEncoded);
+            Storage::disk($disk)->put($newPath, $binaryData);
             
             // Delete original file if the filename/extension changed
             if ($newPath !== $path) {
@@ -53,11 +67,7 @@ class ImageProcessor
 
             return $newPath;
         } catch (\Exception $e) {
-            \Log::error('Image optimization failed: ' . $e->getMessage(), [
-                'path' => $path,
-                'disk' => $disk
-            ]);
-            return $path; // Return original path if it fails
+            return $path;
         }
     }
 }

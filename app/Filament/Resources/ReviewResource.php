@@ -5,6 +5,7 @@ namespace App\Filament\Resources;
 use App\Filament\Resources\ReviewResource\Pages;
 use App\Models\Review;
 use Filament\Forms;
+use Filament\Schemas;
 use Filament\Resources\Resource;
 use Filament\Actions\BulkActionGroup;
 use Filament\Actions\DeleteBulkAction;
@@ -25,27 +26,37 @@ class ReviewResource extends Resource
     {
         return $schema
             ->schema([
-                Forms\Components\Select::make('product_id')
-                    ->relationship('product', 'name')
-                    ->searchable()
-                    ->preload()
-                    ->required(),
-                Forms\Components\TextInput::make('customer_name')->required()->maxLength(255),
-                Forms\Components\TextInput::make('customer_email')->email()->maxLength(255),
-                Forms\Components\TextInput::make('rating')->numeric()->step('0.1'),
-                Forms\Components\Textarea::make('comment')->rows(4),
-                Forms\Components\FileUpload::make('gallery_images')
-                    ->label('Foto Gallery Review')
-                    ->image()
-                    ->disk('public')
-                    ->directory('reviews/gallery')
-                    ->visibility('public')
-                    ->multiple()
-                    ->maxFiles(6)
-                    ->maxSize(5120) // 5MB
-                    ->reorderable()
-                    ->columnSpanFull(),
-                Forms\Components\Toggle::make('is_approved')->default(false),
+                Schemas\Components\Section::make('Informasi Ulasan')
+                    ->columns(2)
+                    ->schema([
+                        Forms\Components\Select::make('product_id')
+                            ->relationship('product', 'name')
+                            ->searchable()
+                            ->preload()
+                            ->required(),
+                        Forms\Components\TextInput::make('customer_name')->required()->maxLength(255),
+                        Forms\Components\TextInput::make('customer_email')->email()->maxLength(255),
+                        Forms\Components\TextInput::make('rating')->numeric()->step('0.1'),
+                        Forms\Components\Textarea::make('comment')->rows(4)->columnSpanFull(),
+                    ]),
+                Schemas\Components\Section::make('Media')
+                    ->schema([
+                        Forms\Components\FileUpload::make('gallery_images')
+                            ->label('Foto Gallery Review')
+                            ->image()
+                            ->disk('public')
+                            ->directory('reviews/gallery')
+                            ->visibility('public')
+                            ->multiple()
+                            ->maxFiles(6)
+                            ->maxSize(5120)
+                            ->reorderable()
+                            ->columnSpanFull(),
+                    ]),
+                Schemas\Components\Section::make('Pengaturan')
+                    ->schema([
+                        Forms\Components\Toggle::make('is_approved')->default(false),
+                    ]),
             ]);
     }
 

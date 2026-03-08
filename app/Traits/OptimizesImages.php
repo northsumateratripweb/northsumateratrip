@@ -37,8 +37,8 @@ trait OptimizesImages
                                     $processedImages[] = $imagePath;
                                 }
                             }
-                            // Set the attribute directly to avoid double casting issues if any
-                            $model->attributes[$field] = json_encode($processedImages);
+                            // Use setAttribute to trigger Laravel's array casting correctly
+                            $model->setAttribute($field, $processedImages);
                         } elseif (is_string($value)) {
                             $model->setAttribute($field, ImageProcessor::toWebp($value));
                         }
