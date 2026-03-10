@@ -119,6 +119,12 @@ class OrderController extends Controller
                 'order_id'     => $order->id,
                 'whatsapp_url' => $this->generateWhatsAppUrl($order)
             ]);
+        } catch (\Illuminate\Validation\ValidationException $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Terdapat kesalahan pada isian form.',
+                'errors'  => $e->errors()
+            ], 422);
         } catch (\Exception $e) {
             \Log::error('Order Store Exception: ' . $e->getMessage());
             return response()->json([
