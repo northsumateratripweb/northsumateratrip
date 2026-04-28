@@ -1,140 +1,106 @@
-# NorthSumateraTrip - Laravel
+# NorthSumateraTrip - Premium Tour & Travel platform
 
-Website tour and travel untuk wisata private di Yogyakarta, dikloning dari [northsumateratrip.com](https://northsumateratrip.com/).
+[![Laravel 11](https://img.shields.io/badge/Laravel-11.x-FF2D20?style=flat-square&logo=laravel)](https://laravel.com)
+[![Filament 4](https://img.shields.io/badge/Filament-4.0%20(Alpha)-FFA500?style=flat-square&logo=filament)](https://filamentphp.com)
+[![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-3.x-38B2AC?style=flat-square&logo=tailwind-css)](https://tailwindcss.com)
 
-## Fitur
+**NorthSumateraTrip** adalah platform website tour and travel premium yang dirancang khusus untuk layanan wisata di Sumatera Utara. Dibangun dengan teknologi terbaru dari ekosistem Laravel, website ini menawarkan pengalaman pengguna yang modern, performa tinggi, dan kemudahan pengelolaan konten bagi admin.
 
-- **Homepage** dengan hero section, produk unggulan, panduan ngetrip, dan partner
-- **Katalog Produk** dengan filter kategori
-- **Detail Produk** dengan galeri gambar, pilihan trip, pricing, dan tabs
-- **Blog/Panduan Ngetrip** untuk artikel wisata
-- **Halaman Kontak** dengan form dan peta
-- **WhatsApp Integration** untuk booking
+## 🌟 Fitur Utama
 
-## Teknologi
+### 🏞️ Manajemen Produk Wisata
+- **Katalog Trip**: Daftar paket wisata dengan filter kategori yang dinamis.
+- **Detail Itinerary**: Informasi lengkap per hari, galeri foto, dan rincian harga.
+- **Sistem Booking**: Pemesanan langsung yang terintegrasi dengan WhatsApp dan database.
+- **Download Dokumen**: Fitur cetak Itinerary dan Brosur dalam format PDF.
 
-- Laravel 11
-- PHP 8.2+
-- Tailwind CSS
-- Font Awesome
-- SQLite (default) / MySQL
+### 🚗 Sewa Kendaraan (Car Rental)
+- **Manajemen Armada**: Daftar kendaraan yang tersedia untuk disewa.
+- **Paket Rental**: Opsi paket sewa dengan durasi dan layanan berbeda.
+- **Booking Jadwal**: Pengecekan status ketersediaan dan pemesanan kendaraan.
 
-## Instalasi
+### 📝 Konten & CMS
+- **Blog / Travel Guide**: Artikel panduan wisata untuk meningkatkan SEO.
+- **Galeri Foto**: Media showcase untuk destinasi wisata.
+- **Halaman Statis**: Pengelolaan halaman 'About', 'Terms', dan 'Privacy' via Admin Panel.
+- **Testimoni/Review**: Sistem ulasan dari pelanggan untuk setiap produk.
 
-### 1. Clone Repository
+### 📊 Admin Panel (Filament)
+- **Dashboard Statistik**: Ringkasan pesanan dan performa website.
+- **Laporan Pesanan**: Ekspor data pesanan ke format CSV dan Excel.
+- **Trip Import**: Kemudahan input data trip dalam jumlah banyak via upload file.
+- **SEO Manager**: Pengaturan Meta Tag, Open Graph, dan Keywords per halaman.
 
-```bash
-cd northsumateratrip-laravel
-```
+### 🌍 Fitur Lanjutan
+- **Multi-currency & Language**: Sistem siap untuk lokalisasi (IDR, USD, dll).
+- **Booking Status**: Pelanggan dapat mengecek status pesanan mereka secara real-time.
+- **Custom Trip Request**: Form khusus bagi pelanggan yang menginginkan rencana perjalanan kustom.
 
-### 2. Install Dependencies
+## 🛠️ Teknologi
 
-```bash
-composer install
-npm install
-npm run build
-```
+- **Backend**: Laravel 11 & PHP 8.2+
+- **Admin Panel**: Filament 4.0 (Alpha)
+- **Frontend**: Tailwind CSS, Alpine.js, Swiper.js
+- **Database**: MySQL / SQLite
+- **PDF Engine**: Laravel DomPDF
+- **Excel/CSV**: Maatwebsite Excel
+- **Real-time**: Laravel Reverb (Opsional)
+- **Error Tracking**: Sentry
 
-### 3. Setup Environment
+## 🚀 Instalasi
 
-```bash
-cp .env.example .env
-php artisan key:generate
-```
+1. **Clone Repository**
+   ```bash
+   git clone https://github.com/username/northsumateratrip.git
+   cd northsumateratrip
+   ```
 
-### 4. Setup Database
+2. **Install Dependencies**
+   ```bash
+   composer install
+   npm install
+   npm run build
+   ```
 
-Untuk SQLite:
-```bash
-touch database/database.sqlite
-```
+3. **Setup Environment**
+   ```bash
+   cp .env.example .env
+   php artisan key:generate
+   ```
 
-Untuk MySQL, sesuaikan konfigurasi di `.env`:
-```
-DB_CONNECTION=mysql
-DB_HOST=127.0.0.1
-DB_PORT=3306
-DB_DATABASE=northsumateratrip
-DB_USERNAME=root
-DB_PASSWORD=
-```
+4. **Database Configuration**
+   Sesuaikan `.env` untuk database (MySQL atau SQLite). Jika menggunakan SQLite:
+   ```bash
+   touch database/database.sqlite
+   ```
 
-### 5. Migrate dan Seed
+5. **Migrate & Seed**
+   ```bash
+   php artisan migrate --seed
+   ```
 
-```bash
-php artisan migrate --seed
-```
+6. **Storage Link**
+   ```bash
+   php artisan storage:link
+   ```
 
-### 6. Storage Link
+7. **Run Server**
+   ```bash
+   php artisan serve
+   ```
 
-```bash
-php artisan storage:link
-```
+## 📁 Struktur Proyek Utama
 
-### 7. Jalankan Server
+- `app/Http/Controllers`: Logika bisnis website.
+- `app/Models`: Definisi skema database dan relasi.
+- `app/Filament/Resources`: Konfigurasi Admin Panel.
+- `resources/views`: Template tampilan menggunakan Blade.
+- `routes/web.php`: Definisi semua rute URL.
+- `database/migrations`: Skema tabel database.
 
-```bash
-php artisan serve
-```
+## 📄 Lisensi
 
-Buka browser: `http://localhost:8000`
+Proyek ini berada di bawah lisensi MIT.
 
-## Struktur Folder
-
-```
-northsumateratrip-laravel/
-├── app/
-│   ├── Http/Controllers/    # Controller
-│   ├── Models/              # Model Eloquent
-│   └── Providers/           # Service Provider
-├── config/                  # Konfigurasi
-├── database/
-│   ├── migrations/          # Database migrations
-│   └── seeders/             # Database seeders
-├── public/
-│   ├── css/                 # Stylesheet
-│   ├── js/                  # JavaScript
-│   └── images/              # Gambar
-├── resources/
-│   └── views/               # Blade templates
-├── routes/
-│   └── web.php              # Web routes
-└── .env                     # Environment variables
-```
-
-## Konfigurasi
-
-### WhatsApp Number
-
-Edit di `.env`:
-```
-WHATSAPP_NUMBER=6281298622143
-```
-
-### Upload Gambar
-
-Upload gambar produk ke:
-- `public/images/products/`
-
-Upload gambar blog ke:
-- `public/images/blogs/`
-
-Upload logo partner ke:
-- `public/images/partners/`
-
-## Admin Panel (Opsional)
-
-Untuk menambahkan admin panel, Anda bisa menginstall:
-- [Filament](https://filamentphp.com/)
-- [Laravel Nova](https://nova.laravel.com/)
-- atau membuat custom admin panel
-
-## Lisensi
-
-MIT License
-
-## Kontak
-
-NorthSumateraTrip  
-WhatsApp: +62 812-9862-2143  
-Email: hello@northsumateratrip.com
+---
+**NorthSumateraTrip** - *Eksplorasi Sumatera Utara dengan layanan premium.*

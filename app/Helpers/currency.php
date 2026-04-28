@@ -7,7 +7,7 @@ if (! function_exists('currency')) {
      * Format an IDR price into the current locale's currency.
      * Usage in Blade: {{ currency($product->price) }}
      */
-    function currency(float|int|null $amountIdr, string $locale = null, bool $format = true): string|float
+    function currency(float|int|null $amountIdr, ?string $locale = null, bool $format = true): string|float
     {
         $amountIdr = $amountIdr ?? 0;
         if (! $format) {

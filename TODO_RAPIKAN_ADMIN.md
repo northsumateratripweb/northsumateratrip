@@ -2,13 +2,13 @@
 
 ## Ringkasan Progress
 - Total: 22 tasks
-- Selesai: 19 tasks (86%)
-- Remaining: 3 tasks (Konsolodasi & Column Layout)
+- Selesai: 22 tasks (100%)
+- Remaining: 0 tasks (Done)
 
-## Prioritas 6: Perbaiki Column Layout
-- [ ] 20. ProductResource - Review columns (2 vs 3)
-- [ ] 21. CarRentalResource - Review columns
-- [ ] 22. RentalScheduleResource - Review columns
+## Prioritas 6: Perbaiki Column Layout ✅
+- [x] 20. ProductResource - Review columns (2 vs 3)
+- [x] 21. CarRentalResource - Review columns
+- [x] 22. RentalScheduleResource - Review columns
 
 ---
 # Catatan: Task yang sudah selesai

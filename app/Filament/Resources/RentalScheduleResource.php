@@ -30,7 +30,7 @@ class RentalScheduleResource extends Resource
         return $schema
             ->schema([
                 Schemas\Components\Section::make('Informasi Rental')
-                    ->columns(2)
+                    ->columns(3)
                     ->schema([
                         Forms\Components\Select::make('order_id')
                             ->label('ID Pesanan (Opsional)')
@@ -45,20 +45,24 @@ class RentalScheduleResource extends Resource
                             ->relationship('carRental', 'name')
                             ->searchable()
                             ->preload()
-                            ->required(),
+                            ->required()
+                            ->columnSpan(1),
                         Forms\Components\TextInput::make('customer_name')
                             ->label('Nama Pelanggan')
                             ->required()
-                            ->maxLength(255),
+                            ->maxLength(255)
+                            ->columnSpan(2),
                         Forms\Components\TextInput::make('customer_phone')
                             ->label('No. Telepon')
                             ->tel()
                             ->required()
-                            ->maxLength(20),
+                            ->maxLength(20)
+                            ->columnSpan(1),
                         Forms\Components\TextInput::make('customer_email')
                             ->label('Email')
                             ->email()
-                            ->maxLength(255),
+                            ->maxLength(255)
+                            ->columnSpan(2),
                     ]),
                 
                 Schemas\Components\Section::make('Jadwal & Durasi')

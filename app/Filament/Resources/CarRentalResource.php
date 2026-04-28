@@ -30,7 +30,7 @@ class CarRentalResource extends Resource
         return $schema
             ->schema([
                 Schemas\Components\Section::make('Informasi Kendaraan')
-                    ->columns(2)
+                    ->columns(3)
                     ->schema([
                         Forms\Components\Select::make('vehicle_id')
                             ->label('Pilih Kendaraan')
@@ -47,25 +47,30 @@ class CarRentalResource extends Resource
                                         $set('capacity', $vehicle->capacity);
                                     }
                                 }
-                            }),
+                            })
+                            ->columnSpan(1),
                         Forms\Components\TextInput::make('name')
                             ->label('Nama Mobil')
                             ->required()
                             ->maxLength(255)
                             ->live(onBlur: true)
-                            ->afterStateUpdated(fn ($state, callable $set) => $set('slug', \Illuminate\Support\Str::slug($state))),
+                            ->afterStateUpdated(fn ($state, callable $set) => $set('slug', \Illuminate\Support\Str::slug($state)))
+                            ->columnSpan(2),
                         Forms\Components\TextInput::make('category')
                             ->label('Kategori')
                             ->maxLength(255)
-                            ->placeholder('Contoh: SUV, MPV, Sedan, dll'),
+                            ->placeholder('Contoh: SUV, MPV, Sedan, dll')
+                            ->columnSpan(1),
                         Forms\Components\TextInput::make('slug')
                             ->required()
                             ->unique(ignoreRecord: true)
-                            ->maxLength(255),
+                            ->maxLength(255)
+                            ->columnSpan(1),
                         Forms\Components\TextInput::make('capacity')
                             ->label('Kapasitas Penumpang')
                             ->numeric()
-                            ->required(),
+                            ->required()
+                            ->columnSpan(1),
                         Forms\Components\RichEditor::make('description')
                             ->label('Deskripsi')
                             ->columnSpanFull(),

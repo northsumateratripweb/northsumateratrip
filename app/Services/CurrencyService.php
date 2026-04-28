@@ -30,7 +30,7 @@ class CurrencyService
      * Get exchange rate from IDR to target currency
      * Rates stored in settings as: exchange_rate_myr, exchange_rate_sgd
      */
-    public static function rate(string $locale = null): float
+    public static function rate(?string $locale = null): float
     {
         $locale = $locale ?? App::getLocale();
 
@@ -44,7 +44,7 @@ class CurrencyService
     /**
      * Convert an IDR amount to the current currency
      */
-    public static function convert(float|int $amountIdr, string $locale = null): float
+    public static function convert(float|int $amountIdr, ?string $locale = null): float
     {
         return $amountIdr * self::rate($locale);
     }
@@ -52,7 +52,7 @@ class CurrencyService
     /**
      * Format price in current currency
      */
-    public static function format(float|int $amountIdr, string $locale = null): string
+    public static function format(float|int $amountIdr, ?string $locale = null): string
     {
         $locale  = $locale ?? App::getLocale();
         $config  = self::$currencies[$locale] ?? self::$currencies['id'];
@@ -78,7 +78,7 @@ class CurrencyService
     /**
      * Get currency symbol for current locale
      */
-    public static function symbol(string $locale = null): string
+    public static function symbol(?string $locale = null): string
     {
         $locale = $locale ?? App::getLocale();
         return self::$currencies[$locale]['symbol'] ?? 'Rp';
@@ -87,7 +87,7 @@ class CurrencyService
     /**
      * Get currency code for current locale
      */
-    public static function code(string $locale = null): string
+    public static function code(?string $locale = null): string
     {
         $locale = $locale ?? App::getLocale();
         return self::$currencies[$locale]['code'] ?? 'IDR';

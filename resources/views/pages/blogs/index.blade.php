@@ -92,7 +92,7 @@
 
             <!-- Pagination -->
             <div class="mt-16 pt-10 border-t border-slate-100 dark:border-slate-800 flex justify-center">
-                {{ $blogs->links('vendor.pagination.tailwind') }}
+                {{ $blogs->links('pagination::tailwind') }}
             </div>
         @else
             <div class="text-center py-24">

@@ -40,7 +40,7 @@ class ProductResource extends Resource
                 // ─────────────────────────────────────────────────────────────
                 Schemas\Components\Section::make('Identitas Paket')
                     ->description('Informasi utama yang tampil di kartu listing dan halaman detail.')
-                    ->columns(2)
+                    ->columns(3)
                     ->schema([
                         Forms\Components\Select::make('category_id')
                             ->label('Kategori')
@@ -49,7 +49,7 @@ class ProductResource extends Resource
                                 ->orderBy('sort_order')
                                 ->pluck('name', 'id'))
                             ->required()
-                            ->columnSpanFull(),
+                            ->columnSpan(1),
 
                         Forms\Components\TextInput::make('name')
                             ->label('Nama Paket Wisata')
@@ -58,25 +58,29 @@ class ProductResource extends Resource
                             ->live(onBlur: true)
                             ->afterStateUpdated(fn ($state, callable $set) =>
                                 $set('slug', \Illuminate\Support\Str::slug($state)))
-                            ->placeholder('Contoh: Wisata Danau Toba 2D1N'),
+                            ->placeholder('Contoh: Wisata Danau Toba 2D1N')
+                            ->columnSpan(2),
 
                         Forms\Components\TextInput::make('slug')
                             ->label('Slug URL')
                             ->required()
                             ->unique(ignoreRecord: true)
-                            ->helperText('Otomatis terisi dari nama. URL: /product/kategori/slug'),
+                            ->helperText('Otomatis terisi dari nama. URL: /product/kategori/slug')
+                            ->columnSpan(1),
 
                         Forms\Components\TextInput::make('location_tag')
                             ->label('Tag Lokasi')
                             ->maxLength(255)
                             ->placeholder('Contoh: Samosir, Sumatera Utara')
-                            ->helperText('Tampil sebagai badge di atas foto'),
+                            ->helperText('Tampil sebagai badge di atas foto')
+                            ->columnSpan(1),
 
                         Forms\Components\TextInput::make('pre_order_info')
                             ->label('Label Pre Order')
                             ->maxLength(100)
                             ->placeholder('Contoh: Pre Order')
-                            ->helperText('Tampil sebagai badge oranye di pojok foto (kosongkan jika tidak ada)'),
+                            ->helperText('Tampil sebagai badge oranye di pojok foto')
+                            ->columnSpan(1),
 
                         Forms\Components\TextInput::make('duration')
                             ->label('Durasi Perjalanan')
