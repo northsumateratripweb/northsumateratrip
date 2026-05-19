@@ -25,4 +25,6 @@ jobs:
             **/.git*/**
             **/node_modules/**
             .env
-            storage/*.key
+            storage/**
+            public/storage/**
+            bootstrap/cache/**
