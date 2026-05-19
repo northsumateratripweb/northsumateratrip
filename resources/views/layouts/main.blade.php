@@ -153,7 +153,7 @@
     @include('partials.footer')
 
     <!-- Floating WhatsApp -->
-    @php $waNumber = preg_replace('/\D/', '', \App\Models\Setting::get('whatsapp_number', '628123456789')); @endphp
+    @php $waNumber = preg_replace('/\D/', '', \App\Models\Setting::get('whatsapp_number', '6281298622143')); @endphp
     <a href="https://wa.me/{{ $waNumber }}?text=Halo%20NorthSumateraTrip%20👋"
        target="_blank"
        class="fixed bottom-8 right-8 z-[150] group"

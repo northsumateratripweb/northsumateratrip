@@ -71,27 +71,27 @@
                         </div>
                         <div>
                             <p class="text-xs font-semibold text-slate-600 uppercase tracking-wider mb-0.5">{{ __('ui.office') }}</p>
-                            <p class="text-slate-400 text-sm leading-relaxed">{{ $settings['site_address'] ?? 'Sumatera Utara, Indonesia' }}</p>
+                            <p class="text-slate-400 text-sm leading-relaxed">{{ $settings['site_address'] ?? 'Medan, Sumatera Utara, Indonesia' }}</p>
                         </div>
                     </div>
-                    <div class="flex items-start gap-3.5">
-                        <div class="w-9 h-9 bg-slate-900 border border-slate-800 rounded-xl flex items-center justify-center text-emerald-500 flex-shrink-0">
+                    <a href="https://wa.me/{{ preg_replace('/\D/', '', $settings['whatsapp_number'] ?? '6281298622143') }}" target="_blank" class="flex items-start gap-3.5 group/wa">
+                        <div class="w-9 h-9 bg-slate-900 border border-slate-800 rounded-xl flex items-center justify-center text-emerald-500 flex-shrink-0 group-hover/wa:bg-emerald-600 group-hover/wa:text-white group-hover/wa:border-emerald-600 transition-all duration-200">
                             <i class="fab fa-whatsapp"></i>
                         </div>
                         <div>
                             <p class="text-xs font-semibold text-slate-600 uppercase tracking-wider mb-0.5">WhatsApp</p>
-                            <p class="text-slate-400 text-sm">{{ $settings['whatsapp_display'] ?? '+62 812-3456-7890' }}</p>
+                            <p class="text-slate-400 text-sm group-hover/wa:text-emerald-400 transition-colors">{{ $settings['whatsapp_display'] ?? '+62 812-9862-2143' }}</p>
                         </div>
-                    </div>
-                    <div class="flex items-start gap-3.5">
-                        <div class="w-9 h-9 bg-slate-900 border border-slate-800 rounded-xl flex items-center justify-center text-blue-400 flex-shrink-0 text-sm">
+                    </a>
+                    <a href="mailto:{{ $settings['site_email'] ?? 'hello@northsumateratrip.com' }}" class="flex items-start gap-3.5 group/mail">
+                        <div class="w-9 h-9 bg-slate-900 border border-slate-800 rounded-xl flex items-center justify-center text-blue-400 flex-shrink-0 text-sm group-hover/mail:bg-blue-600 group-hover/mail:text-white group-hover/mail:border-blue-600 transition-all duration-200">
                             <i class="fas fa-envelope"></i>
                         </div>
                         <div>
                             <p class="text-xs font-semibold text-slate-600 uppercase tracking-wider mb-0.5">Email</p>
-                            <p class="text-slate-400 text-sm">{{ $settings['site_email'] ?? 'hello@northsumateratrip.com' }}</p>
+                            <p class="text-slate-400 text-sm group-hover/mail:text-blue-400 transition-colors">{{ $settings['site_email'] ?? 'hello@northsumateratrip.com' }}</p>
                         </div>
-                    </div>
+                    </a>
                 </div>
             </div>
         </div>

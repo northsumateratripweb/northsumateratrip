@@ -22,6 +22,7 @@ class DatabaseSeeder extends Seeder
             VehicleSeeder::class,
             GallerySeeder::class,
             SettingsSeeder::class,
+            StaticPagesSeeder::class,
             FillMissingImagesSeeder::class,
             OrderSeeder::class,
         ]);

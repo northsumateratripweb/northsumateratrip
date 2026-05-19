@@ -30,6 +30,7 @@ class RentalScheduleResource extends Resource
         return $schema
             ->schema([
                 Schemas\Components\Section::make('Informasi Rental')
+                    ->icon('heroicon-o-calendar-days')
                     ->columns(3)
                     ->schema([
                         Forms\Components\Select::make('order_id')
@@ -41,7 +42,7 @@ class RentalScheduleResource extends Resource
                             ->columnSpanFull()
                             ->helperText('Hubungkan jadwal ini dengan pesanan pelanggan jika ada.'),
                         Forms\Components\Select::make('car_rental_id')
-                            ->label('Mobil Rental')
+                            ->label('Pilih Mobil')
                             ->relationship('carRental', 'name')
                             ->searchable()
                             ->preload()
@@ -66,6 +67,7 @@ class RentalScheduleResource extends Resource
                     ]),
                 
                 Schemas\Components\Section::make('Jadwal & Durasi')
+                    ->icon('heroicon-o-clock')
                     ->columns(3)
                     ->schema([
                         Forms\Components\DateTimePicker::make('start_date')
@@ -85,6 +87,7 @@ class RentalScheduleResource extends Resource
                     ]),
                 
                 Schemas\Components\Section::make('Lokasi & Detail')
+                    ->icon('heroicon-o-map-pin')
                     ->columns(2)
                     ->schema([
                         Forms\Components\TextInput::make('pickup_location')
@@ -103,6 +106,7 @@ class RentalScheduleResource extends Resource
                     ]),
                 
                 Schemas\Components\Section::make('Harga & Status')
+                    ->icon('heroicon-o-banknotes')
                     ->columns(3)
                     ->schema([
                         Forms\Components\TextInput::make('total_price')
@@ -145,10 +149,8 @@ class RentalScheduleResource extends Resource
                 Tables\Columns\TextColumn::make('customer_name')
                     ->label('Pelanggan')
                     ->searchable()
-                    ->sortable(),
-                Tables\Columns\TextColumn::make('customer_phone')
-                    ->label('Telepon')
-                    ->searchable(),
+                    ->sortable()
+                    ->description(fn (RentalSchedule $record): string => $record->customer_phone),
                 Tables\Columns\TextColumn::make('start_date')
                     ->label('Mulai')
                     ->dateTime('d M Y H:i')
@@ -156,31 +158,53 @@ class RentalScheduleResource extends Resource
                 Tables\Columns\TextColumn::make('end_date')
                     ->label('Selesai')
                     ->dateTime('d M Y H:i')
-                    ->sortable(),
+                    ->sortable()
+                    ->toggleable(),
                 Tables\Columns\TextColumn::make('rental_days')
                     ->label('Hari')
                     ->suffix(' hari')
-                    ->sortable(),
+                    ->sortable()
+                    ->alignCenter(),
                 Tables\Columns\TextColumn::make('total_price')
                     ->label('Total')
                     ->money('IDR', true)
-                    ->sortable(),
-                Tables\Columns\BadgeColumn::make('payment_status')
+                    ->sortable()
+                    ->color('success')
+                    ->weight('bold'),
+                Tables\Columns\TextColumn::make('payment_status')
                     ->label('Pembayaran')
-                    ->colors([
-                        'warning' => 'pending',
-                        'success' => 'paid',
-                        'info' => 'partial',
-                        'danger' => 'cancelled',
-                    ]),
-                Tables\Columns\BadgeColumn::make('rental_status')
+                    ->badge()
+                    ->color(fn (string $state): string => match ($state) {
+                        'pending' => 'warning',
+                        'paid' => 'success',
+                        'partial' => 'info',
+                        'cancelled' => 'danger',
+                        default => 'gray',
+                    })
+                    ->formatStateUsing(fn (string $state): string => match ($state) {
+                        'pending' => 'Pending',
+                        'paid' => 'Lunas',
+                        'partial' => 'DP',
+                        'cancelled' => 'Dibatalkan',
+                        default => $state,
+                    }),
+                Tables\Columns\TextColumn::make('rental_status')
                     ->label('Status')
-                    ->colors([
-                        'info' => 'booked',
-                        'warning' => 'ongoing',
-                        'success' => 'completed',
-                        'danger' => 'cancelled',
-                    ]),
+                    ->badge()
+                    ->color(fn (string $state): string => match ($state) {
+                        'booked' => 'info',
+                        'ongoing' => 'warning',
+                        'completed' => 'success',
+                        'cancelled' => 'danger',
+                        default => 'gray',
+                    })
+                    ->formatStateUsing(fn (string $state): string => match ($state) {
+                        'booked' => 'Dipesan',
+                        'ongoing' => 'Berjalan',
+                        'completed' => 'Selesai',
+                        'cancelled' => 'Dibatalkan',
+                        default => $state,
+                    }),
             ])
             ->filters([
                 Tables\Filters\SelectFilter::make('payment_status')
@@ -210,16 +234,6 @@ class RentalScheduleResource extends Resource
                     ])
                     ->query(function ($query, array $data) {
                         return $query->when($data['month'], fn ($query, $month) => $query->whereMonth('start_date', $month));
-                    }),
-                Tables\Filters\Filter::make('start_date_year')
-                    ->form([
-                        Forms\Components\Select::make('year')
-                            ->label('Tahun')
-                            ->options(array_combine(range(now()->year, now()->year - 5), range(now()->year, now()->year - 5)))
-                            ->default(now()->year),
-                    ])
-                    ->query(function ($query, array $data) {
-                        return $query->when($data['year'], fn ($query, $year) => $query->whereYear('start_date', $year));
                     }),
             ])
             ->recordActions([

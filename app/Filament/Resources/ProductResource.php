@@ -38,7 +38,9 @@ class ProductResource extends Resource
                 // ─────────────────────────────────────────────────────────────
                 // 1. IDENTITAS PAKET  (ditampilkan di kartu listing & header detail)
                 // ─────────────────────────────────────────────────────────────
+                // 1. IDENTITAS PAKET
                 Schemas\Components\Section::make('Identitas Paket')
+                    ->icon('heroicon-o-identification')
                     ->description('Informasi utama yang tampil di kartu listing dan halaman detail.')
                     ->columns(3)
                     ->schema([
@@ -88,10 +90,9 @@ class ProductResource extends Resource
                             ->columnSpanFull(),
                     ]),
 
-                // ─────────────────────────────────────────────────────────────
-                // 2. FOTO  (gambar utama + galeri yang tampil di halaman detail)
-                // ─────────────────────────────────────────────────────────────
+                // 2. FOTO
                 Schemas\Components\Section::make('Foto Paket')
+                    ->icon('heroicon-o-camera')
                     ->description('Foto utama tampil di kartu listing. Galeri tampil sebagai thumbnail di halaman detail.')
                     ->columns(2)
                     ->schema([
@@ -119,10 +120,9 @@ class ProductResource extends Resource
                             ->helperText('Foto tambahan yang tampil sebagai thumbnail di halaman detail'),
                     ]),
 
-                // ─────────────────────────────────────────────────────────────
-                // 3. HARGA  (tampil di kartu listing dan halaman detail)
-                // ─────────────────────────────────────────────────────────────
+                // 3. HARGA
                 Schemas\Components\Section::make('Harga')
+                    ->icon('heroicon-o-banknotes')
                     ->description('Isi harga per orang untuk setiap jumlah peserta. Harga tampil di kartu listing diambil dari baris pertama dan terakhir.')
                     ->schema([
                         Forms\Components\Repeater::make('pricing_details')
@@ -186,11 +186,9 @@ class ProductResource extends Resource
                         ]),
                     ]),
 
-                // ─────────────────────────────────────────────────────────────
-                // 4. DESKRIPSI  (tampil di halaman detail: short_description di bawah harga,
-                //                description sebagai konten utama)
-                // ─────────────────────────────────────────────────────────────
+                // 4. DESKRIPSI
                 Schemas\Components\Section::make('Deskripsi')
+                    ->icon('heroicon-o-document-text')
                     ->description('Short description tampil tepat di bawah harga. Deskripsi lengkap di dalam tab.')
                     ->schema([
                         Forms\Components\Textarea::make('short_description')
@@ -211,10 +209,9 @@ class ProductResource extends Resource
                             ->columnSpanFull(),
                     ]),
 
-                // ─────────────────────────────────────────────────────────────
-                // 5. ITINERARY  (tab "PILIHAN TRIP" di halaman detail)
-                // ─────────────────────────────────────────────────────────────
+                // 5. ITINERARY
                 Schemas\Components\Section::make('Itinerary (Jadwal Perjalanan)')
+                    ->icon('heroicon-o-map')
                     ->description('Tampil di Brosur PDF dan Timeline (jika aktif). Gunakan kolom ini untuk detail hari demi hari.')
                     ->schema([
                         Forms\Components\Repeater::make('itinerary')
@@ -241,10 +238,9 @@ class ProductResource extends Resource
                             ->columnSpanFull(),
                     ]),
 
-                // ─────────────────────────────────────────────────────────────
-                // 5a. LAYANAN TAMBAHAN (Drone, dll)
-                // ─────────────────────────────────────────────────────────────
+                // 5a. LAYANAN TAMBAHAN
                 Schemas\Components\Section::make('Layanan Drone (Opsional)')
+                    ->icon('heroicon-o-video-camera')
                     ->description('Detail untuk paket video/foto cinematic menggunakan drone.')
                     ->columns(2)
                     ->schema([
@@ -259,10 +255,9 @@ class ProductResource extends Resource
                             ->helperText('Lokasi spesifik di mana drone akan digunakan'),
                     ]),
 
-                // ─────────────────────────────────────────────────────────────
-                // 6. FASILITAS  (tab "NOTE" di halaman detail)
-                // ─────────────────────────────────────────────────────────────
+                // 6. FASILITAS
                 Schemas\Components\Section::make('Fasilitas & Catatan')
+                    ->icon('heroicon-o-list-bullet')
                     ->description('Tampil di tab "NOTE" pada halaman detail.')
                     ->columns(2)
                     ->schema([
@@ -283,10 +278,9 @@ class ProductResource extends Resource
                             ->columnSpanFull(),
                     ]),
 
-                // ─────────────────────────────────────────────────────────────
-                // 7. STATUS & URUTAN  (kontrol tampil/sembunyi dan urutan di listing)
-                // ─────────────────────────────────────────────────────────────
+                // 7. STATUS & URUTAN
                 Schemas\Components\Section::make('Status & Urutan')
+                    ->icon('heroicon-o-cog-6-tooth')
                     ->description('Kontrol visibilitas dan urutan tampil di halaman listing.')
                     ->columns(3)
                     ->schema([
@@ -305,10 +299,9 @@ class ProductResource extends Resource
                             ->helperText('Angka kecil tampil lebih dulu'),
                     ]),
 
-                // ─────────────────────────────────────────────────────────────
-                // 9. SEO  (meta title & description untuk Google)
-                // ─────────────────────────────────────────────────────────────
+                // 9. SEO
                 Schemas\Components\Section::make('SEO (Opsional)')
+                    ->icon('heroicon-o-magnifying-glass')
                     ->description('Judul dan deskripsi yang muncul di hasil pencarian Google. Kosongkan untuk menggunakan nama & short description.')
                     ->collapsed()
                     ->schema([
@@ -324,10 +317,9 @@ class ProductResource extends Resource
                             ->placeholder('Deskripsi singkat untuk Google (maks. 160 karakter)'),
                     ]),
 
-                // ─────────────────────────────────────────────────────────────
-                // 10. TERJEMAHAN (Bahasa Asing)
-                // ─────────────────────────────────────────────────────────────
+                // 10. TERJEMAHAN
                 Schemas\Components\Section::make('Terjemahan (Bahasa Asing)')
+                    ->icon('heroicon-o-language')
                     ->description('Isi konten dalam bahasa Inggris dan Melayu.')
                     ->collapsed()
                     ->schema([
@@ -364,18 +356,49 @@ class ProductResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('name')->searchable()->sortable()->limit(30),
-                Tables\Columns\TextColumn::make('category.name')->label('Category')->sortable()->toggleable(),
-                Tables\Columns\TextColumn::make('price_min')->money('IDR', true)->sortable(),
-                Tables\Columns\TextColumn::make('price_max')->money('IDR', true)->sortable()->toggleable(),
-                Tables\Columns\IconColumn::make('is_featured')->boolean()->sortable(),
-                Tables\Columns\IconColumn::make('is_active')->boolean()->sortable(),
-                Tables\Columns\TextColumn::make('sort_order')->sortable()->toggleable(),
-                Tables\Columns\TextColumn::make('updated_at')->dateTime()->since()->toggleable(isToggledHiddenByDefault: true),
+                Tables\Columns\ImageColumn::make('featured_image')
+                    ->label('Foto')
+                    ->circular()
+                    ->limit(1),
+                Tables\Columns\TextColumn::make('name')
+                    ->label('Nama Paket')
+                    ->searchable()
+                    ->sortable()
+                    ->limit(30)
+                    ->description(fn (Product $record): string => $record->category?->name ?? 'Tanpa Kategori'),
+                Tables\Columns\TextColumn::make('price_min')
+                    ->label('Harga Mulai')
+                    ->money('IDR', true)
+                    ->sortable()
+                    ->color('success')
+                    ->weight('bold'),
+                Tables\Columns\IconColumn::make('is_featured')
+                    ->label('Unggulan')
+                    ->boolean()
+                    ->sortable()
+                    ->toggleable(),
+                Tables\Columns\IconColumn::make('is_active')
+                    ->label('Status')
+                    ->boolean()
+                    ->sortable(),
+                Tables\Columns\TextColumn::make('sort_order')
+                    ->label('Urutan')
+                    ->sortable()
+                    ->toggleable(),
+                Tables\Columns\TextColumn::make('updated_at')
+                    ->label('Update Terakhir')
+                    ->dateTime()
+                    ->since()
+                    ->toggleable(isToggledHiddenByDefault: true),
             ])
             ->filters([
-                Tables\Filters\TernaryFilter::make('is_active'),
-                Tables\Filters\TernaryFilter::make('is_featured'),
+                Tables\Filters\TernaryFilter::make('is_active')
+                    ->label('Status Aktif'),
+                Tables\Filters\TernaryFilter::make('is_featured')
+                    ->label('Status Unggulan'),
+                Tables\Filters\SelectFilter::make('category_id')
+                    ->label('Kategori')
+                    ->relationship('category', 'name'),
             ])
             ->recordActions([
                 ViewAction::make(),

@@ -91,6 +91,9 @@
 
 ## 📁 Struktur Proyek Utama
 
+Untuk penjelasan lebih detail mengenai arsitektur sistem, peran Frontend, Backend, serta alur data aplikasi ini, silakan baca dokumen berikut:
+👉 **[Arsitektur Proyek (Frontend & Backend)](./docs/ARSITEKTUR_PROYEK.md)**
+
 - `app/Http/Controllers`: Logika bisnis website.
 - `app/Models`: Definisi skema database dan relasi.
 - `app/Filament/Resources`: Konfigurasi Admin Panel.

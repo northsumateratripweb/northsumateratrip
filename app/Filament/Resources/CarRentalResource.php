@@ -30,6 +30,7 @@ class CarRentalResource extends Resource
         return $schema
             ->schema([
                 Schemas\Components\Section::make('Informasi Kendaraan')
+                    ->icon('heroicon-o-information-circle')
                     ->columns(3)
                     ->schema([
                         Forms\Components\Select::make('vehicle_id')
@@ -77,6 +78,7 @@ class CarRentalResource extends Resource
                     ]),
                 
                 Schemas\Components\Section::make('Harga Rental')
+                    ->icon('heroicon-o-banknotes')
                     ->columns(3)
                     ->schema([
                         Forms\Components\TextInput::make('price_per_day')
@@ -111,6 +113,7 @@ class CarRentalResource extends Resource
                     ]),
                 
                 Schemas\Components\Section::make('Spesifikasi')
+                    ->icon('heroicon-o-cog')
                     ->columns(3)
                     ->schema([
                         Forms\Components\TextInput::make('transmission')
@@ -125,6 +128,7 @@ class CarRentalResource extends Resource
                     ]),
                 
                 Schemas\Components\Section::make('Fasilitas & Ketentuan')
+                    ->icon('heroicon-o-list-bullet')
                     ->schema([
                         Forms\Components\TagsInput::make('features')
                             ->label('Fitur Kendaraan')
@@ -139,6 +143,7 @@ class CarRentalResource extends Resource
                     ]),
                 
                 Schemas\Components\Section::make('Media')
+                    ->icon('heroicon-o-photo')
                     ->schema([
                         Forms\Components\FileUpload::make('featured_image')
                             ->label('Banner Utama (Bisa Lebih dari 1)')
@@ -164,6 +169,7 @@ class CarRentalResource extends Resource
                     ]),
                 
                 Schemas\Components\Section::make('Status & SEO')
+                    ->icon('heroicon-o-globe-alt')
                     ->collapsed()
                     ->columns(2)
                     ->schema([
@@ -191,6 +197,7 @@ class CarRentalResource extends Resource
                 // TERJEMAHAN (Bahasa Asing)
                 // ─────────────────────────────────────────────────────────────
                 Schemas\Components\Section::make('Terjemahan (Bahasa Asing)')
+                    ->icon('heroicon-o-language')
                     ->description('Isi konten dalam bahasa Inggris dan Melayu.')
                     ->collapsed()
                     ->schema([
@@ -224,11 +231,14 @@ class CarRentalResource extends Resource
         return $table
             ->columns([
                 Tables\Columns\ImageColumn::make('featured_image')
-                    ->label('Foto'),
+                    ->label('Foto')
+                    ->circular()
+                    ->limit(1),
                 Tables\Columns\TextColumn::make('name')
                     ->label('Nama Mobil')
                     ->searchable()
-                    ->sortable(),
+                    ->sortable()
+                    ->description(fn (CarRental $record): string => $record->category ?? 'Tanpa Kategori'),
                 Tables\Columns\TextColumn::make('vehicle.name')
                     ->label('Armada')
                     ->sortable()
@@ -236,11 +246,14 @@ class CarRentalResource extends Resource
                 Tables\Columns\TextColumn::make('capacity')
                     ->label('Kapasitas')
                     ->suffix(' orang')
-                    ->sortable(),
+                    ->sortable()
+                    ->alignCenter(),
                 Tables\Columns\TextColumn::make('price_per_day')
                     ->label('Harga/Hari')
                     ->money('IDR', true)
-                    ->sortable(),
+                    ->sortable()
+                    ->color('success')
+                    ->weight('bold'),
                 Tables\Columns\IconColumn::make('is_available')
                     ->label('Tersedia')
                     ->boolean()
@@ -248,7 +261,8 @@ class CarRentalResource extends Resource
                 Tables\Columns\IconColumn::make('is_featured')
                     ->label('Unggulan')
                     ->boolean()
-                    ->sortable(),
+                    ->sortable()
+                    ->toggleable(),
             ])
             ->filters([
                 Tables\Filters\TernaryFilter::make('is_available'),

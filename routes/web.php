@@ -84,13 +84,8 @@ Route::get('/dashboard', [UserDashboardController::class, 'index'])->middleware(
 // Language switcher (handled by LocaleController below)
 
 // Legal Pages
-Route::get('/terms', function () {
-    return view('pages.legal.terms');
-})->name('legal.terms');
-
-Route::get('/privacy', function () {
-    return view('pages.legal.privacy');
-})->name('legal.privacy');
+Route::get('/terms', [\App\Http\Controllers\StaticPageController::class, 'show'])->defaults('slug', 'terms')->name('legal.terms');
+Route::get('/privacy', [\App\Http\Controllers\StaticPageController::class, 'show'])->defaults('slug', 'privacy')->name('legal.privacy');
 
 // SEO
 Route::get('/sitemap.xml', [\App\Http\Controllers\SitemapController::class, 'index']);

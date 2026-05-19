@@ -26,18 +26,23 @@ class BlogResource extends Resource
     {
         return $schema
             ->schema([
-                Schemas\Components\Section::make('Informasi Dasar')
+                Schemas\Components\Section::make('Konten Artikel')
+                    ->icon('heroicon-o-document-text')
                     ->columns(2)
                     ->schema([
                         Forms\Components\TextInput::make('title')
+                            ->label('Judul Artikel')
                             ->required()
                             ->maxLength(255)
                             ->live(onBlur: true)
-                            ->afterStateUpdated(fn ($state, callable $set) => $set('slug', \Illuminate\Support\Str::slug($state))),
+                            ->afterStateUpdated(fn ($state, callable $set) => $set('slug', \Illuminate\Support\Str::slug($state)))
+                            ->columnSpan(1),
                         Forms\Components\TextInput::make('slug')
+                            ->label('Slug URL')
                             ->required()
                             ->unique(ignoreRecord: true)
-                            ->maxLength(255),
+                            ->maxLength(255)
+                            ->columnSpan(1),
                         Forms\Components\FileUpload::make('featured_image')
                             ->label('Banner Artikel / Slider')
                             ->image()
@@ -46,29 +51,48 @@ class BlogResource extends Resource
                             ->disk('public')
                             ->directory('blog')
                             ->visibility('public')
-                            ->columnSpanFull(),
+                            ->columnSpanFull()
+                            ->helperText('Gambar pertama akan menjadi thumbnail di halaman index blog.'),
                         Forms\Components\Textarea::make('excerpt')
+                            ->label('Kutipan Singkat')
                             ->rows(3)
+                            ->placeholder('Ringkasan isi artikel untuk halaman list blog...')
                             ->columnSpanFull(),
                         Forms\Components\RichEditor::make('content')
+                            ->label('Isi Artikel')
                             ->required()
                             ->columnSpanFull(),
                     ]),
                 Schemas\Components\Section::make('Status & SEO')
+                    ->icon('heroicon-o-globe-alt')
                     ->collapsed()
                     ->columns(3)
                     ->schema([
-                        Forms\Components\Toggle::make('is_published')->default(false),
-                        Forms\Components\DateTimePicker::make('published_at'),
-                        Forms\Components\TextInput::make('view_count')->numeric()->default(0),
-                        Forms\Components\TextInput::make('meta_title')->maxLength(255)->columnSpanFull(),
-                        Forms\Components\Textarea::make('meta_description')->rows(2)->columnSpanFull(),
+                        Forms\Components\Toggle::make('is_published')
+                            ->label('Publikasikan')
+                            ->default(false),
+                        Forms\Components\DateTimePicker::make('published_at')
+                            ->label('Tgl Publikasi'),
+                        Forms\Components\TextInput::make('view_count')
+                            ->label('Jumlah View')
+                            ->numeric()
+                            ->default(0)
+                            ->disabled(),
+                        Forms\Components\TextInput::make('meta_title')
+                            ->label('Meta Title')
+                            ->maxLength(255)
+                            ->columnSpanFull(),
+                        Forms\Components\Textarea::make('meta_description')
+                            ->label('Meta Description')
+                            ->rows(2)
+                            ->columnSpanFull(),
                     ]),
 
                 // ─────────────────────────────────────────────────────────────
                 // TERJEMAHAN (Bahasa Asing)
                 // ─────────────────────────────────────────────────────────────
                 Schemas\Components\Section::make('Terjemahan (Bahasa Asing)')
+                    ->icon('heroicon-o-language')
                     ->description('Isi konten dalam bahasa Inggris dan Melayu.')
                     ->collapsed()
                     ->schema([
@@ -95,14 +119,39 @@ class BlogResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('title')->searchable()->sortable()->limit(50),
-                Tables\Columns\IconColumn::make('is_published')->boolean()->sortable(),
-                Tables\Columns\TextColumn::make('published_at')->dateTime()->sortable(),
-                Tables\Columns\TextColumn::make('view_count')->numeric()->sortable(),
-                Tables\Columns\TextColumn::make('updated_at')->dateTime()->since()->toggleable(isToggledHiddenByDefault: true),
+                Tables\Columns\ImageColumn::make('featured_image')
+                    ->label('Thumbnail')
+                    ->circular()
+                    ->limit(1),
+                Tables\Columns\TextColumn::make('title')
+                    ->label('Judul Artikel')
+                    ->searchable()
+                    ->sortable()
+                    ->limit(50),
+                Tables\Columns\IconColumn::make('is_published')
+                    ->label('Status')
+                    ->boolean()
+                    ->sortable(),
+                Tables\Columns\TextColumn::make('published_at')
+                    ->label('Dipublikasi')
+                    ->dateTime()
+                    ->sortable(),
+                Tables\Columns\TextColumn::make('view_count')
+                    ->label('Views')
+                    ->numeric()
+                    ->sortable()
+                    ->alignRight()
+                    ->badge()
+                    ->color('info'),
+                Tables\Columns\TextColumn::make('updated_at')
+                    ->label('Update')
+                    ->dateTime()
+                    ->since()
+                    ->toggleable(isToggledHiddenByDefault: true),
             ])
             ->filters([
-                Tables\Filters\TernaryFilter::make('is_published'),
+                Tables\Filters\TernaryFilter::make('is_published')
+                    ->label('Sudah Terbit'),
             ])
             ->recordActions([
                 EditAction::make(),

@@ -100,7 +100,7 @@
 
             <!-- Right: Actions -->
             <div class="flex-1 flex justify-end items-center gap-4">
-                <a href="https://wa.me/{{ $settings['whatsapp_number'] ?? '' }}" class="hidden md:flex items-center gap-1.5 px-4 py-2 bg-green-50 text-green-600 rounded-full border border-green-100 text-[10px] font-bold uppercase tracking-widest hover:bg-green-100 transition-colors">
+                <a href="https://wa.me/{{ preg_replace('/\D/', '', $settings['whatsapp_number'] ?? '6281298622143') }}" class="hidden md:flex items-center gap-1.5 px-4 py-2 bg-green-50 text-green-600 rounded-full border border-green-100 text-[10px] font-bold uppercase tracking-widest hover:bg-green-100 transition-colors">
                     <i class="fab fa-whatsapp"></i> Chat CS
                 </a>
 
@@ -140,7 +140,7 @@
                 </li>
             @endforeach
             <li class="px-8 py-4 border-t border-gray-50">
-                <a href="https://wa.me/{{ $settings['whatsapp_number'] ?? '' }}" class="flex items-center gap-3 text-green-600 font-bold text-xs uppercase tracking-widest">
+                <a href="https://wa.me/{{ preg_replace('/\D/', '', $settings['whatsapp_number'] ?? '6281298622143') }}" class="flex items-center gap-3 text-green-600 font-bold text-xs uppercase tracking-widest">
                     <i class="fab fa-whatsapp text-lg"></i> Hubungi via WhatsApp
                 </a>
             </li>

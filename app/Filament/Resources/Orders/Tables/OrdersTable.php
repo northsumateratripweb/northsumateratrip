@@ -25,7 +25,8 @@ class OrdersTable
                 \Filament\Tables\Columns\TextColumn::make('customer_name')
                     ->label('Pelanggan')
                     ->description(fn ($record) => "{$record->customer_phone} — {$record->customer_email}")
-                    ->searchable(),
+                    ->searchable()
+                    ->weight('bold'),
                 \Filament\Tables\Columns\TextColumn::make('type')
                     ->label('Tipe')
                     ->badge()
@@ -34,49 +35,62 @@ class OrdersTable
                         'Mobil' => 'warning',
                         'Paket Rental' => 'info',
                         'Paket Wisata' => 'success',
+                        default => 'gray',
                     }),
                 \Filament\Tables\Columns\TextColumn::make('item')
                     ->label('Item')
                     ->getStateUsing(fn ($record) => $record->vehicle?->name ?? $record->rentalPackage?->name ?? $record->product?->name ?? '-')
-                    ->wrap(),
+                    ->wrap()
+                    ->limit(40),
                 \Filament\Tables\Columns\TextColumn::make('trip_date')
                     ->label('Tgl Trip')
-                    ->date('M d, Y')
-                    ->sortable(),
+                    ->date('d M Y')
+                    ->sortable()
+                    ->color('primary'),
                 \Filament\Tables\Columns\TextColumn::make('total_price')
                     ->label('Total')
-                    ->money('IDR')
-                    ->sortable(),
+                    ->money('IDR', true)
+                    ->sortable()
+                    ->weight('bold')
+                    ->color('success'),
                 \Filament\Tables\Columns\ImageColumn::make('payment_proof')
                     ->label('Bukti')
+                    ->circular()
                     ->placeholder('Belum ada'),
-                \Filament\Tables\Columns\SelectColumn::make('status')
+                \Filament\Tables\Columns\TextColumn::make('status')
                     ->label('Status')
-                    ->options([
-                        'pending' => 'Pending',
-                        'confirmed' => 'Confirmed',
-                        'completed' => 'Completed',
-                        'cancelled' => 'Cancelled',
-                    ])
+                    ->badge()
+                    ->color(fn (string $state): string => match ($state) {
+                        'pending' => 'warning',
+                        'confirmed' => 'info',
+                        'completed' => 'success',
+                        'cancelled' => 'danger',
+                        default => 'gray',
+                    })
                     ->sortable(),
-                \Filament\Tables\Columns\SelectColumn::make('payment_status')
+                \Filament\Tables\Columns\TextColumn::make('payment_status')
                     ->label('Bayar')
-                    ->options([
+                    ->badge()
+                    ->color(fn (string $state): string => match ($state) {
+                        'unpaid' => 'danger',
+                        'paid' => 'success',
+                        'partial' => 'warning',
+                        default => 'gray',
+                    })
+                    ->formatStateUsing(fn (string $state): string => match ($state) {
                         'unpaid' => 'Belum Lunas',
                         'paid' => 'Lunas',
-                        'partial' => 'DP (Sebagian)',
-                    ])
-                    ->sortable(),
-                \Filament\Tables\Columns\TextColumn::make('trip_type')
-                    ->label('Tipe Trip')
-                    ->badge()
-                    ->placeholder('Reguler')
+                        'partial' => 'DP',
+                        default => $state,
+                    })
                     ->sortable(),
                 \Filament\Tables\Columns\TextColumn::make('transaction_id')
                     ->label('ID Transaksi')
                     ->placeholder('-')
                     ->searchable()
-                    ->copyable(),
+                    ->copyable()
+                    ->fontFamily('mono')
+                    ->toggleable(isToggledHiddenByDefault: true),
             ])
             ->filters([
                 \Filament\Tables\Filters\SelectFilter::make('status')

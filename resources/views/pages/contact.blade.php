@@ -30,7 +30,7 @@
                     <div>
                         <h3 class="font-bold text-slate-900 dark:text-white text-sm mb-1">WhatsApp</h3>
                         <p class="text-slate-500 text-sm mb-1.5">{{ $settings['whatsapp_display'] ?? '+62 812-9862-2143' }}</p>
-                        <a href="https://wa.me/{{ $settings['whatsapp_number'] ?? '6281298622143' }}" target="_blank" 
+                        <a href="https://wa.me/{{ preg_replace('/\D/', '', $settings['whatsapp_number'] ?? '6281298622143') }}" target="_blank" 
                            class="text-blue-600 hover:text-blue-700 text-xs font-bold inline-flex items-center gap-1 group">
                             Chat sekarang <i class="fas fa-arrow-right text-[10px] group-hover:translate-x-0.5 transition-transform"></i>
                         </a>
@@ -59,7 +59,7 @@
                     </div>
                     <div>
                         <h3 class="font-bold text-slate-900 dark:text-white text-sm mb-1">Alamat</h3>
-                        <p class="text-slate-500 text-sm">{{ $settings['site_address'] ?? 'Sumatera Utara, Indonesia' }}</p>
+                        <p class="text-slate-500 text-sm">{{ $settings['site_address'] ?? 'Medan, Sumatera Utara, Indonesia' }}</p>
                     </div>
                 </div>
                 
@@ -70,7 +70,7 @@
                     </div>
                     <div>
                         <h3 class="font-bold text-slate-900 dark:text-white text-sm mb-1">Jam Operasional</h3>
-                        <p class="text-slate-500 text-sm">Senin - Minggu: 08:00 - 20:00 WIB</p>
+                        <p class="text-slate-500 text-sm">{{ $settings['working_hours'] ?? 'Senin - Minggu: 08:00 - 20:00 WIB' }}</p>
                     </div>
                 </div>
             </div>
@@ -169,7 +169,7 @@
     <div class="max-w-7xl mx-auto px-6 lg:px-8">
         <div class="rounded-2xl overflow-hidden border border-slate-100 dark:border-slate-800">
             <iframe 
-                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d254759.34723920093!2d98.5550337!3d3.5952472!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x303131db7687c6b7%3A0x74d7e7a9e1e0437a!2sMedan%2C%20Kota%20Medan%2C%20Sumatera%20Utara!5e0!3m2!1sid!2sid!4v1700000000000!5m2!1sid!2sid"
+                src="{{ $settings['google_maps_embed'] ?? 'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d254759.34723920093!2d98.5550337!3d3.5952472!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x303131db7687c6b7%3A0x74d7e7a9e1e0437a!2sMedan%2C%20Kota%20Medan%2C%20Sumatera%20Utara!5e0!3m2!1sid!2sid!4v1700000000000!5m2!1sid!2sid' }}"
                 width="100%" 
                 height="400" 
                 style="border:0;" 
@@ -190,34 +190,33 @@
                 <span class="text-xs font-bold text-blue-600 uppercase tracking-[0.2em]">FAQ</span>
                 <div class="w-8 h-0.5 bg-blue-600"></div>
             </div>
-            <h2 class="text-2xl md:text-3xl font-extrabold text-slate-900 dark:text-white tracking-tight">Pertanyaan yang Sering Ditanyakan</h2>
+            <h2 class="text-2xl md:text-3xl font-extrabold text-slate-900 dark:text-white tracking-tight">{{ __('ui.faq_title') }}</h2>
         </div>
         
         <div class="space-y-3">
-            @foreach([
-                ['q' => 'Bagaimana cara memesan paket trip?', 'a' => 'Anda dapat memesan melalui WhatsApp, mengisi formulir kontak, atau langsung menekan tombol "Book Now" pada halaman produk yang diinginkan.'],
-                ['q' => 'Apakah bisa custom itinerary?', 'a' => 'Ya, kami menerima custom itinerary sesuai keinginan Anda. Silakan hubungi kami untuk diskusi lebih lanjut.'],
-                ['q' => 'Bagaimana sistem pembayarannya?', 'a' => 'Kami menggunakan sistem down payment (DP) untuk memesan trip. Pelunasan dapat dilakukan pada hari H atau sesuai kesepakatan.'],
-                ['q' => 'Apakah ada biaya tambahan yang tidak termasuk?', 'a' => 'Biaya yang tidak termasuk biasanya meliputi tiket masuk objek wisata, makanan dan minuman pribadi, serta pengeluaran pribadi lainnya.'],
-            ] as $i => $faq)
-            <div class="bg-white dark:bg-slate-900 rounded-2xl border transition-all duration-300"
-                 :class="openFaq === {{ $i }} ? 'border-blue-200 dark:border-blue-800 shadow-lg shadow-blue-900/[0.04]' : 'border-slate-100 dark:border-slate-800'">
-                <button class="w-full px-6 py-4.5 text-left font-bold text-sm flex justify-between items-center gap-4 transition-colors"
-                        :class="openFaq === {{ $i }} ? 'text-blue-600' : 'text-slate-700 dark:text-slate-300'"
-                        @click="openFaq = openFaq === {{ $i }} ? null : {{ $i }}">
-                    <span>{{ $faq['q'] }}</span>
-                    <div class="w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0 transition-all duration-300"
-                         :class="openFaq === {{ $i }} ? 'bg-blue-50 dark:bg-blue-900/20 text-blue-600 rotate-180' : 'bg-slate-50 dark:bg-slate-800 text-slate-400'">
-                        <i class="fas fa-chevron-down text-xs"></i>
+            @foreach(range(1, 5) as $i)
+                @if(Lang::has("ui.faq_{$i}_q"))
+                <div class="bg-white dark:bg-slate-900 rounded-2xl border transition-all duration-300"
+                     :class="openFaq === {{ $i }} ? 'border-blue-200 dark:border-blue-800 shadow-lg shadow-blue-900/[0.04]' : 'border-slate-100 dark:border-slate-800'">
+                    <button class="w-full px-6 py-4.5 text-left font-bold text-sm flex justify-between items-center gap-4 transition-colors"
+                            :class="openFaq === {{ $i }} ? 'text-blue-600' : 'text-slate-700 dark:text-slate-300'"
+                            @click="openFaq = openFaq === {{ $i }} ? null : {{ $i }}">
+                        <span>{{ __("ui.faq_{$i}_q") }}</span>
+                        <div class="w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0 transition-all duration-300"
+                             :class="openFaq === {{ $i }} ? 'bg-blue-50 dark:bg-blue-900/20 text-blue-600 rotate-180' : 'bg-slate-50 dark:bg-slate-800 text-slate-400'">
+                            <i class="fas fa-chevron-down text-xs"></i>
+                        </div>
+                    </button>
+                    <div x-show="openFaq === {{ $i }}" x-collapse x-cloak
+                         class="px-6 pb-5 text-slate-500 dark:text-slate-400 text-sm leading-relaxed">
+                        {{ __("ui.faq_{$i}_a") }}
                     </div>
-                </button>
-                <div x-show="openFaq === {{ $i }}" x-collapse x-cloak
-                     class="px-6 pb-5 text-slate-500 dark:text-slate-400 text-sm leading-relaxed">
-                    {{ $faq['a'] }}
                 </div>
-            </div>
+                @endif
             @endforeach
         </div>
+    </div>
+</section>
     </div>
 </section>
 @endsection

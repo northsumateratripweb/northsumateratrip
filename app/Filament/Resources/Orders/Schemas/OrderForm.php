@@ -12,6 +12,8 @@ class OrderForm
         return $schema
             ->components([
                 \Filament\Schemas\Components\Section::make('Pelanggan')
+                    ->icon('heroicon-o-user')
+                    ->description('Informasi kontak pelanggan yang melakukan pemesanan.')
                     ->columns(2)
                     ->schema([
                         \Filament\Forms\Components\TextInput::make('customer_name')->required()->label('Nama Lengkap'),
@@ -20,30 +22,37 @@ class OrderForm
                             ->tel()
                             ->required()
                             ->label('Nomor Telepon / WhatsApp')
-                            ->placeholder('Contoh: 08123456789'),
+                            ->placeholder('Contoh: 08123456789')
+                            ->helperText('Gunakan format internasional jika perlu, misal: 62812...'),
                         \Filament\Forms\Components\Select::make('user_id')
                             ->relationship('user', 'name')
                             ->searchable()
-                            ->label('User Account (Opsional)'),
+                            ->label('User Account (Opsional)')
+                            ->helperText('Hubungkan dengan akun terdaftar jika ada.'),
                     ]),
                 \Filament\Schemas\Components\Section::make('Detail Pesanan')
+                    ->icon('heroicon-o-shopping-bag')
+                    ->description('Rincian item yang dipesan dan jadwal perjalanan.')
                     ->columns(2)
                     ->schema([
                         \Filament\Forms\Components\Select::make('product_id')
                             ->relationship('product', 'name')
                             ->searchable()
                             ->preload()
-                            ->label('Paket Wisata'),
+                            ->label('Paket Wisata')
+                            ->columnSpan(1),
                         \Filament\Forms\Components\Select::make('vehicle_id')
                             ->relationship('vehicle', 'name')
                             ->searchable()
                             ->preload()
-                            ->label('Kendaraan/Mobil'),
+                            ->label('Kendaraan/Mobil')
+                            ->columnSpan(1),
                         \Filament\Forms\Components\Select::make('rental_package_id')
                             ->relationship('rentalPackage', 'name')
                             ->searchable()
                             ->preload()
-                            ->label('Paket Rental'),
+                            ->label('Paket Rental')
+                            ->columnSpanFull(),
                         \Filament\Forms\Components\DatePicker::make('trip_date')->required()->label('Tanggal Mulai Trip'),
                         \Filament\Forms\Components\DatePicker::make('trip_end_date')->label('Tanggal Selesai'),
                         \Filament\Schemas\Components\Grid::make(2)->schema([
@@ -51,8 +60,13 @@ class OrderForm
                             \Filament\Forms\Components\TextInput::make('pax_child')->numeric()->required()->label('Peserta Anak (8 Thn Kebawah)'),
                         ]),
                         \Filament\Forms\Components\TextInput::make('quantity')->numeric()->required()->label('Total Peserta (Pax)'),
-                        \Filament\Forms\Components\TextInput::make('total_price')->numeric()->prefix('Rp')->required()->label('Total Harga'),
-                        \Filament\Forms\Components\TextInput::make('trip_type')->label('Tipe Trip (Custom)'),
+                        \Filament\Forms\Components\TextInput::make('total_price')
+                            ->numeric()
+                            ->prefix('Rp')
+                            ->required()
+                            ->label('Total Harga')
+                            ->hint('Gunakan angka saja tanpa titik/koma'),
+                        \Filament\Forms\Components\TextInput::make('trip_type')->label('Tipe Trip (Custom)')->placeholder('Contoh: Reguler / VIP'),
                         \Filament\Forms\Components\Select::make('status')
                             ->options([
                                 'pending' => 'Pending',
@@ -61,9 +75,12 @@ class OrderForm
                                 'cancelled' => 'Cancelled',
                             ])
                             ->default('pending')
-                            ->required(),
+                            ->required()
+                            ->native(false),
                     ]),
                 \Filament\Schemas\Components\Section::make('Pembayaran & Transaksi')
+                    ->icon('heroicon-o-credit-card')
+                    ->description('Status pembayaran dan bukti transfer.')
                     ->columns(2)
                     ->schema([
                         \Filament\Forms\Components\Select::make('payment_status')
@@ -74,7 +91,8 @@ class OrderForm
                                 'partial' => 'DP (Sebagian)',
                             ])
                             ->default('unpaid')
-                            ->required(),
+                            ->required()
+                            ->native(false),
                         \Filament\Forms\Components\TextInput::make('transaction_id')
                             ->label('ID Transaksi (Manual/Otomatis)')
                             ->placeholder('TRIP-XXXX / CAR-XXXX'),
@@ -87,6 +105,8 @@ class OrderForm
                             ->columnSpanFull(),
                     ]),
                 \Filament\Schemas\Components\Section::make('Akomodasi & Logistik')
+                    ->icon('heroicon-o-building-office-2')
+                    ->description('Detail hotel dan informasi kedatangan.')
                     ->columns(2)
                     ->schema([
                         \Filament\Forms\Components\Select::make('hotel_category')
@@ -97,7 +117,8 @@ class OrderForm
                                 'bintang_5' => '⭐⭐⭐⭐⭐ Bintang 5',
                                 'non_hotel' => '🏠 Non Hotel',
                             ])
-                            ->columnSpanFull(),
+                            ->columnSpanFull()
+                            ->native(false),
                         ...collect([1, 2, 3, 4])->map(fn ($i) =>
                             \Filament\Forms\Components\Select::make("hotel_{$i}")
                                 ->label("Hotel Malam {$i}")
@@ -121,12 +142,17 @@ class OrderForm
                                 ])
                                 ->createOptionUsing(fn (array $data) => $data['custom_hotel'])
                         )->toArray(),
-                        \Filament\Forms\Components\Textarea::make('flight_info')->label('Info Penerbangan')->rows(2)->columnSpanFull(),
+                        \Filament\Forms\Components\Textarea::make('flight_info')
+                            ->label('Info Penerbangan')
+                            ->placeholder('Nomor pesawat, Jam kedatangan/keberangkatan...')
+                            ->rows(2)
+                            ->columnSpanFull(),
                         \Filament\Forms\Components\Toggle::make('use_drone')->label('Gunakan Layanan Drone')->default(false),
                     ]),
-                \Filament\Schemas\Components\Section::make('Tambahan')
+                \Filament\Schemas\Components\Section::make('Catatan Tambahan')
+                    ->icon('heroicon-o-pencil-square')
                     ->schema([
-                        \Filament\Forms\Components\Textarea::make('notes')->rows(3)->label('Catatan'),
+                        \Filament\Forms\Components\Textarea::make('notes')->rows(3)->label('Catatan dari Admin/Pelanggan'),
                     ]),
             ]);
     }

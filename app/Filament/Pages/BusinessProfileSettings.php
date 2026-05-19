@@ -31,8 +31,10 @@ class BusinessProfileSettings extends Page implements HasForms
         $this->form->fill([
             'site_name' => Setting::get('site_name', 'NorthSumateraTrip'),
             'whatsapp_number' => Setting::get('whatsapp_number', '6281298622143'),
+            'whatsapp_display' => Setting::get('whatsapp_display', '+62 812-9862-2143'),
             'site_email' => Setting::get('site_email', 'hello@northsumateratrip.com'),
             'site_address' => Setting::get('site_address', 'Medan, Sumatera Utara, Indonesia'),
+            'google_maps_embed' => Setting::get('google_maps_embed', 'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d254759.34723920093!2d98.5550337!3d3.5952472!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x303131db7687c6b7%3A0x74d7e7a9e1e0437a!2sMedan%2C%20Kota%20Medan%2C%20Sumatera%20Utara!5e0!3m2!1sid!2sid!4v1700000000000!5m2!1sid!2sid'),
             'working_hours' => Setting::get('working_hours', '08:00 - 17:00'),
             'timezone' => Setting::get('timezone', 'Asia/Jakarta'),
             'facebook_url' => Setting::get('facebook_url'),
@@ -91,13 +93,17 @@ class BusinessProfileSettings extends Page implements HasForms
                                                     ->label('Nama Website / Bisnis')
                                                     ->required()
                                                     ->helperText('Nama ini akan muncul di judul browser dan footer.'),
-                                                Schemas\Grid::make(2)
+                                                Schemas\Grid::make(3)
                                                     ->schema([
                                                         Forms\Components\TextInput::make('whatsapp_number')
                                                             ->label('WhatsApp (Tanpa +)')
                                                             ->placeholder('628123456789')
                                                             ->required()
                                                             ->tel(),
+                                                        Forms\Components\TextInput::make('whatsapp_display')
+                                                            ->label('Tampilan WhatsApp')
+                                                            ->placeholder('+62 812-3456-7890')
+                                                            ->required(),
                                                         Forms\Components\TextInput::make('site_email')
                                                             ->label('Email Publik')
                                                             ->required()
@@ -106,6 +112,10 @@ class BusinessProfileSettings extends Page implements HasForms
                                                 Forms\Components\Textarea::make('site_address')
                                                     ->label('Alamat Lengkap')
                                                     ->rows(3),
+                                                Forms\Components\Textarea::make('google_maps_embed')
+                                                    ->label('Google Maps Embed URL / Iframe src')
+                                                    ->helperText('Masukkan tautan embed/src dari Google Maps. Contoh: https://www.google.com/maps/embed?...')
+                                                    ->rows(2),
                                             ]),
                                         Schemas\Section::make('Operasional')
                                             ->columnSpan(1)
@@ -323,6 +333,29 @@ class BusinessProfileSettings extends Page implements HasForms
     protected function getHeaderActions(): array
     {
         return [
+            Action::make('sync_exchange_rates')
+                ->label('Sinkronkan Kurs Otomatis')
+                ->icon('heroicon-o-arrow-path')
+                ->color('success')
+                ->action(function () {
+                    $exitCode = \Illuminate\Support\Facades\Artisan::call('currency:sync');
+                    if ($exitCode === 0) {
+                        Notification::make()
+                            ->title('Kurs SGD & MYR Berhasil Disinkronkan!')
+                            ->body('Kurs terbaru telah diambil langsung dari ExchangeRate-API.')
+                            ->success()
+                            ->send();
+                        
+                        // Isi ulang formulir dengan data baru
+                        $this->mount();
+                    } else {
+                        Notification::make()
+                            ->title('Gagal Sinkronisasi Kurs')
+                            ->body('Terjadi kesalahan saat memanggil API. Silakan periksa koneksi internet Anda.')
+                            ->danger()
+                            ->send();
+                    }
+                }),
             Action::make('view_site')
                 ->label('Lihat Website')
                 ->url(url('/'))

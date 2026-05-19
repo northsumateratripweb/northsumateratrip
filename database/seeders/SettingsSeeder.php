@@ -10,6 +10,13 @@ class SettingsSeeder extends Seeder
     public function run(): void
     {
         $settings = [
+            'site_name'         => 'NorthSumateraTrip',
+            'whatsapp_number'   => '6281298622143',
+            'whatsapp_display'  => '+62 812-9862-2143',
+            'site_email'        => 'hello@northsumateratrip.com',
+            'site_address'      => 'Medan, Sumatera Utara, Indonesia',
+            'google_maps_embed' => 'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d254759.34723920093!2d98.5550337!3d3.5952472!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x303131db7687c6b7%3A0x74d7e7a9e1e0437a!2sMedan%2C%20Kota%20Medan%2C%20Sumatera%20Utara!5e0!3m2!1sid!2sid!4v1700000000000!5m2!1sid!2sid',
+            'working_hours'     => 'Senin - Minggu: 08:00 - 20:00 WIB',
             'facebook_url'      => 'https://facebook.com/northsumateratrip',
             'instagram_url'     => 'https://instagram.com/northsumateratrip',
             'tiktok_url'        => 'https://tiktok.com/@northsumateratrip',
