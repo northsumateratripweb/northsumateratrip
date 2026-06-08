@@ -3,7 +3,7 @@
         {{ $this->form }}
 
         <div class="flex items-center justify-end gap-x-3 mt-4">
-            <x-filament::button type="submit" size="lg" color="primary">
+            <x-filament::button type="submit" size="lg" color="primary" wire:target="save">
                 Simpan Perubahan
             </x-filament::button>
         </div>
