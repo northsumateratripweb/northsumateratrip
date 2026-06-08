@@ -277,7 +277,7 @@ class BusinessProfileSettings extends Page implements HasForms
                                                 Forms\Components\TextInput::make('exchange_rate_sgd')
                                                     ->label('Kurs IDR → SGD (Dolar Singapura)')
                                                     ->numeric()
-                                                    ->step(0.000001)
+                                                    ->step('any')
                                                     ->default('0.000085')
                                                     ->prefix('1 IDR =')
                                                     ->suffix('SGD')
@@ -285,7 +285,7 @@ class BusinessProfileSettings extends Page implements HasForms
                                                 Forms\Components\TextInput::make('exchange_rate_myr')
                                                     ->label('Kurs IDR → MYR (Ringgit Malaysia)')
                                                     ->numeric()
-                                                    ->step(0.000001)
+                                                    ->step('any')
                                                     ->default('0.00029')
                                                     ->prefix('1 IDR =')
                                                     ->suffix('MYR')
@@ -387,6 +387,7 @@ class BusinessProfileSettings extends Page implements HasForms
 
     public function save(): void
     {
+        \Illuminate\Support\Facades\Log::info('BusinessProfileSettings::save() started');
         try {
             $data = $this->form->getState();
 
