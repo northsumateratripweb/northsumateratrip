@@ -34,7 +34,9 @@ class AppServiceProvider extends ServiceProvider
 
     public function boot(): void
     {
-        Mcp::local('default', DefaultServer::class);
+        if (class_exists(\Laravel\Mcp\Facades\Mcp::class)) {
+            \Laravel\Mcp\Facades\Mcp::local('default', DefaultServer::class);
+        }
 
         // Share categories and settings with all views (cached per request)
         View::composer('*', function ($view) {
