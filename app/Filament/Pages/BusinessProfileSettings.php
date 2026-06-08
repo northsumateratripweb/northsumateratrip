@@ -389,26 +389,37 @@ class BusinessProfileSettings extends Page implements HasForms
     {
         try {
             $data = $this->form->getState();
+
+            foreach ($data as $key => $value) {
+                Setting::set($key, $value);
+            }
+
+            Notification::make()
+                ->title('Pengaturan berhasil disimpan')
+                ->success()
+                ->send();
+
+            Cache::forget('site_settings');
+            Cache::forget('app_settings');
+            
         } catch (\Illuminate\Validation\ValidationException $e) {
+            $this->addError('form', 'Ada kolom yang wajib diisi. Silakan periksa semua tab.');
+            
             Notification::make()
                 ->title('Gagal Disimpan')
-                ->body('Pastikan Anda telah mengisi semua kolom wajib (termasuk yang ada di Tab lain) dengan benar.')
+                ->body('Pastikan Anda telah mengisi semua kolom wajib di setiap Tab dengan benar.')
                 ->danger()
                 ->send();
-            
+                
             throw $e;
+        } catch (\Throwable $e) {
+            \Illuminate\Support\Facades\Log::error('Error saving business profile: ' . $e->getMessage() . "\n" . $e->getTraceAsString());
+            
+            Notification::make()
+                ->title('Terjadi Kesalahan Sistem')
+                ->body('Pesan: ' . $e->getMessage())
+                ->danger()
+                ->send();
         }
-
-        foreach ($data as $key => $value) {
-            Setting::set($key, $value);
-        }
-
-        Notification::make()
-            ->title('Pengaturan berhasil disimpan')
-            ->success()
-            ->send();
-
-        Cache::forget('site_settings');
-        Cache::forget('app_settings');
     }
 }
