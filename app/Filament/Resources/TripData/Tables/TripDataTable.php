@@ -26,7 +26,8 @@ class TripDataTable
                     ->label('Bulan')
                     ->badge()
                     ->color('info')
-                    ->sortable(),
+                    ->sortable()
+                    ->toggleable(isToggledHiddenByDefault: true),
 
                 TextColumn::make('nama_pelanggan')
                     ->label('Pelanggan')
@@ -35,7 +36,8 @@ class TripDataTable
 
                 TextColumn::make('nomor_hp')
                     ->label('No. HP')
-                    ->default('-'),
+                    ->default('-')
+                    ->toggleable(isToggledHiddenByDefault: true),
 
                 TextColumn::make('layanan')
                     ->label('Layanan')
@@ -53,12 +55,14 @@ class TripDataTable
                 TextColumn::make('jumlah_hari')
                     ->label('Hari')
                     ->alignCenter()
-                    ->default('-'),
+                    ->default('-')
+                    ->toggleable(isToggledHiddenByDefault: true),
 
                 IconColumn::make('drone')
                     ->label('Drone')
                     ->boolean()
-                    ->alignCenter(),
+                    ->alignCenter()
+                    ->toggleable(isToggledHiddenByDefault: true),
 
                 TextColumn::make('status')
                     ->label('Status')
