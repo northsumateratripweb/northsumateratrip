@@ -148,23 +148,28 @@ class PackageRentalScheduleResource extends Resource
                     ->sortable(),
                 Tables\Columns\TextColumn::make('customer_phone')
                     ->label('Telepon')
-                    ->searchable(),
+                    ->searchable()
+                    ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('start_date')
                     ->label('Mulai')
                     ->dateTime('d M Y')
-                    ->sortable(),
+                    ->sortable()
+                    ->wrap(),
                 Tables\Columns\TextColumn::make('end_date')
                     ->label('Selesai')
                     ->dateTime('d M Y')
-                    ->sortable(),
+                    ->sortable()
+                    ->wrap(),
                 Tables\Columns\TextColumn::make('rental_days')
                     ->label('Hari')
                     ->suffix(' hari')
-                    ->sortable(),
+                    ->sortable()
+                    ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('number_of_people')
                     ->label('Peserta')
                     ->suffix(' orang')
-                    ->sortable(),
+                    ->sortable()
+                    ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('total_price')
                     ->label('Total')
                     ->money('IDR', true)
@@ -176,7 +181,8 @@ class PackageRentalScheduleResource extends Resource
                         'success' => 'paid',
                         'info' => 'partial',
                         'danger' => 'cancelled',
-                    ]),
+                    ])
+                    ->toggleable(),
                 Tables\Columns\BadgeColumn::make('booking_status')
                     ->label('Status')
                     ->colors([
@@ -184,7 +190,8 @@ class PackageRentalScheduleResource extends Resource
                         'warning' => 'ongoing',
                         'success' => 'completed',
                         'danger' => 'cancelled',
-                    ]),
+                    ])
+                    ->toggleable(),
             ])
             ->filters([
                 Tables\Filters\SelectFilter::make('payment_status')

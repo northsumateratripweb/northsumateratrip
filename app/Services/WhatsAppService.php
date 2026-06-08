@@ -16,34 +16,28 @@ class WhatsAppService
      */
     public static function sendMessage($target, $message)
     {
-        $token = config('services.fonnte.token');
-
-        if (! $token) {
-            Log::warning('WhatsApp Service: FONNTE_TOKEN tidak ditemukan di .env');
-
-            return false;
-        }
+        $baseUrl = env('WHATSAPP_SERVICE_URL', 'http://localhost:3000');
 
         try {
-            $response = Http::withHeaders([
-                'Authorization' => $token,
-            ])->post('https://api.fonnte.com/send', [
-                'target' => $target,
+            $response = Http::post("{$baseUrl}/send-message", [
+                'phone' => $target,
                 'message' => $message,
-                'countryCode' => '62', // Default Indonesia
             ]);
 
             $result = $response->json();
 
-            if ($response->successful() && isset($result['status']) && $result['status'] === true) {
+            if ($response->successful() && isset($result['status']) && $result['status'] === 'success') {
                 return true;
             }
 
-            Log::error('WhatsApp Service Error: '.($result['reason'] ?? 'Unknown error'));
+            Log::error('WhatsApp Service Error: ' . ($result['message'] ?? 'Unknown error'), [
+                'phone' => $target,
+                'response' => $result,
+            ]);
 
             return false;
         } catch (\Exception $e) {
-            Log::error('WhatsApp Service Exception: '.$e->getMessage());
+            Log::error('WhatsApp Service Exception: ' . $e->getMessage());
 
             return false;
         }
