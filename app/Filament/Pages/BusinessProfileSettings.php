@@ -387,7 +387,17 @@ class BusinessProfileSettings extends Page implements HasForms
 
     public function save(): void
     {
-        $data = $this->form->getState();
+        try {
+            $data = $this->form->getState();
+        } catch (\Illuminate\Validation\ValidationException $e) {
+            Notification::make()
+                ->title('Gagal Disimpan')
+                ->body('Pastikan Anda telah mengisi semua kolom wajib (termasuk yang ada di Tab lain) dengan benar.')
+                ->danger()
+                ->send();
+            
+            throw $e;
+        }
 
         foreach ($data as $key => $value) {
             Setting::set($key, $value);
