@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use App\Models\Product;
 use App\Models\Review;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Log;
 
 class ReviewController extends Controller
 {
@@ -23,7 +22,7 @@ class ReviewController extends Controller
         $recentReview = Review::where('product_id', $product->id)
             ->where(function ($q) use ($identifier, $request) {
                 $q->where('customer_email', $identifier)
-                  ->orWhere('ip_address', $request->ip());
+                    ->orWhere('ip_address', $request->ip());
             })
             ->where('created_at', '>=', now()->subDay())
             ->exists();

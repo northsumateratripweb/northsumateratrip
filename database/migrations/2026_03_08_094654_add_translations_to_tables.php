@@ -12,7 +12,7 @@ return new class extends Migration
 
         foreach ($tables as $table) {
             Schema::table($table, function (Blueprint $blueprint) use ($table) {
-                if (!Schema::hasColumn($table, 'translations')) {
+                if (! Schema::hasColumn($table, 'translations')) {
                     $blueprint->json('translations')->nullable();
                 }
             });

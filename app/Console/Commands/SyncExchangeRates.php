@@ -37,14 +37,16 @@ class SyncExchangeRates extends Command
             $response = Http::timeout(10)->get($url);
 
             if ($response->failed()) {
-                $this->error('Gagal mengambil data dari ExchangeRate-API. HTTP Status: ' . $response->status());
+                $this->error('Gagal mengambil data dari ExchangeRate-API. HTTP Status: '.$response->status());
+
                 return 1;
             }
 
             $data = $response->json();
 
             if (($data['result'] ?? '') !== 'success') {
-                $this->error('API merespon dengan status gagal: ' . ($data['error-type'] ?? 'Unknown Error'));
+                $this->error('API merespon dengan status gagal: '.($data['error-type'] ?? 'Unknown Error'));
+
                 return 1;
             }
 
@@ -52,8 +54,9 @@ class SyncExchangeRates extends Command
             $sgd = $rates['SGD'] ?? null;
             $myr = $rates['MYR'] ?? null;
 
-            if (!$sgd || !$myr) {
+            if (! $sgd || ! $myr) {
                 $this->error('Data kurs SGD atau MYR tidak ditemukan dalam respon API.');
+
                 return 1;
             }
 
@@ -65,13 +68,14 @@ class SyncExchangeRates extends Command
             Cache::forget('site_settings');
             Cache::forget('app_settings');
 
-            $this->info("Kurs berhasil disinkronkan!");
-            $this->line("SGD: 1 IDR = {$sgd} SGD (≈ Rp " . number_format(1 / $sgd, 2) . "/SGD)");
-            $this->line("MYR: 1 IDR = {$myr} MYR (≈ Rp " . number_format(1 / $myr, 2) . "/MYR)");
+            $this->info('Kurs berhasil disinkronkan!');
+            $this->line("SGD: 1 IDR = {$sgd} SGD (≈ Rp ".number_format(1 / $sgd, 2).'/SGD)');
+            $this->line("MYR: 1 IDR = {$myr} MYR (≈ Rp ".number_format(1 / $myr, 2).'/MYR)');
 
             return 0;
         } catch (\Exception $e) {
-            $this->error('Terjadi error saat sinkronisasi kurs: ' . $e->getMessage());
+            $this->error('Terjadi error saat sinkronisasi kurs: '.$e->getMessage());
+
             return 1;
         }
     }

@@ -4,6 +4,7 @@ namespace App\Filament\Resources\SettingResource\Pages;
 
 use App\Filament\Resources\SettingResource;
 use Filament\Resources\Pages\CreateRecord;
+use Illuminate\Support\Facades\Cache;
 
 class CreateSetting extends CreateRecord
 {
@@ -11,7 +12,7 @@ class CreateSetting extends CreateRecord
 
     protected function afterCreate(): void
     {
-        \Illuminate\Support\Facades\Cache::forget('site_settings');
-        \Illuminate\Support\Facades\Cache::forget('app_settings');
+        Cache::forget('site_settings');
+        Cache::forget('app_settings');
     }
 }

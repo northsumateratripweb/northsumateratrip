@@ -2,15 +2,15 @@
 
 namespace App\Console\Commands;
 
-use Illuminate\Console\Command;
-use App\Models\Product;
-use App\Models\CarRental;
-use App\Models\Blog;
-use App\Models\Hotel;
-use App\Models\Vehicle;
-use App\Models\Partner;
-use App\Models\Review;
 use App\Helpers\ImageProcessor;
+use App\Models\Blog;
+use App\Models\CarRental;
+use App\Models\Hotel;
+use App\Models\Partner;
+use App\Models\Product;
+use App\Models\Review;
+use App\Models\Vehicle;
+use Illuminate\Console\Command;
 
 class OptimizeExistingImages extends Command
 {
@@ -33,7 +33,7 @@ class OptimizeExistingImages extends Command
      */
     public function handle()
     {
-        $this->info("Memulai optimasi gambar...");
+        $this->info('Memulai optimasi gambar...');
 
         $models = [
             Product::class => ['featured_image', 'gallery_images'],
@@ -57,7 +57,9 @@ class OptimizeExistingImages extends Command
                 foreach ($fields as $field) {
                     $value = $record->getAttribute($field);
 
-                    if (empty($value)) continue;
+                    if (empty($value)) {
+                        continue;
+                    }
 
                     if (is_array($value)) {
                         $processedImages = [];
@@ -65,7 +67,9 @@ class OptimizeExistingImages extends Command
                             if (is_string($imagePath)) {
                                 $newPath = ImageProcessor::toWebp($imagePath);
                                 $processedImages[] = $newPath;
-                                if ($newPath !== $imagePath) $hasUpdates = true;
+                                if ($newPath !== $imagePath) {
+                                    $hasUpdates = true;
+                                }
                             } else {
                                 $processedImages[] = $imagePath;
                             }

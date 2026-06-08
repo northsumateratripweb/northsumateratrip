@@ -4,28 +4,35 @@ namespace App\Filament\Resources;
 
 use App\Filament\Resources\SettingResource\Pages;
 use App\Models\Setting;
-use Filament\Forms;
-use Filament\Resources\Resource;
 use Filament\Actions\BulkActionGroup;
+use Filament\Actions\DeleteAction;
 use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
-use Filament\Actions\DeleteAction;
+use Filament\Forms;
+use Filament\Resources\Resource;
+use Filament\Schemas\Components as Schemas;
+use Filament\Schemas\Schema;
 use Filament\Tables;
 use Filament\Tables\Table;
-use Filament\Schemas\Components as Schemas;
+use Illuminate\Support\Facades\Cache;
 
 class SettingResource extends Resource
 {
     protected static ?string $model = Setting::class;
 
     protected static string|\UnitEnum|null $navigationGroup = 'Sistem & Pengaturan';
+
     protected static string|\BackedEnum|null $navigationIcon = 'heroicon-o-cog-6-tooth';
+
     protected static ?string $navigationLabel = 'Kelola Pengaturan';
+
     protected static ?string $modelLabel = 'Pengaturan';
+
     protected static ?string $pluralModelLabel = 'Pengaturan';
+
     protected static ?int $navigationSort = 10;
 
-    public static function form(\Filament\Schemas\Schema $schema): \Filament\Schemas\Schema
+    public static function form(Schema $schema): Schema
     {
         return $schema
             ->schema([
@@ -119,16 +126,16 @@ class SettingResource extends Resource
                 EditAction::make(),
                 DeleteAction::make()
                     ->after(function () {
-                        \Illuminate\Support\Facades\Cache::forget('site_settings');
-                        \Illuminate\Support\Facades\Cache::forget('app_settings');
+                        Cache::forget('site_settings');
+                        Cache::forget('app_settings');
                     }),
             ])
             ->toolbarActions([
                 BulkActionGroup::make([
                     DeleteBulkAction::make()
                         ->after(function () {
-                            \Illuminate\Support\Facades\Cache::forget('site_settings');
-                            \Illuminate\Support\Facades\Cache::forget('app_settings');
+                            Cache::forget('site_settings');
+                            Cache::forget('app_settings');
                         }),
                 ]),
             ])

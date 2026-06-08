@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Hotel extends Model
 {
-    use ResolvesImagePath, \App\Traits\OptimizesImages;
+    use \App\Traits\OptimizesImages, ResolvesImagePath;
 
     protected $fillable = [
         'name',

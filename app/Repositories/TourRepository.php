@@ -22,6 +22,7 @@ class TourRepository implements TourRepositoryInterface
     public function with(array $relations)
     {
         $this->query = $this->query->with($relations);
+
         return $this;
     }
 

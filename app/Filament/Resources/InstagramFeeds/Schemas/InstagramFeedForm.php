@@ -2,6 +2,10 @@
 
 namespace App\Filament\Resources\InstagramFeeds\Schemas;
 
+use Filament\Forms\Components\FileUpload;
+use Filament\Forms\Components\Textarea;
+use Filament\Forms\Components\TextInput;
+use Filament\Forms\Components\Toggle;
 use Filament\Schemas\Schema;
 
 class InstagramFeedForm
@@ -10,20 +14,20 @@ class InstagramFeedForm
     {
         return $schema
             ->components([
-                \Filament\Forms\Components\TextInput::make('post_id')
+                TextInput::make('post_id')
                     ->maxLength(255),
-                \Filament\Forms\Components\FileUpload::make('image_url')
+                FileUpload::make('image_url')
                     ->image()
                     ->disk('public')
                     ->directory('instagram')
                     ->visibility('public')
                     ->required(),
-                \Filament\Forms\Components\Textarea::make('caption')
+                Textarea::make('caption')
                     ->rows(3),
-                \Filament\Forms\Components\TextInput::make('permalink')
+                TextInput::make('permalink')
                     ->url()
                     ->maxLength(255),
-                \Filament\Forms\Components\Toggle::make('is_active')
+                Toggle::make('is_active')
                     ->default(true),
             ]);
     }

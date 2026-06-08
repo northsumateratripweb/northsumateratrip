@@ -11,7 +11,7 @@ return new class extends Migration
         Schema::table('products', function (Blueprint $table) {
             $table->text('featured_image')->change();
         });
-        
+
         Schema::table('car_rentals', function (Blueprint $table) {
             $table->text('featured_image')->change();
         });
@@ -34,7 +34,7 @@ return new class extends Migration
         Schema::table('products', function (Blueprint $table) {
             $table->string('featured_image')->change();
         });
-        
+
         Schema::table('car_rentals', function (Blueprint $table) {
             $table->string('featured_image')->change();
         });

@@ -3,11 +3,14 @@
 namespace App\Http\Controllers;
 
 use App\Models\Blog;
+use App\Models\CarRental;
 use App\Models\Hotel;
 use App\Models\InstagramFeed;
 use App\Models\Partner;
 use App\Models\Product;
 use App\Models\PromotionBanner;
+use App\Models\RentalPackage;
+use App\Models\Review;
 
 class HomeController extends Controller
 {
@@ -19,12 +22,12 @@ class HomeController extends Controller
             ->take(6)
             ->get();
 
-        $carRentalProducts = \App\Models\CarRental::available()
+        $carRentalProducts = CarRental::available()
             ->orderBy('sort_order')
             ->take(4)
             ->get();
 
-        $rentalPackageProducts = \App\Models\RentalPackage::where('is_active', true)
+        $rentalPackageProducts = RentalPackage::where('is_active', true)
             ->orderBy('sort_order')
             ->take(4)
             ->get();
@@ -48,7 +51,7 @@ class HomeController extends Controller
             ->take(8)
             ->get();
 
-        $testimonials = \App\Models\Review::where('is_approved', true)
+        $testimonials = Review::where('is_approved', true)
             ->latest()
             ->take(6)
             ->get();

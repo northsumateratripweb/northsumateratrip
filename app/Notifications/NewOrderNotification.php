@@ -2,9 +2,8 @@
 
 namespace App\Notifications;
 
+use App\Models\Order;
 use Illuminate\Bus\Queueable;
-use Illuminate\Contracts\Queue\ShouldQueue;
-use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 
 class NewOrderNotification extends Notification
@@ -16,7 +15,7 @@ class NewOrderNotification extends Notification
     /**
      * Create a new notification instance.
      */
-    public function __construct(\App\Models\Order $order)
+    public function __construct(Order $order)
     {
         $this->order = $order;
     }
@@ -42,9 +41,8 @@ class NewOrderNotification extends Notification
             'order_id' => $this->order->id,
             'customer_name' => $this->order->customer_name,
             'total_price' => $this->order->total_price,
-            'message' => "Pesanan baru dari {$this->order->customer_name} senilai Rp " . number_format($this->order->total_price, 0, ',', '.'),
-            'type' => 'order'
+            'message' => "Pesanan baru dari {$this->order->customer_name} senilai Rp ".number_format($this->order->total_price, 0, ',', '.'),
+            'type' => 'order',
         ];
     }
 }
-

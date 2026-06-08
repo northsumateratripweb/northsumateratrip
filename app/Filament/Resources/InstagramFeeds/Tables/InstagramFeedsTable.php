@@ -8,6 +8,10 @@ use Filament\Actions\DeleteAction;
 use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
 use Filament\Actions\ViewAction;
+use Filament\Tables\Columns\IconColumn;
+use Filament\Tables\Columns\ImageColumn;
+use Filament\Tables\Columns\TextColumn;
+use Filament\Tables\Filters\TernaryFilter;
 use Filament\Tables\Table;
 
 class InstagramFeedsTable
@@ -16,20 +20,20 @@ class InstagramFeedsTable
     {
         return $table
             ->columns([
-                \Filament\Tables\Columns\ImageColumn::make('image_url')
+                ImageColumn::make('image_url')
                     ->label('Foto'),
-                \Filament\Tables\Columns\TextColumn::make('caption')
+                TextColumn::make('caption')
                     ->limit(50)
                     ->searchable(),
-                \Filament\Tables\Columns\IconColumn::make('is_active')
+                IconColumn::make('is_active')
                     ->boolean()
                     ->sortable(),
-                \Filament\Tables\Columns\TextColumn::make('created_at')
+                TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable(),
             ])
             ->filters([
-                \Filament\Tables\Filters\TernaryFilter::make('is_active'),
+                TernaryFilter::make('is_active'),
             ])
             ->recordActions([
                 ViewAction::make(),

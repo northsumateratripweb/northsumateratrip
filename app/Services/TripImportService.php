@@ -17,18 +17,18 @@ class TripImportService
 {
     /** Bulan Indo → slug untuk normalise nama dari filename */
     protected const MONTH_MAP = [
-        'januari'   => 'Januari',
-        'februari'  => 'Februari',
-        'maret'     => 'Maret',
-        'april'     => 'April',
-        'mei'       => 'Mei',
-        'juni'      => 'Juni',
-        'juli'      => 'Juli',
-        'agustus'   => 'Agustus',
+        'januari' => 'Januari',
+        'februari' => 'Februari',
+        'maret' => 'Maret',
+        'april' => 'April',
+        'mei' => 'Mei',
+        'juni' => 'Juni',
+        'juli' => 'Juli',
+        'agustus' => 'Agustus',
         'september' => 'September',
-        'oktober'   => 'Oktober',
-        'november'  => 'November',
-        'desember'  => 'Desember',
+        'oktober' => 'Oktober',
+        'november' => 'November',
+        'desember' => 'Desember',
     ];
 
     /**
@@ -57,7 +57,7 @@ class TripImportService
         $results = [];
 
         foreach ($files as $filePath) {
-            $bulan   = $this->extractMonth($filePath);
+            $bulan = $this->extractMonth($filePath);
             $results[] = $this->importFile($filePath, $bulan);
         }
 
@@ -83,7 +83,7 @@ class TripImportService
 
         // Baca & normalise header
         $rawHeader = fgetcsv($handle);
-        $header    = array_map(fn ($h) => mb_strtolower(trim($h)), $rawHeader);
+        $header = array_map(fn ($h) => mb_strtolower(trim($h)), $rawHeader);
 
         $inserted = 0;
 
@@ -96,7 +96,7 @@ class TripImportService
             $data = array_combine($header, array_slice($row, 0, count($header)));
 
             // Lewati baris yang tidak punya tanggal DAN nama pelanggan
-            $hasDate     = trim($data['tanggal'] ?? '') !== '';
+            $hasDate = trim($data['tanggal'] ?? '') !== '';
             $hasCustomer = trim($data['nama pelanggan'] ?? '') !== '';
 
             if (! $hasDate && ! $hasCustomer) {
@@ -120,8 +120,8 @@ class TripImportService
     protected function extractMonth(string $filePath): string
     {
         $filename = pathinfo($filePath, PATHINFO_FILENAME);       // "TRIP - JANUARI"
-        $parts    = explode(' - ', $filename, 2);                  // ["TRIP", "JANUARI"]
-        $raw      = isset($parts[1]) ? mb_strtolower(trim($parts[1])) : '';
+        $parts = explode(' - ', $filename, 2);                  // ["TRIP", "JANUARI"]
+        $raw = isset($parts[1]) ? mb_strtolower(trim($parts[1])) : '';
 
         return self::MONTH_MAP[$raw] ?? ucfirst(mb_strtolower($raw)) ?: 'Tidak Diketahui';
     }
@@ -129,11 +129,11 @@ class TripImportService
     /** Petakan 1 baris CSV ke array yang siap disimpan */
     protected function mapRow(array $data, string $bulan): array
     {
-        $nullable = fn (string $key) =>
-            trim($data[$key] ?? '') !== '' ? trim($data[$key]) : null;
+        $nullable = fn (string $key) => trim($data[$key] ?? '') !== '' ? trim($data[$key]) : null;
 
         $integer = function (string $key) use ($data): ?int {
             $val = preg_replace('/[^0-9]/', '', $data[$key] ?? '');
+
             return $val !== '' ? (int) $val : null;
         };
 
@@ -149,40 +149,42 @@ class TripImportService
         }
 
         return [
-            'bulan'          => $bulan,
-            'tanggal'        => $tanggal,
+            'bulan' => $bulan,
+            'tanggal' => $tanggal,
             'nama_pelanggan' => $nullable('nama pelanggan'),
-            'status'         => $this->mapStatus($nullable('status')),
-            'nomor_hp'       => $nullable('nomor hp'),
-            'nama_driver'    => $nullable('nama driver'),
-            'layanan'        => $nullable('layanan'),
-            'plat_mobil'     => $nullable('plat mobil'),
-            'jenis_mobil'    => $nullable('jenis mobil'),
-            'drone'          => strtolower(trim($data['drone'] ?? 'false')) === 'true',
-            'jumlah_hari'    => $integer('jumlah hari'),
-            'penumpang'      => $nullable('penumpang'),
-            'hotel_1'        => $nullable('hotel 1'),
-            'hotel_2'        => $nullable('hotel 2'),
-            'hotel_3'        => $nullable('hotel 3'),
-            'hotel_4'        => $nullable('hotel 4'),
-            'harga'          => $integer('harga'),
-            'deposit'        => $integer('deposit'),
-            'pelunasan'      => $integer('pelunasan'),
-            'tiba'           => $nullable('tiba'),
-            'flight_balik'   => $nullable('flight balik'),
+            'status' => $this->mapStatus($nullable('status')),
+            'nomor_hp' => $nullable('nomor hp'),
+            'nama_driver' => $nullable('nama driver'),
+            'layanan' => $nullable('layanan'),
+            'plat_mobil' => $nullable('plat mobil'),
+            'jenis_mobil' => $nullable('jenis mobil'),
+            'drone' => strtolower(trim($data['drone'] ?? 'false')) === 'true',
+            'jumlah_hari' => $integer('jumlah hari'),
+            'penumpang' => $nullable('penumpang'),
+            'hotel_1' => $nullable('hotel 1'),
+            'hotel_2' => $nullable('hotel 2'),
+            'hotel_3' => $nullable('hotel 3'),
+            'hotel_4' => $nullable('hotel 4'),
+            'harga' => $integer('harga'),
+            'deposit' => $integer('deposit'),
+            'pelunasan' => $integer('pelunasan'),
+            'tiba' => $nullable('tiba'),
+            'flight_balik' => $nullable('flight balik'),
         ];
     }
 
     protected function mapStatus(?string $raw): string
     {
-        if ($raw === null) return 'pending';
+        if ($raw === null) {
+            return 'pending';
+        }
 
         return match (Str::lower($raw)) {
             'confirmed', 'dikonfirmasi', 'terkonfirmasi' => 'confirmed',
-            'ongoing', 'berlangsung'                     => 'ongoing',
-            'completed', 'selesai'                       => 'completed',
-            'cancelled', 'dibatalkan', 'batal'           => 'cancelled',
-            default                                      => 'pending',
+            'ongoing', 'berlangsung' => 'ongoing',
+            'completed', 'selesai' => 'completed',
+            'cancelled', 'dibatalkan', 'batal' => 'cancelled',
+            default => 'pending',
         };
     }
 }

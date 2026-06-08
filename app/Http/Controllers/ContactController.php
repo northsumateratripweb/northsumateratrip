@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\ContactMessage;
 use App\Services\WhatsAppService;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 
 class ContactController extends Controller
 {
@@ -36,7 +37,7 @@ class ContactController extends Controller
             $adminPhone = config('services.whatsapp.admin_phone', '6281298622143');
             WhatsAppService::sendMessage($adminPhone, "📩 Pesan baru dari {$validated['name']} ({$validated['email']}): {$validated['message']}");
         } catch (\Exception $e) {
-            \Illuminate\Support\Facades\Log::warning('WhatsApp notification gagal untuk contact message', [
+            Log::warning('WhatsApp notification gagal untuk contact message', [
                 'message_id' => $contactMessage->id,
                 'error' => $e->getMessage(),
             ]);

@@ -2,9 +2,10 @@
 
 namespace App\Models;
 
+use App\Traits\HasTranslations;
 use App\Traits\ResolvesImagePath;
 use Illuminate\Database\Eloquent\Model;
-use App\Traits\HasTranslations;
+use Illuminate\Support\Carbon;
 
 /**
  * @property int $id
@@ -19,12 +20,12 @@ use App\Traits\HasTranslations;
  * @property string|null $featured_image
  * @property bool $is_active
  * @property int $sort_order
- * @property \Illuminate\Support\Carbon|null $created_at
- * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property Carbon|null $created_at
+ * @property Carbon|null $updated_at
  */
 class RentalPackage extends Model
 {
-    use ResolvesImagePath, HasTranslations;
+    use HasTranslations, ResolvesImagePath;
 
     protected $fillable = [
         'name',
@@ -53,6 +54,7 @@ class RentalPackage extends Model
         'sort_order' => 'integer',
         'translations' => 'array',
     ];
+
     public function getImageUrlAttribute(): string
     {
         return self::resolveImagePath($this->featured_image, 'images/rental-packages');
@@ -62,10 +64,13 @@ class RentalPackage extends Model
     {
         $images = [];
         if (is_array($this->featured_image)) {
-            foreach ($this->featured_image as $img) $images[] = self::resolveImagePath($img, 'images/rental-packages');
+            foreach ($this->featured_image as $img) {
+                $images[] = self::resolveImagePath($img, 'images/rental-packages');
+            }
         } elseif ($this->featured_image) {
             $images[] = self::resolveImagePath($this->featured_image, 'images/rental-packages');
         }
+
         return array_values(array_unique($images));
     }
 

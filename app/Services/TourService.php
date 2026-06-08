@@ -2,15 +2,16 @@
 
 namespace App\Services;
 
-use App\Repositories\Contracts\TourRepositoryInterface;
-use App\Repositories\Contracts\CarRepositoryInterface;
-use App\Models\Order;
 use App\Models\Blog;
+use App\Models\Order;
+use App\Repositories\Contracts\CarRepositoryInterface;
+use App\Repositories\Contracts\TourRepositoryInterface;
 use Illuminate\Support\Facades\Log;
 
 class TourService
 {
     protected $tourRepository;
+
     protected $carRepository;
 
     public function __construct(
@@ -65,18 +66,18 @@ class TourService
         // WhatsApp Notification
         try {
             $waMessage = "✨ *BOOKING BERHASIL* ✨\n\n";
-            $waMessage .= "Halo *" . $order->customer_name . "*,\n";
+            $waMessage .= 'Halo *'.$order->customer_name."*,\n";
             $waMessage .= "Terima kasih telah memesan di NorthSumateraTrip!\n\n";
             $waMessage .= "📋 *DETAIL PESANAN:*\n";
-            $waMessage .= "• *Paket:* " . $product->name . "\n";
-            $waMessage .= "• *Tgl Perjalanan:* " . $order->trip_date . "\n";
-            $waMessage .= "• *Peserta:* " . $order->quantity . " Orang\n";
-            $waMessage .= "• *Total:* Rp " . number_format($order->total_price, 0, ',', '.') . "\n\n";
-            $waMessage .= "Tim kami akan segera menghubungi Anda melalui WhatsApp ini. Terima kasih! 🙏";
+            $waMessage .= '• *Paket:* '.$product->name."\n";
+            $waMessage .= '• *Tgl Perjalanan:* '.$order->trip_date."\n";
+            $waMessage .= '• *Peserta:* '.$order->quantity." Orang\n";
+            $waMessage .= '• *Total:* Rp '.number_format($order->total_price, 0, ',', '.')."\n\n";
+            $waMessage .= 'Tim kami akan segera menghubungi Anda melalui WhatsApp ini. Terima kasih! 🙏';
 
             WhatsAppService::sendMessage($order->customer_phone, $waMessage);
         } catch (\Exception $e) {
-            Log::error('WA Notification Error: ' . $e->getMessage());
+            Log::error('WA Notification Error: '.$e->getMessage());
         }
 
         return $order;

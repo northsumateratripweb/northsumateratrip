@@ -17,7 +17,7 @@ class DatabaseQuery extends Tool
         $query = trim($request->string('query'));
 
         // Only allow SELECT queries for safety
-        if (!preg_match('/^\s*SELECT\b/i', $query)) {
+        if (! preg_match('/^\s*SELECT\b/i', $query)) {
             return Response::text('Error: Only SELECT queries are allowed.');
         }
 
@@ -30,9 +30,9 @@ class DatabaseQuery extends Tool
             $results = DB::select($query);
             $output = json_encode($results, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE);
 
-            return Response::text("Results (" . count($results) . " rows):\n" . $output);
+            return Response::text('Results ('.count($results)." rows):\n".$output);
         } catch (\Exception $e) {
-            return Response::text('Query error: ' . $e->getMessage());
+            return Response::text('Query error: '.$e->getMessage());
         }
     }
 

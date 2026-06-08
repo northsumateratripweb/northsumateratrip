@@ -2,9 +2,10 @@
 
 namespace App\Console\Commands;
 
+use App\Services\WhatsAppService;
 use Illuminate\Console\Command;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
 
@@ -38,7 +39,7 @@ class HealthCheck extends Command
             DB::connection()->getPdo();
             $this->info('✓ Database: OK');
         } catch (\Exception $e) {
-            $this->error('✗ Database: FAILED - ' . $e->getMessage());
+            $this->error('✗ Database: FAILED - '.$e->getMessage());
             $issues[] = 'Database connection failed';
         }
 
@@ -53,7 +54,7 @@ class HealthCheck extends Command
                 throw new \Exception('Cache read/write failed');
             }
         } catch (\Exception $e) {
-            $this->error('✗ Cache: FAILED - ' . $e->getMessage());
+            $this->error('✗ Cache: FAILED - '.$e->getMessage());
             $issues[] = 'Cache system failed';
         }
 
@@ -69,7 +70,7 @@ class HealthCheck extends Command
                 throw new \Exception('Cannot write to storage');
             }
         } catch (\Exception $e) {
-            $this->error('✗ Storage: FAILED - ' . $e->getMessage());
+            $this->error('✗ Storage: FAILED - '.$e->getMessage());
             $issues[] = 'Storage not writable';
         }
 
@@ -79,15 +80,15 @@ class HealthCheck extends Command
             $freeSpace = disk_free_space(base_path());
             $totalSpace = disk_total_space(base_path());
             $usedPercent = (($totalSpace - $freeSpace) / $totalSpace) * 100;
-            
+
             if ($usedPercent > 90) {
-                $this->warn("⚠ Disk space: " . round($usedPercent, 2) . "% used");
-                $issues[] = "Disk space critical: " . round($usedPercent, 2) . "% used";
+                $this->warn('⚠ Disk space: '.round($usedPercent, 2).'% used');
+                $issues[] = 'Disk space critical: '.round($usedPercent, 2).'% used';
             } else {
-                $this->info("✓ Disk space: " . round($usedPercent, 2) . "% used");
+                $this->info('✓ Disk space: '.round($usedPercent, 2).'% used');
             }
         } catch (\Exception $e) {
-             $this->warn('⚠ Disk space: Check failed - ' . $e->getMessage());
+            $this->warn('⚠ Disk space: Check failed - '.$e->getMessage());
         }
 
         // Check website is accessible
@@ -97,10 +98,10 @@ class HealthCheck extends Command
             if ($response->successful()) {
                 $this->info('✓ Website: OK');
             } else {
-                throw new \Exception('Website returned status ' . $response->status());
+                throw new \Exception('Website returned status '.$response->status());
             }
         } catch (\Exception $e) {
-            $this->error('✗ Website: FAILED - ' . $e->getMessage());
+            $this->error('✗ Website: FAILED - '.$e->getMessage());
             $issues[] = 'Website not accessible';
         }
 
@@ -108,11 +109,12 @@ class HealthCheck extends Command
         $this->newLine();
         if (empty($issues)) {
             $this->info('✓ All health checks passed!');
+
             return 0;
         } else {
-            $this->error('✗ Health check failed with ' . count($issues) . ' issue(s):');
+            $this->error('✗ Health check failed with '.count($issues).' issue(s):');
             foreach ($issues as $issue) {
-                $this->error('  - ' . $issue);
+                $this->error('  - '.$issue);
             }
 
             // Log issues
@@ -134,23 +136,23 @@ class HealthCheck extends Command
     {
         try {
             $message = "⚠️ *HEALTH CHECK ALERT*\n\n";
-            $message .= "Website: " . config('app.url') . "\n";
+            $message .= 'Website: '.config('app.url')."\n";
             $message .= "Issues found:\n";
             foreach ($issues as $issue) {
                 $message .= "• {$issue}\n";
             }
-            $message .= "\nTime: " . now()->format('Y-m-d H:i:s');
+            $message .= "\nTime: ".now()->format('Y-m-d H:i:s');
 
             // Send via WhatsApp (if configured)
-            if (class_exists(\App\Services\WhatsAppService::class)) {
+            if (class_exists(WhatsAppService::class)) {
                 $adminPhone = config('services.whatsapp.admin_phone');
                 if ($adminPhone) {
-                    \App\Services\WhatsAppService::sendMessage($adminPhone, $message);
+                    WhatsAppService::sendMessage($adminPhone, $message);
                     $this->info('Notification sent via WhatsApp');
                 }
             }
         } catch (\Exception $e) {
-            $this->warn('Failed to send notification: ' . $e->getMessage());
+            $this->warn('Failed to send notification: '.$e->getMessage());
         }
     }
 }

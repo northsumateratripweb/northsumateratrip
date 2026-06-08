@@ -48,9 +48,9 @@ class TripDataResource extends Resource
     public static function getPages(): array
     {
         return [
-            'index'  => ListTripData::route('/'),
+            'index' => ListTripData::route('/'),
             'create' => CreateTripData::route('/create'),
-            'edit'   => EditTripData::route('/{record}/edit'),
+            'edit' => EditTripData::route('/{record}/edit'),
         ];
     }
 }

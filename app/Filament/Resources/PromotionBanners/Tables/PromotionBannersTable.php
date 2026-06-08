@@ -7,6 +7,11 @@ use Filament\Actions\CreateAction;
 use Filament\Actions\DeleteAction;
 use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
+use Filament\Tables\Columns\IconColumn;
+use Filament\Tables\Columns\ImageColumn;
+use Filament\Tables\Columns\TextColumn;
+use Filament\Tables\Filters\SelectFilter;
+use Filament\Tables\Filters\TernaryFilter;
 use Filament\Tables\Table;
 
 class PromotionBannersTable
@@ -15,21 +20,21 @@ class PromotionBannersTable
     {
         return $table
             ->columns([
-                \Filament\Tables\Columns\ImageColumn::make('image_url')
+                ImageColumn::make('image_url')
                     ->label('Banner'),
-                \Filament\Tables\Columns\TextColumn::make('title')
+                TextColumn::make('title')
                     ->searchable()
                     ->sortable(),
-                \Filament\Tables\Columns\TextColumn::make('position')
+                TextColumn::make('position')
                     ->badge()
                     ->sortable(),
-                \Filament\Tables\Columns\IconColumn::make('is_active')
+                IconColumn::make('is_active')
                     ->boolean()
                     ->sortable(),
             ])
             ->filters([
-                \Filament\Tables\Filters\TernaryFilter::make('is_active'),
-                \Filament\Tables\Filters\SelectFilter::make('position')
+                TernaryFilter::make('is_active'),
+                SelectFilter::make('position')
                     ->options([
                         'home_top' => 'Home Top',
                         'home_middle' => 'Home Middle',

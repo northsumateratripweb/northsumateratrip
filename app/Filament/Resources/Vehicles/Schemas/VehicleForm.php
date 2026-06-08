@@ -2,6 +2,10 @@
 
 namespace App\Filament\Resources\Vehicles\Schemas;
 
+use Filament\Forms\Components\FileUpload;
+use Filament\Forms\Components\Select;
+use Filament\Forms\Components\TextInput;
+use Filament\Forms\Components\Toggle;
 use Filament\Schemas\Schema;
 
 class VehicleForm
@@ -10,17 +14,17 @@ class VehicleForm
     {
         return $schema
             ->components([
-                \Filament\Forms\Components\TextInput::make('name')
+                TextInput::make('name')
                     ->required()
                     ->maxLength(255),
-                \Filament\Forms\Components\TextInput::make('plate_number')
+                TextInput::make('plate_number')
                     ->unique(ignoreRecord: true)
                     ->required()
                     ->maxLength(20),
-                \Filament\Forms\Components\TextInput::make('capacity')
+                TextInput::make('capacity')
                     ->numeric()
                     ->minValue(1),
-                \Filament\Forms\Components\Select::make('type')
+                Select::make('type')
                     ->options([
                         'SUV' => 'SUV',
                         'MPV' => 'MPV',
@@ -29,20 +33,20 @@ class VehicleForm
                         'Sedan' => 'Sedan',
                     ])
                     ->required(),
-                \Filament\Forms\Components\TextInput::make('brand')
+                TextInput::make('brand')
                     ->label('Merek')
                     ->maxLength(100),
-                \Filament\Forms\Components\TextInput::make('transmission')
+                TextInput::make('transmission')
                     ->label('Transmisi')
                     ->maxLength(50)
                     ->placeholder('Manual / Automatic'),
-                \Filament\Forms\Components\FileUpload::make('thumbnail')
+                FileUpload::make('thumbnail')
                     ->label('Foto Kendaraan')
                     ->disk('public')
                     ->directory('vehicles')
                     ->visibility('public')
                     ->image(),
-                \Filament\Forms\Components\Toggle::make('is_active')
+                Toggle::make('is_active')
                     ->default(true),
             ]);
     }

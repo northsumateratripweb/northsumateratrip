@@ -8,6 +8,10 @@ use Filament\Actions\DeleteAction;
 use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
 use Filament\Actions\ViewAction;
+use Filament\Tables\Columns\IconColumn;
+use Filament\Tables\Columns\TextColumn;
+use Filament\Tables\Filters\SelectFilter;
+use Filament\Tables\Filters\TernaryFilter;
 use Filament\Tables\Table;
 
 class VehiclesTable
@@ -16,25 +20,25 @@ class VehiclesTable
     {
         return $table
             ->columns([
-                \Filament\Tables\Columns\TextColumn::make('name')
+                TextColumn::make('name')
                     ->searchable()
                     ->sortable(),
-                \Filament\Tables\Columns\TextColumn::make('plate_number')
+                TextColumn::make('plate_number')
                     ->searchable()
                     ->sortable(),
-                \Filament\Tables\Columns\TextColumn::make('type')
+                TextColumn::make('type')
                     ->badge()
                     ->sortable(),
-                \Filament\Tables\Columns\TextColumn::make('capacity')
+                TextColumn::make('capacity')
                     ->numeric()
                     ->sortable(),
-                \Filament\Tables\Columns\IconColumn::make('is_active')
+                IconColumn::make('is_active')
                     ->boolean()
                     ->sortable(),
             ])
             ->filters([
-                \Filament\Tables\Filters\TernaryFilter::make('is_active'),
-                \Filament\Tables\Filters\SelectFilter::make('type')
+                TernaryFilter::make('is_active'),
+                SelectFilter::make('type')
                     ->options([
                         'SUV' => 'SUV',
                         'MPV' => 'MPV',

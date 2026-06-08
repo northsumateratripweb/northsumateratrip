@@ -9,6 +9,7 @@ use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
 use Filament\Tables\Columns\IconColumn;
 use Filament\Tables\Columns\TextColumn;
+use Filament\Tables\Filters\TernaryFilter;
 use Filament\Tables\Table;
 
 class StaticPagesTable
@@ -23,7 +24,7 @@ class StaticPagesTable
                 TextColumn::make('updated_at')->dateTime()->since(),
             ])
             ->filters([
-                \Filament\Tables\Filters\TernaryFilter::make('is_published'),
+                TernaryFilter::make('is_published'),
             ])
             ->recordActions([
                 EditAction::make(),

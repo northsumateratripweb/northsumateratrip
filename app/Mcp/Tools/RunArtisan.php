@@ -30,16 +30,17 @@ class RunArtisan extends Tool
 
         // Check if command is in allowed list
         $baseCommand = explode(' ', $command)[0];
-        if (!in_array($baseCommand, self::ALLOWED_COMMANDS)) {
-            return Response::text("Error: Command '{$baseCommand}' is not allowed.\nAllowed: " . implode(', ', self::ALLOWED_COMMANDS));
+        if (! in_array($baseCommand, self::ALLOWED_COMMANDS)) {
+            return Response::text("Error: Command '{$baseCommand}' is not allowed.\nAllowed: ".implode(', ', self::ALLOWED_COMMANDS));
         }
 
         try {
             Artisan::call($command);
             $output = Artisan::output();
+
             return Response::text($output ?: 'Command completed with no output.');
         } catch (\Throwable $e) {
-            return Response::text('Error: ' . $e->getMessage());
+            return Response::text('Error: '.$e->getMessage());
         }
     }
 

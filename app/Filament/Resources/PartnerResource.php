@@ -4,12 +4,14 @@ namespace App\Filament\Resources;
 
 use App\Filament\Resources\PartnerResource\Pages;
 use App\Models\Partner;
-use Filament\Forms;
-use Filament\Schemas;
-use Filament\Resources\Resource;
 use Filament\Actions\BulkActionGroup;
+use Filament\Actions\DeleteAction;
 use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
+use Filament\Forms;
+use Filament\Resources\Resource;
+use Filament\Schemas;
+use Filament\Schemas\Schema;
 use Filament\Tables;
 use Filament\Tables\Table;
 
@@ -18,9 +20,10 @@ class PartnerResource extends Resource
     protected static ?string $model = Partner::class;
 
     protected static string|\UnitEnum|null $navigationGroup = 'Katalog Produk';
+
     protected static string|\BackedEnum|null $navigationIcon = 'heroicon-o-hand-raised';
 
-    public static function form(\Filament\Schemas\Schema $schema): \Filament\Schemas\Schema
+    public static function form(Schema $schema): Schema
     {
         return $schema
             ->schema([
@@ -58,7 +61,7 @@ class PartnerResource extends Resource
             ])
             ->recordActions([
                 EditAction::make(),
-                \Filament\Actions\DeleteAction::make(),
+                DeleteAction::make(),
             ])
             ->toolbarActions([
                 BulkActionGroup::make([

@@ -3,23 +3,28 @@
 namespace App\Filament\Resources;
 
 use App\Filament\Resources\ProductResource\Pages;
+use App\Models\Category;
 use App\Models\Product;
-use Filament\Forms;
-use Filament\Schemas;
-use Filament\Resources\Resource;
 use Filament\Actions\BulkActionGroup;
+use Filament\Actions\DeleteAction;
 use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
 use Filament\Actions\ViewAction;
+use Filament\Forms;
+use Filament\Resources\Resource;
+use Filament\Schemas;
+use Filament\Schemas\Schema;
 use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Support\Str;
 
 class ProductResource extends Resource
 {
     protected static ?string $model = Product::class;
 
     protected static string|\UnitEnum|null $navigationGroup = 'Katalog Produk';
+
     protected static string|\BackedEnum|null $navigationIcon = 'heroicon-o-map';
 
     protected static ?string $navigationLabel = 'Paket Wisata';
@@ -30,7 +35,7 @@ class ProductResource extends Resource
 
     protected static ?string $pluralModelLabel = 'Paket Wisata';
 
-    public static function form(\Filament\Schemas\Schema $schema): \Filament\Schemas\Schema
+    public static function form(Schema $schema): Schema
     {
         return $schema
             ->schema([
@@ -46,7 +51,7 @@ class ProductResource extends Resource
                     ->schema([
                         Forms\Components\Select::make('category_id')
                             ->label('Kategori')
-                            ->options(fn () => \App\Models\Category::query()
+                            ->options(fn () => Category::query()
                                 ->where('is_active', true)
                                 ->orderBy('sort_order')
                                 ->pluck('name', 'id'))
@@ -58,8 +63,7 @@ class ProductResource extends Resource
                             ->required()
                             ->maxLength(255)
                             ->live(onBlur: true)
-                            ->afterStateUpdated(fn ($state, callable $set) =>
-                                $set('slug', \Illuminate\Support\Str::slug($state)))
+                            ->afterStateUpdated(fn ($state, callable $set) => $set('slug', Str::slug($state)))
                             ->placeholder('Contoh: Wisata Danau Toba 2D1N')
                             ->columnSpan(2),
 
@@ -147,9 +151,11 @@ class ProductResource extends Resource
                             ->helperText('Harga ditampilkan ke pelanggan berdasarkan jumlah peserta yang dipilih. Urutan bebas.')
                             ->live()
                             ->afterStateUpdated(function ($state, callable $set) {
-                                if (empty($state)) return;
+                                if (empty($state)) {
+                                    return;
+                                }
                                 $prices = array_filter(array_column($state, 'price_per_person'));
-                                if (!empty($prices)) {
+                                if (! empty($prices)) {
                                     $set('price_min', min($prices));
                                     $set('price_max', max($prices));
                                 }
@@ -347,7 +353,7 @@ class ProductResource extends Resource
                                         Forms\Components\Textarea::make('translations.ms.notes')->label('Catatan/Notes (MS)'),
                                         Forms\Components\RichEditor::make('translations.ms.itinerary_text')->label('Isi Itinerary Text (MS)'),
                                     ]),
-                            ])->columnSpanFull()
+                            ])->columnSpanFull(),
                     ]),
             ]);
     }
@@ -403,7 +409,7 @@ class ProductResource extends Resource
             ->recordActions([
                 ViewAction::make(),
                 EditAction::make(),
-                \Filament\Actions\DeleteAction::make(),
+                DeleteAction::make(),
             ])
             ->toolbarActions([
                 BulkActionGroup::make([

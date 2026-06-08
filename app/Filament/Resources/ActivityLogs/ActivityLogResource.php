@@ -11,7 +11,6 @@ use App\Models\ActivityLog;
 use BackedEnum;
 use Filament\Resources\Resource;
 use Filament\Schemas\Schema;
-use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Table;
 
 class ActivityLogResource extends Resource

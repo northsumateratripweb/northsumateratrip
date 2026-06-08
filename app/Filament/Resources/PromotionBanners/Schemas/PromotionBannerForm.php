@@ -2,6 +2,10 @@
 
 namespace App\Filament\Resources\PromotionBanners\Schemas;
 
+use Filament\Forms\Components\FileUpload;
+use Filament\Forms\Components\Select;
+use Filament\Forms\Components\TextInput;
+use Filament\Forms\Components\Toggle;
 use Filament\Schemas\Schema;
 
 class PromotionBannerForm
@@ -10,24 +14,24 @@ class PromotionBannerForm
     {
         return $schema
             ->components([
-                \Filament\Forms\Components\TextInput::make('title')
+                TextInput::make('title')
                     ->required()
                     ->maxLength(255),
-                \Filament\Forms\Components\FileUpload::make('image_url')
+                FileUpload::make('image_url')
                     ->image()
                     ->disk('public')
                     ->directory('banners')
                     ->visibility('public')
                     ->required(),
-                \Filament\Forms\Components\TextInput::make('link_url')
+                TextInput::make('link_url')
                     ->maxLength(255),
-                \Filament\Forms\Components\Select::make('position')
+                Select::make('position')
                     ->options([
                         'home_top' => 'Home Top',
                         'home_middle' => 'Home Middle',
                         'sidebar' => 'Sidebar',
                     ]),
-                \Filament\Forms\Components\Toggle::make('is_active')
+                Toggle::make('is_active')
                     ->default(true),
             ]);
     }

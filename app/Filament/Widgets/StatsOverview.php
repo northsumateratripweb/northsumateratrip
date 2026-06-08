@@ -6,7 +6,6 @@ use App\Models\Order;
 use App\Models\RentalSchedule;
 use Filament\Widgets\StatsOverviewWidget as BaseWidget;
 use Filament\Widgets\StatsOverviewWidget\Stat;
-use Illuminate\Support\Facades\DB;
 
 class StatsOverview extends BaseWidget
 {
@@ -15,10 +14,10 @@ class StatsOverview extends BaseWidget
 
     protected function getStats(): array
     {
-        $now   = now();
-        $year  = $now->year;
+        $now = now();
+        $year = $now->year;
         $month = $now->month;
-        $yearStr  = $now->format('Y');
+        $yearStr = $now->format('Y');
         $monthStr = $now->format('m');
 
         // ── This month ────────────────────────────────────────────────────────
@@ -26,21 +25,21 @@ class StatsOverview extends BaseWidget
             ->whereRaw("strftime('%m', created_at) = ?", [$monthStr]);
 
         $totalOrdersBulan = (clone $monthlyQ)->count();
-        $revenueBulan     = (clone $monthlyQ)->where('status', '!=', 'cancelled')->sum('total_price');
+        $revenueBulan = (clone $monthlyQ)->where('status', '!=', 'cancelled')->sum('total_price');
 
         // vs last month
-        $lastMonth      = $now->copy()->subMonth();
+        $lastMonth = $now->copy()->subMonth();
         $lastMonthTotal = Order::whereRaw("strftime('%Y', created_at) = ?", [$lastMonth->format('Y')])
             ->whereRaw("strftime('%m', created_at) = ?", [$lastMonth->format('m')])
             ->count();
-        $changeOrders   = $lastMonthTotal > 0
+        $changeOrders = $lastMonthTotal > 0
             ? round((($totalOrdersBulan - $lastMonthTotal) / $lastMonthTotal) * 100)
             : 0;
 
         // ── This year ─────────────────────────────────────────────────────────
-        $yearlyQ          = Order::whereRaw("strftime('%Y', created_at) = ?", [$yearStr]);
+        $yearlyQ = Order::whereRaw("strftime('%Y', created_at) = ?", [$yearStr]);
         $totalOrdersTahun = (clone $yearlyQ)->count();
-        $revenueTahun     = (clone $yearlyQ)->where('status', '!=', 'cancelled')->sum('total_price');
+        $revenueTahun = (clone $yearlyQ)->where('status', '!=', 'cancelled')->sum('total_price');
 
         // ── Pending ──────────────────────────────────────────────────────────
         $pendingOrders = Order::where('status', 'pending')->count();
@@ -52,9 +51,9 @@ class StatsOverview extends BaseWidget
             ->count();
 
         // ── Breakdown bulan ini ──────────────────────────────────────────────
-        $tourCount   = (clone $monthlyQ)->whereNotNull('product_id')->whereNull('vehicle_id')->whereNull('rental_package_id')->count();
+        $tourCount = (clone $monthlyQ)->whereNotNull('product_id')->whereNull('vehicle_id')->whereNull('rental_package_id')->count();
         $rentalCount = (clone $monthlyQ)->whereNotNull('rental_package_id')->count();
-        $carCount    = (clone $monthlyQ)->whereNotNull('vehicle_id')->count();
+        $carCount = (clone $monthlyQ)->whereNotNull('vehicle_id')->count();
 
         // Chart data (last 6 months)
         $chartData = [];
@@ -66,18 +65,18 @@ class StatsOverview extends BaseWidget
 
         return [
             Stat::make('Pesanan Bulan Ini', $totalOrdersBulan)
-                ->description(($changeOrders >= 0 ? '↑ +' : '↓ ') . $changeOrders . '% dari bulan lalu')
+                ->description(($changeOrders >= 0 ? '↑ +' : '↓ ').$changeOrders.'% dari bulan lalu')
                 ->descriptionIcon($changeOrders >= 0 ? 'heroicon-m-arrow-trending-up' : 'heroicon-m-arrow-trending-down')
                 ->color($changeOrders >= 0 ? 'success' : 'warning')
                 ->chart($chartData),
 
-            Stat::make('Pendapatan Bulan Ini', 'Rp ' . number_format($revenueBulan, 0, ',', '.'))
-                ->description('Wisata: ' . $tourCount . ' | Rental: ' . $rentalCount . ' | Mobil: ' . $carCount)
+            Stat::make('Pendapatan Bulan Ini', 'Rp '.number_format($revenueBulan, 0, ',', '.'))
+                ->description('Wisata: '.$tourCount.' | Rental: '.$rentalCount.' | Mobil: '.$carCount)
                 ->descriptionIcon('heroicon-m-banknotes')
                 ->color('success'),
 
-            Stat::make('Total Tahun ' . $year, $totalOrdersTahun)
-                ->description('Rp ' . number_format($revenueTahun, 0, ',', '.') . ' total pendapatan')
+            Stat::make('Total Tahun '.$year, $totalOrdersTahun)
+                ->description('Rp '.number_format($revenueTahun, 0, ',', '.').' total pendapatan')
                 ->descriptionIcon('heroicon-m-calendar')
                 ->color('info'),
 

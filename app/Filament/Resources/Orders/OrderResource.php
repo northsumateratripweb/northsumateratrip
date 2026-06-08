@@ -11,15 +11,15 @@ use App\Models\Order;
 use BackedEnum;
 use Filament\Resources\Resource;
 use Filament\Schemas\Schema;
-use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Table;
+use Illuminate\Database\Eloquent\Builder;
 use UnitEnum;
 
 class OrderResource extends Resource
 {
     protected static ?string $model = Order::class;
-    
-    public static function getEloquentQuery(): \Illuminate\Database\Eloquent\Builder
+
+    public static function getEloquentQuery(): Builder
     {
         return parent::getEloquentQuery()->with(['product', 'vehicle', 'rentalPackage']);
     }
@@ -29,7 +29,7 @@ class OrderResource extends Resource
     protected static string|UnitEnum|null $navigationGroup = 'Pesanan & Jadwal';
 
     protected static ?string $navigationLabel = 'Semua Pesanan';
-    
+
     protected static ?int $navigationSort = 1;
 
     public static function form(Schema $schema): Schema

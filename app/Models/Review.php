@@ -9,8 +9,8 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Review extends Model
 {
-    use HasFactory, ResolvesImagePath, \App\Traits\OptimizesImages;
-    
+    use \App\Traits\OptimizesImages, HasFactory, ResolvesImagePath;
+
     public $optimizableImages = ['gallery_images', 'avatar'];
 
     protected $fillable = [
@@ -46,6 +46,7 @@ class Review extends Model
         if (empty($this->gallery_images)) {
             return [];
         }
+
         return array_map(fn ($img) => self::resolveImagePath($img, 'images/reviews'), $this->gallery_images);
     }
 }

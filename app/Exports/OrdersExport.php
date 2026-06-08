@@ -3,20 +3,20 @@
 namespace App\Exports;
 
 use App\Models\Order;
-use Illuminate\Support\Carbon;
 use Maatwebsite\Excel\Concerns\FromCollection;
+use Maatwebsite\Excel\Concerns\WithColumnWidths;
 use Maatwebsite\Excel\Concerns\WithHeadings;
 use Maatwebsite\Excel\Concerns\WithMapping;
 use Maatwebsite\Excel\Concerns\WithStyles;
 use Maatwebsite\Excel\Concerns\WithTitle;
-use Maatwebsite\Excel\Concerns\WithColumnWidths;
-use PhpOffice\PhpSpreadsheet\Worksheet\Worksheet;
-use PhpOffice\PhpSpreadsheet\Style\Fill;
 use PhpOffice\PhpSpreadsheet\Style\Alignment;
+use PhpOffice\PhpSpreadsheet\Style\Fill;
+use PhpOffice\PhpSpreadsheet\Worksheet\Worksheet;
 
-class OrdersExport implements FromCollection, WithHeadings, WithMapping, WithStyles, WithTitle, WithColumnWidths
+class OrdersExport implements FromCollection, WithColumnWidths, WithHeadings, WithMapping, WithStyles, WithTitle
 {
     protected int $tahun;
+
     protected ?int $bulan;
 
     public function __construct(int $tahun, ?int $bulan = null)
@@ -28,15 +28,16 @@ class OrdersExport implements FromCollection, WithHeadings, WithMapping, WithSty
     public function title(): string
     {
         $namaBulan = [
-            1=>'Januari', 2=>'Februari', 3=>'Maret', 4=>'April',
-            5=>'Mei', 6=>'Juni', 7=>'Juli', 8=>'Agustus',
-            9=>'September', 10=>'Oktober', 11=>'November', 12=>'Desember',
+            1 => 'Januari', 2 => 'Februari', 3 => 'Maret', 4 => 'April',
+            5 => 'Mei', 6 => 'Juni', 7 => 'Juli', 8 => 'Agustus',
+            9 => 'September', 10 => 'Oktober', 11 => 'November', 12 => 'Desember',
         ];
 
         if ($this->bulan) {
-            return 'Laporan ' . ($namaBulan[$this->bulan] ?? $this->bulan) . ' ' . $this->tahun;
+            return 'Laporan '.($namaBulan[$this->bulan] ?? $this->bulan).' '.$this->tahun;
         }
-        return 'Laporan Tahunan ' . $this->tahun;
+
+        return 'Laporan Tahunan '.$this->tahun;
     }
 
     public function collection()
@@ -116,10 +117,10 @@ class OrdersExport implements FromCollection, WithHeadings, WithMapping, WithSty
             $order->quantity,
             $order->total_price,
             ucfirst($order->status),
-            match($order->payment_status) {
-                'paid'    => 'Lunas',
+            match ($order->payment_status) {
+                'paid' => 'Lunas',
                 'partial' => 'DP (Sebagian)',
-                default   => 'Belum Lunas',
+                default => 'Belum Lunas',
             },
             $order->hotel_category ?? '-',
             $order->hotel_1 ?? '-',
@@ -168,7 +169,7 @@ class OrdersExport implements FromCollection, WithHeadings, WithMapping, WithSty
             1 => [
                 'font' => ['bold' => true, 'color' => ['rgb' => 'FFFFFF']],
                 'fill' => [
-                    'fillType'   => Fill::FILL_SOLID,
+                    'fillType' => Fill::FILL_SOLID,
                     'startColor' => ['rgb' => '1E40AF'],
                 ],
                 'alignment' => [

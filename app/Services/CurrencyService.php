@@ -23,6 +23,7 @@ class CurrencyService
     public static function current(): array
     {
         $locale = App::getLocale();
+
         return self::$currencies[$locale] ?? self::$currencies['id'];
     }
 
@@ -54,16 +55,16 @@ class CurrencyService
      */
     public static function format(float|int $amountIdr, ?string $locale = null): string
     {
-        $locale  = $locale ?? App::getLocale();
-        $config  = self::$currencies[$locale] ?? self::$currencies['id'];
-        $amount  = $amountIdr * self::rate($locale);
+        $locale = $locale ?? App::getLocale();
+        $config = self::$currencies[$locale] ?? self::$currencies['id'];
+        $amount = $amountIdr * self::rate($locale);
 
         if ($locale === 'id') {
             // Indonesian style: Rp 1.500.000
-            return $config['symbol'] . ' ' . number_format($amount, $config['decimals'], ',', '.');
+            return $config['symbol'].' '.number_format($amount, $config['decimals'], ',', '.');
         } else {
             // International style: RM 420.00 / S$ 123.50
-            return $config['symbol'] . number_format($amount, $config['decimals'], '.', ',');
+            return $config['symbol'].number_format($amount, $config['decimals'], '.', ',');
         }
     }
 
@@ -81,6 +82,7 @@ class CurrencyService
     public static function symbol(?string $locale = null): string
     {
         $locale = $locale ?? App::getLocale();
+
         return self::$currencies[$locale]['symbol'] ?? 'Rp';
     }
 
@@ -90,6 +92,7 @@ class CurrencyService
     public static function code(?string $locale = null): string
     {
         $locale = $locale ?? App::getLocale();
+
         return self::$currencies[$locale]['code'] ?? 'IDR';
     }
 }

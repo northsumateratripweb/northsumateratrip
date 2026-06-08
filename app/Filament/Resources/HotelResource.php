@@ -5,12 +5,15 @@ namespace App\Filament\Resources;
 use App\Filament\Resources\HotelResource\Pages;
 use App\Models\Hotel;
 use Filament\Actions\BulkActionGroup;
+use Filament\Actions\CreateAction;
+use Filament\Actions\DeleteAction;
 use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
 use Filament\Actions\ViewAction;
 use Filament\Forms;
 use Filament\Resources\Resource;
 use Filament\Schemas;
+use Filament\Schemas\Schema;
 use Filament\Tables;
 use Filament\Tables\Table;
 
@@ -19,13 +22,14 @@ class HotelResource extends Resource
     protected static ?string $model = Hotel::class;
 
     protected static string|\UnitEnum|null $navigationGroup = 'Katalog Produk';
+
     protected static string|\BackedEnum|null $navigationIcon = 'heroicon-o-building-office-2';
 
     protected static ?string $navigationLabel = 'Hotel';
 
     protected static ?int $navigationSort = 1;
 
-    public static function form(\Filament\Schemas\Schema $schema): \Filament\Schemas\Schema
+    public static function form(Schema $schema): Schema
     {
         return $schema
             ->schema([
@@ -120,10 +124,10 @@ class HotelResource extends Resource
             ->recordActions([
                 ViewAction::make(),
                 EditAction::make(),
-                \Filament\Actions\DeleteAction::make(),
+                DeleteAction::make(),
             ])
             ->toolbarActions([
-                \Filament\Actions\CreateAction::make(),
+                CreateAction::make(),
                 BulkActionGroup::make([
                     DeleteBulkAction::make(),
                 ]),
@@ -135,10 +139,10 @@ class HotelResource extends Resource
     public static function getPages(): array
     {
         return [
-            'index'  => Pages\ListHotels::route('/'),
+            'index' => Pages\ListHotels::route('/'),
             'create' => Pages\CreateHotel::route('/create'),
-            'view'   => Pages\ViewHotel::route('/{record}'),
-            'edit'   => Pages\EditHotel::route('/{record}/edit'),
+            'view' => Pages\ViewHotel::route('/{record}'),
+            'edit' => Pages\EditHotel::route('/{record}/edit'),
         ];
     }
 }

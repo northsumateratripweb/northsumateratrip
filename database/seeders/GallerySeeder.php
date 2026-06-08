@@ -20,7 +20,7 @@ class GallerySeeder extends Seeder
             // Berastagi & Karo
             ['title' => 'Gunung Sibayak Sunrise',                  'image_url' => 'https://picsum.photos/seed/gallery-sibayak/800/600',   'caption' => 'Sunrise dari puncak Gunung Sibayak, Berastagi',                      'category' => 'Berastagi',    'sort_order' => 6],
             ['title' => 'Air Terjun Sipiso-piso',                  'image_url' => 'https://picsum.photos/seed/gallery-sipiso/800/600',    'caption' => 'Air terjun setinggi 120 meter di tepi Danau Toba',                   'category' => 'Berastagi',    'sort_order' => 7],
-            ['title' => 'Pasar Buah Berastagi',                    'image_url' => 'https://picsum.photos/seed/gallery-pasar-buah/800/600','caption' => 'Aneka buah segar dan markisa khas Berastagi',                        'category' => 'Berastagi',    'sort_order' => 8],
+            ['title' => 'Pasar Buah Berastagi',                    'image_url' => 'https://picsum.photos/seed/gallery-pasar-buah/800/600', 'caption' => 'Aneka buah segar dan markisa khas Berastagi',                        'category' => 'Berastagi',    'sort_order' => 8],
             ['title' => 'Kebun Teh Sidamanik',                     'image_url' => 'https://picsum.photos/seed/gallery-kebun-teh/800/600', 'caption' => 'Hamparan hijau kebun teh di dataran tinggi Simalungun',              'category' => 'Berastagi',    'sort_order' => 9],
 
             // Medan
@@ -34,7 +34,7 @@ class GallerySeeder extends Seeder
 
             // Tangkahan
             ['title' => 'Gajah Sumatera di Tangkahan',              'image_url' => 'https://picsum.photos/seed/gallery-elephant/800/600', 'caption' => 'Memandikan gajah di sungai Tangkahan',                               'category' => 'Tangkahan',    'sort_order' => 15],
-            ['title' => 'Sungai Tangkahan',                         'image_url' => 'https://picsum.photos/seed/gallery-tangkahan/800/600','caption' => 'Air jernih sungai Tangkahan dengan latar hutan lebat',               'category' => 'Tangkahan',    'sort_order' => 16],
+            ['title' => 'Sungai Tangkahan',                         'image_url' => 'https://picsum.photos/seed/gallery-tangkahan/800/600', 'caption' => 'Air jernih sungai Tangkahan dengan latar hutan lebat',               'category' => 'Tangkahan',    'sort_order' => 16],
 
             // Pulau Nias
             ['title' => 'Lompat Batu Nias',                         'image_url' => 'https://picsum.photos/seed/gallery-hombo/800/600',   'caption' => 'Tradisi Hombo Batu (Lompat Batu) khas Nias Selatan',                 'category' => 'Nias',         'sort_order' => 17],

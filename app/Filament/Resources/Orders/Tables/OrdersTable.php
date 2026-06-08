@@ -2,12 +2,17 @@
 
 namespace App\Filament\Resources\Orders\Tables;
 
+use Filament\Actions\Action;
 use Filament\Actions\BulkActionGroup;
-use Filament\Actions\CreateAction;
 use Filament\Actions\DeleteAction;
 use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
 use Filament\Actions\ViewAction;
+use Filament\Forms\Components\Select;
+use Filament\Tables\Columns\ImageColumn;
+use Filament\Tables\Columns\TextColumn;
+use Filament\Tables\Filters\Filter;
+use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Table;
 
 class OrdersTable
@@ -18,16 +23,16 @@ class OrdersTable
             ->poll('30s')
 
             ->columns([
-                \Filament\Tables\Columns\TextColumn::make('created_at')
+                TextColumn::make('created_at')
                     ->label('Tgl Pesan')
                     ->dateTime('d M Y H:i')
                     ->sortable(),
-                \Filament\Tables\Columns\TextColumn::make('customer_name')
+                TextColumn::make('customer_name')
                     ->label('Pelanggan')
                     ->description(fn ($record) => "{$record->customer_phone} — {$record->customer_email}")
                     ->searchable()
                     ->weight('bold'),
-                \Filament\Tables\Columns\TextColumn::make('type')
+                TextColumn::make('type')
                     ->label('Tipe')
                     ->badge()
                     ->getStateUsing(fn ($record) => $record->vehicle_id ? 'Mobil' : ($record->rental_package_id ? 'Paket Rental' : 'Paket Wisata'))
@@ -37,27 +42,27 @@ class OrdersTable
                         'Paket Wisata' => 'success',
                         default => 'gray',
                     }),
-                \Filament\Tables\Columns\TextColumn::make('item')
+                TextColumn::make('item')
                     ->label('Item')
                     ->getStateUsing(fn ($record) => $record->vehicle?->name ?? $record->rentalPackage?->name ?? $record->product?->name ?? '-')
                     ->wrap()
                     ->limit(40),
-                \Filament\Tables\Columns\TextColumn::make('trip_date')
+                TextColumn::make('trip_date')
                     ->label('Tgl Trip')
                     ->date('d M Y')
                     ->sortable()
                     ->color('primary'),
-                \Filament\Tables\Columns\TextColumn::make('total_price')
+                TextColumn::make('total_price')
                     ->label('Total')
                     ->money('IDR', true)
                     ->sortable()
                     ->weight('bold')
                     ->color('success'),
-                \Filament\Tables\Columns\ImageColumn::make('payment_proof')
+                ImageColumn::make('payment_proof')
                     ->label('Bukti')
                     ->circular()
                     ->placeholder('Belum ada'),
-                \Filament\Tables\Columns\TextColumn::make('status')
+                TextColumn::make('status')
                     ->label('Status')
                     ->badge()
                     ->color(fn (string $state): string => match ($state) {
@@ -68,7 +73,7 @@ class OrdersTable
                         default => 'gray',
                     })
                     ->sortable(),
-                \Filament\Tables\Columns\TextColumn::make('payment_status')
+                TextColumn::make('payment_status')
                     ->label('Bayar')
                     ->badge()
                     ->color(fn (string $state): string => match ($state) {
@@ -84,7 +89,7 @@ class OrdersTable
                         default => $state,
                     })
                     ->sortable(),
-                \Filament\Tables\Columns\TextColumn::make('transaction_id')
+                TextColumn::make('transaction_id')
                     ->label('ID Transaksi')
                     ->placeholder('-')
                     ->searchable()
@@ -93,23 +98,23 @@ class OrdersTable
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
             ->filters([
-                \Filament\Tables\Filters\SelectFilter::make('status')
+                SelectFilter::make('status')
                     ->options([
                         'pending' => 'Pending',
                         'confirmed' => 'Confirmed',
                         'completed' => 'Completed',
                         'cancelled' => 'Cancelled',
                     ]),
-                \Filament\Tables\Filters\SelectFilter::make('payment_status')
+                SelectFilter::make('payment_status')
                     ->label('Status Bayar')
                     ->options([
                         'unpaid' => 'Belum Lunas',
                         'paid' => 'Lunas',
                         'partial' => 'DP (Sebagian)',
                     ]),
-                \Filament\Tables\Filters\Filter::make('created_at_month')
+                Filter::make('created_at_month')
                     ->form([
-                        \Filament\Forms\Components\Select::make('month')
+                        Select::make('month')
                             ->label('Bulan')
                             ->options([
                                 1 => 'Januari', 2 => 'Februari', 3 => 'Maret', 4 => 'April', 5 => 'Mei', 6 => 'Juni',
@@ -119,9 +124,9 @@ class OrdersTable
                     ->query(function ($query, array $data) {
                         return $query->when($data['month'], fn ($query, $month) => $query->whereMonth('created_at', $month));
                     }),
-                \Filament\Tables\Filters\Filter::make('created_at_year')
+                Filter::make('created_at_year')
                     ->form([
-                        \Filament\Forms\Components\Select::make('year')
+                        Select::make('year')
                             ->label('Tahun')
                             ->options(array_combine(range(now()->year, now()->year - 5), range(now()->year, now()->year - 5)))
                             ->default(now()->year),
@@ -129,33 +134,33 @@ class OrdersTable
                     ->query(function ($query, array $data) {
                         return $query->when($data['year'], fn ($query, $year) => $query->whereYear('created_at', $year));
                     }),
-                \Filament\Tables\Filters\Filter::make('is_vehicle')
+                Filter::make('is_vehicle')
                     ->label('Sewa Mobil')
                     ->query(fn ($query) => $query->whereNotNull('vehicle_id')),
-                \Filament\Tables\Filters\Filter::make('is_product')
+                Filter::make('is_product')
                     ->label('Paket Wisata')
                     ->query(fn ($query) => $query->whereNotNull('product_id')),
             ])
             ->recordActions([
                 ViewAction::make(),
                 EditAction::make(),
-                \Filament\Actions\Action::make('invoice')
+                Action::make('invoice')
                     ->label('Invoice')
                     ->icon('heroicon-o-document-text')
                     ->color('info')
                     ->url(fn ($record) => route('order.invoice', $record->id))
                     ->openUrlInNewTab(),
-                \Filament\Actions\Action::make('pdf')
+                Action::make('pdf')
                     ->label('PDF')
                     ->icon('heroicon-o-arrow-down-tray')
                     ->color('gray')
                     ->url(fn ($record) => route('order.invoice', $record->id))
                     ->openUrlInNewTab(),
-                \Filament\Actions\Action::make('whatsapp')
+                Action::make('whatsapp')
                     ->label('WhatsApp')
                     ->icon('heroicon-o-chat-bubble-left-right')
                     ->color('success')
-                    ->url(fn ($record) => "https://wa.me/" . preg_replace('/\D/', '', $record->customer_phone) . "?text=" . urlencode("Halo {$record->customer_name}, kami ingin menginformasikan status pesanan Anda #ORD-" . str_pad($record->id, 5, '0', STR_PAD_LEFT) . " saat ini adalah " . strtoupper($record->status) . "."))
+                    ->url(fn ($record) => 'https://wa.me/'.preg_replace('/\D/', '', $record->customer_phone).'?text='.urlencode("Halo {$record->customer_name}, kami ingin menginformasikan status pesanan Anda #ORD-".str_pad($record->id, 5, '0', STR_PAD_LEFT).' saat ini adalah '.strtoupper($record->status).'.'))
                     ->openUrlInNewTab(),
                 DeleteAction::make(),
             ])

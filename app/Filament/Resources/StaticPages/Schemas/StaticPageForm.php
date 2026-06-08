@@ -3,12 +3,11 @@
 namespace App\Filament\Resources\StaticPages\Schemas;
 
 use Filament\Forms\Components\RichEditor;
-use Filament\Schemas\Components\Section;
+use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Toggle;
-use Filament\Forms\Components\Select;
-use Filament\Forms\Get;
+use Filament\Schemas\Components\Section;
 use Filament\Schemas\Schema;
 use Illuminate\Support\Str;
 
@@ -31,7 +30,7 @@ class StaticPageForm
                     ->label('Tipe Konten')
                     ->options([
                         'text' => 'Teks Standar (Rich Editor)',
-                        'html' => 'Kode HTML Kustom (Bisa berisi CSS/JS dll)'
+                        'html' => 'Kode HTML Kustom (Bisa berisi CSS/JS dll)',
                     ])
                     ->default('text')
                     ->reactive()

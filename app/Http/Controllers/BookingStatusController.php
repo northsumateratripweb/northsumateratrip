@@ -10,11 +10,11 @@ class BookingStatusController extends Controller
     public function index(Request $request)
     {
         $orderId = $request->query('order_id');
-        $phone   = $request->query('phone');
+        $phone = $request->query('phone');
 
         if ($orderId && $phone) {
             // Validasi input
-            if (!is_numeric($orderId) || strlen($phone) > 20) {
+            if (! is_numeric($orderId) || strlen($phone) > 20) {
                 return view('pages.booking-status');
             }
 
@@ -35,7 +35,7 @@ class BookingStatusController extends Controller
     {
         $validated = $request->validate([
             'order_id' => 'required|integer|min:1',
-            'phone'    => 'required|string|max:20',
+            'phone' => 'required|string|max:20',
         ]);
 
         $order = Order::with(['product', 'vehicle', 'tripSchedule.vehicle'])
@@ -52,7 +52,6 @@ class BookingStatusController extends Controller
     }
 
     public function getStatus(Order $order, Request $request)
-
     {
         // Simple security: check if phone matches
         if ($request->phone !== $order->customer_phone) {

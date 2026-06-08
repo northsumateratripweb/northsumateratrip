@@ -7,10 +7,9 @@ use Illuminate\Database\Seeder;
 
 class TripSeeder extends Seeder
 {
-
     public function run(): void
     {
-        $service = new TripImportService();
+        $service = new TripImportService;
         $results = $service->importAll(truncate: true);
 
         $total = 0;

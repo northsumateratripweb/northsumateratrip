@@ -4,23 +4,27 @@ namespace App\Filament\Resources;
 
 use App\Filament\Resources\CategoryResource\Pages;
 use App\Models\Category;
-use Filament\Forms;
-use Filament\Schemas;
-use Filament\Resources\Resource;
 use Filament\Actions\BulkActionGroup;
+use Filament\Actions\DeleteAction;
 use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
+use Filament\Forms;
+use Filament\Resources\Resource;
+use Filament\Schemas;
+use Filament\Schemas\Schema;
 use Filament\Tables;
 use Filament\Tables\Table;
+use Illuminate\Support\Str;
 
 class CategoryResource extends Resource
 {
     protected static ?string $model = Category::class;
 
     protected static string|\UnitEnum|null $navigationGroup = 'Katalog Produk';
+
     protected static string|\BackedEnum|null $navigationIcon = 'heroicon-o-tag';
 
-    public static function form(\Filament\Schemas\Schema $schema): \Filament\Schemas\Schema
+    public static function form(Schema $schema): Schema
     {
         return $schema
             ->schema([
@@ -31,7 +35,7 @@ class CategoryResource extends Resource
                             ->required()
                             ->maxLength(255)
                             ->live(onBlur: true)
-                            ->afterStateUpdated(fn ($state, callable $set) => $set('slug', \Illuminate\Support\Str::slug($state))),
+                            ->afterStateUpdated(fn ($state, callable $set) => $set('slug', Str::slug($state))),
                         Forms\Components\TextInput::make('slug')
                             ->required()
                             ->unique(ignoreRecord: true)
@@ -71,7 +75,7 @@ class CategoryResource extends Resource
                                         Forms\Components\TextInput::make('translations.ms.name')->label('Nama Kategori (MS)'),
                                         Forms\Components\Textarea::make('translations.ms.description')->label('Deskripsi (MS)'),
                                     ]),
-                            ])->columnSpanFull()
+                            ])->columnSpanFull(),
                     ]),
             ]);
     }
@@ -87,7 +91,7 @@ class CategoryResource extends Resource
             ])
             ->recordActions([
                 EditAction::make(),
-                \Filament\Actions\DeleteAction::make(),
+                DeleteAction::make(),
             ])
             ->toolbarActions([
                 BulkActionGroup::make([

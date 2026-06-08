@@ -31,7 +31,7 @@ class ListRoutes extends Tool
 
         $output = $routes->map(fn ($r) => "{$r['method']} {$r['uri']} [{$r['name']}] → {$r['action']}")->implode("\n");
 
-        return Response::text("Routes (" . $routes->count() . "):\n" . $output);
+        return Response::text('Routes ('.$routes->count()."):\n".$output);
     }
 
     public function schema(JsonSchema $schema): array

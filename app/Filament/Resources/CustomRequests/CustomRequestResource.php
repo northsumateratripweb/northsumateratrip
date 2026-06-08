@@ -8,16 +8,15 @@ use App\Filament\Resources\CustomRequests\Pages\ViewCustomRequest;
 use App\Filament\Resources\CustomRequests\Tables\CustomRequestsTable;
 use App\Models\CustomRequest;
 use BackedEnum;
-use UnitEnum;
-use Filament\Resources\Resource;
-use Filament\Schemas\Schema;
-use Filament\Support\Icons\Heroicon;
-use Filament\Tables\Table;
+use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
-use Filament\Forms\Components\DatePicker;
+use Filament\Resources\Resource;
 use Filament\Schemas\Components\Section;
+use Filament\Schemas\Schema;
+use Filament\Tables\Table;
+use UnitEnum;
 
 class CustomRequestResource extends Resource
 {
@@ -40,10 +39,10 @@ class CustomRequestResource extends Resource
                 ->schema([
                     Select::make('status')
                         ->options([
-                            'new'       => 'Baru',
-                            'reviewed'  => 'Ditinjau',
+                            'new' => 'Baru',
+                            'reviewed' => 'Ditinjau',
                             'responded' => 'Ditanggapi',
-                            'closed'    => 'Selesai',
+                            'closed' => 'Selesai',
                         ])
                         ->required(),
                     Textarea::make('admin_notes')
@@ -90,9 +89,9 @@ class CustomRequestResource extends Resource
     public static function getPages(): array
     {
         return [
-            'index'  => ListCustomRequests::route('/'),
-            'view'   => ViewCustomRequest::route('/{record}'),
-            'edit'   => EditCustomRequest::route('/{record}/edit'),
+            'index' => ListCustomRequests::route('/'),
+            'view' => ViewCustomRequest::route('/{record}'),
+            'edit' => EditCustomRequest::route('/{record}/edit'),
         ];
     }
 }

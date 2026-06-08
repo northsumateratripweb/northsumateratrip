@@ -4,6 +4,7 @@ namespace App\Filament\Resources\SettingResource\Pages;
 
 use App\Filament\Resources\SettingResource;
 use Filament\Resources\Pages\EditRecord;
+use Illuminate\Support\Facades\Cache;
 
 class EditSetting extends EditRecord
 {
@@ -11,7 +12,7 @@ class EditSetting extends EditRecord
 
     protected function afterSave(): void
     {
-        \Illuminate\Support\Facades\Cache::forget('site_settings');
-        \Illuminate\Support\Facades\Cache::forget('app_settings');
+        Cache::forget('site_settings');
+        Cache::forget('app_settings');
     }
 }

@@ -23,7 +23,7 @@ class TripScheduleResource extends Resource
     protected static string|UnitEnum|null $navigationGroup = 'Pesanan & Jadwal';
 
     protected static ?string $navigationLabel = 'Jadwal Trip';
-    
+
     protected static ?int $navigationSort = 2;
 
     public static function form(Schema $schema): Schema

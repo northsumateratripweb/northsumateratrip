@@ -4,28 +4,33 @@ namespace App\Filament\Resources;
 
 use App\Filament\Resources\RentalPackageResource\Pages;
 use App\Models\RentalPackage;
-use Filament\Forms;
-use Filament\Schemas;
-use Filament\Resources\Resource;
 use Filament\Actions\BulkActionGroup;
+use Filament\Actions\CreateAction;
+use Filament\Actions\DeleteAction;
 use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
 use Filament\Actions\ViewAction;
+use Filament\Forms;
+use Filament\Resources\Resource;
+use Filament\Schemas;
+use Filament\Schemas\Schema;
 use Filament\Tables;
 use Filament\Tables\Table;
+use Illuminate\Support\Str;
 
 class RentalPackageResource extends Resource
 {
     protected static ?string $model = RentalPackage::class;
 
     protected static string|\UnitEnum|null $navigationGroup = 'Katalog Produk';
+
     protected static string|\BackedEnum|null $navigationIcon = 'heroicon-o-briefcase';
 
     protected static ?string $navigationLabel = 'Paket Rental';
-    
+
     protected static ?int $navigationSort = 2;
 
-    public static function form(\Filament\Schemas\Schema $schema): \Filament\Schemas\Schema
+    public static function form(Schema $schema): Schema
     {
         return $schema
             ->schema([
@@ -37,7 +42,7 @@ class RentalPackageResource extends Resource
                             ->required()
                             ->maxLength(255)
                             ->live(onBlur: true)
-                            ->afterStateUpdated(fn ($state, callable $set) => $set('slug', \Illuminate\Support\Str::slug($state))),
+                            ->afterStateUpdated(fn ($state, callable $set) => $set('slug', Str::slug($state))),
                         Forms\Components\TextInput::make('category')
                             ->label('Kategori')
                             ->maxLength(255)
@@ -51,7 +56,7 @@ class RentalPackageResource extends Resource
                             ->rows(3)
                             ->columnSpanFull(),
                     ]),
-                
+
                 Schemas\Components\Section::make('Harga & Durasi')
                     ->columns(3)
                     ->schema([
@@ -70,7 +75,7 @@ class RentalPackageResource extends Resource
                             ->numeric()
                             ->default(30),
                     ]),
-                
+
                 Schemas\Components\Section::make('Fasilitas')
                     ->schema([
                         Forms\Components\TagsInput::make('includes')
@@ -80,7 +85,7 @@ class RentalPackageResource extends Resource
                             ->label('Tidak Termasuk')
                             ->placeholder('Contoh: Makan, Tiket Masuk'),
                     ]),
-                
+
                 Schemas\Components\Section::make('Media')
                     ->schema([
                         Forms\Components\FileUpload::make('featured_image')
@@ -93,7 +98,7 @@ class RentalPackageResource extends Resource
                             ->reorderable()
                             ->required(),
                     ]),
-                
+
                 Schemas\Components\Section::make('Status')
                     ->columns(2)
                     ->schema([
@@ -131,7 +136,7 @@ class RentalPackageResource extends Resource
                                         Forms\Components\TagsInput::make('translations.ms.includes')->label('Termasuk (MS)'),
                                         Forms\Components\TagsInput::make('translations.ms.excludes')->label('Tidak Termasuk (MS)'),
                                     ]),
-                            ])->columnSpanFull()
+                            ])->columnSpanFull(),
                     ]),
             ]);
     }
@@ -165,10 +170,10 @@ class RentalPackageResource extends Resource
             ->recordActions([
                 ViewAction::make(),
                 EditAction::make(),
-                \Filament\Actions\DeleteAction::make(),
+                DeleteAction::make(),
             ])
             ->toolbarActions([
-                \Filament\Actions\CreateAction::make(),
+                CreateAction::make(),
                 BulkActionGroup::make([
                     DeleteBulkAction::make(),
                 ]),

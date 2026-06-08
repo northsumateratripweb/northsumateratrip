@@ -9,13 +9,15 @@ use Illuminate\Support\Facades\Hash;
 class ResetAdminPassword extends Command
 {
     protected $signature = 'app:reset-admin-password {--password=admin123 : The new password to set}';
+
     protected $description = 'Reset password for first admin user';
 
     public function handle()
     {
         $user = User::first();
-        if (!$user) {
+        if (! $user) {
             $this->error('No user found in database!');
+
             return 1;
         }
 
@@ -23,7 +25,7 @@ class ResetAdminPassword extends Command
         $user->password = Hash::make($password);
         $user->save();
 
-        $this->info("Password successfully reset!");
+        $this->info('Password successfully reset!');
         $this->table(['Field', 'Value'], [
             ['ID', $user->id],
             ['Name', $user->name],
@@ -33,5 +35,5 @@ class ResetAdminPassword extends Command
         ]);
 
         return 0;
-     }
+    }
 }

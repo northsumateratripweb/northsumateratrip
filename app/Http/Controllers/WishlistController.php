@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
-use App\Models\Wishlist;
 use App\Models\Product;
 use App\Models\Vehicle;
+use App\Models\Wishlist;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
 
@@ -64,7 +64,7 @@ class WishlistController extends Controller
                     } else {
                         $query->where('session_id', $sessionId);
                     }
-                })->count()
+                })->count(),
             ]);
         }
 
@@ -110,7 +110,7 @@ class WishlistController extends Controller
                     } else {
                         $query->where('session_id', $sessionId);
                     }
-                })->count()
+                })->count(),
             ]);
         }
 

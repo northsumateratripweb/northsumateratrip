@@ -2,14 +2,14 @@
 
 namespace App\Models;
 
+use App\Traits\HasTranslations;
 use App\Traits\ResolvesImagePath;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use App\Traits\HasTranslations;
 
 class Blog extends Model
 {
-    use HasFactory, ResolvesImagePath, \App\Traits\OptimizesImages, HasTranslations;
+    use \App\Traits\OptimizesImages, HasFactory, HasTranslations, ResolvesImagePath;
 
     protected $fillable = [
         'title',
@@ -64,13 +64,18 @@ class Blog extends Model
     {
         $images = [];
         if (is_array($this->featured_image)) {
-            foreach ($this->featured_image as $img) $images[] = self::resolveImagePath($img, 'images/blogs');
+            foreach ($this->featured_image as $img) {
+                $images[] = self::resolveImagePath($img, 'images/blogs');
+            }
         } elseif ($this->featured_image) {
             $images[] = self::resolveImagePath($this->featured_image, 'images/blogs');
         }
         if (is_array($this->gallery_images)) {
-            foreach ($this->gallery_images as $img) $images[] = self::resolveImagePath($img, 'images/blogs');
+            foreach ($this->gallery_images as $img) {
+                $images[] = self::resolveImagePath($img, 'images/blogs');
+            }
         }
+
         return array_values(array_unique($images));
     }
 
@@ -79,6 +84,7 @@ class Blog extends Model
         if (empty($this->gallery_images)) {
             return [];
         }
+
         return array_map(fn ($img) => self::resolveImagePath($img, 'images/blogs'), $this->gallery_images);
     }
 
@@ -86,7 +92,8 @@ class Blog extends Model
     {
         $words = str_word_count(strip_tags($this->content));
         $minutes = ceil($words / 200);
-        return $minutes . ' ' . __('ui.min_read');
+
+        return $minutes.' '.__('ui.min_read');
     }
 
     public function getShareUrlAttribute(): array

@@ -2,11 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Exports\OrdersExport;
 use App\Models\Order;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\DB;
 use Maatwebsite\Excel\Facades\Excel;
-use App\Exports\OrdersExport;
 
 class LaporanPesananController extends Controller
 {
@@ -48,9 +49,9 @@ class LaporanPesananController extends Controller
         for ($m = 1; $m <= 12; $m++) {
             $orders = Order::whereYear('created_at', $tahun)->whereMonth('created_at', $m)->where('status', '!=', 'cancelled');
             $grafikBulanan[] = [
-                'bulan'    => Carbon::create($tahun, $m, 1)->locale('id')->isoFormat('MMM'),
-                'pesanan'  => $orders->count(),
-                'revenue'  => $orders->sum('total_price'),
+                'bulan' => Carbon::create($tahun, $m, 1)->locale('id')->isoFormat('MMM'),
+                'pesanan' => $orders->count(),
+                'revenue' => $orders->sum('total_price'),
             ];
         }
 
@@ -73,7 +74,7 @@ class LaporanPesananController extends Controller
 
         // Group by month for yearly view
         $groupedByMonth = null;
-        if (!$bulan) {
+        if (! $bulan) {
             $groupedByMonth = $orders->groupBy(fn ($o) => $o->created_at->format('n'));
         }
 
@@ -83,9 +84,9 @@ class LaporanPesananController extends Controller
         $availableYears = $this->getAvailableYears();
 
         $namaBulan = [
-            1=>'Januari', 2=>'Februari', 3=>'Maret', 4=>'April',
-            5=>'Mei', 6=>'Juni', 7=>'Juli', 8=>'Agustus',
-            9=>'September', 10=>'Oktober', 11=>'November', 12=>'Desember',
+            1 => 'Januari', 2 => 'Februari', 3 => 'Maret', 4 => 'April',
+            5 => 'Mei', 6 => 'Juni', 7 => 'Juli', 8 => 'Agustus',
+            9 => 'September', 10 => 'Oktober', 11 => 'November', 12 => 'Desember',
         ];
 
         return view('pages.laporan-pesanan', compact(
@@ -102,8 +103,8 @@ class LaporanPesananController extends Controller
         $tahun = (int) $request->input('tahun', now()->year);
         $bulan = $request->input('bulan') ? (int) $request->input('bulan') : null;
 
-        $namaBulan = $bulan ? '-bulan-' . str_pad($bulan, 2, '0', STR_PAD_LEFT) : '';
-        $filename  = 'laporan-pesanan-' . $tahun . $namaBulan . '.csv';
+        $namaBulan = $bulan ? '-bulan-'.str_pad($bulan, 2, '0', STR_PAD_LEFT) : '';
+        $filename = 'laporan-pesanan-'.$tahun.$namaBulan.'.csv';
 
         return Excel::download(new OrdersExport($tahun, $bulan), $filename, \Maatwebsite\Excel\Excel::CSV, [
             'Content-Type' => 'text/csv',
@@ -118,8 +119,8 @@ class LaporanPesananController extends Controller
         $tahun = (int) $request->input('tahun', now()->year);
         $bulan = $request->input('bulan') ? (int) $request->input('bulan') : null;
 
-        $namaBulan = $bulan ? '-bulan-' . str_pad($bulan, 2, '0', STR_PAD_LEFT) : '';
-        $filename  = 'laporan-pesanan-' . $tahun . $namaBulan . '.xlsx';
+        $namaBulan = $bulan ? '-bulan-'.str_pad($bulan, 2, '0', STR_PAD_LEFT) : '';
+        $filename = 'laporan-pesanan-'.$tahun.$namaBulan.'.xlsx';
 
         return Excel::download(new OrdersExport($tahun, $bulan), $filename);
     }
@@ -130,17 +131,17 @@ class LaporanPesananController extends Controller
     protected function computeStats($orders): array
     {
         return [
-            'total'     => $orders->count(),
-            'revenue'   => $orders->where('status', '!=', 'cancelled')->sum('total_price'),
-            'tour'      => $orders->filter(fn ($o) => $o->product_id && !$o->vehicle_id && !$o->rental_package_id)->count(),
-            'rental'    => $orders->filter(fn ($o) => (bool) $o->rental_package_id)->count(),
-            'car'       => $orders->filter(fn ($o) => (bool) $o->vehicle_id)->count(),
-            'pending'   => $orders->where('status', 'pending')->count(),
+            'total' => $orders->count(),
+            'revenue' => $orders->where('status', '!=', 'cancelled')->sum('total_price'),
+            'tour' => $orders->filter(fn ($o) => $o->product_id && ! $o->vehicle_id && ! $o->rental_package_id)->count(),
+            'rental' => $orders->filter(fn ($o) => (bool) $o->rental_package_id)->count(),
+            'car' => $orders->filter(fn ($o) => (bool) $o->vehicle_id)->count(),
+            'pending' => $orders->where('status', 'pending')->count(),
             'confirmed' => $orders->where('status', 'confirmed')->count(),
             'completed' => $orders->where('status', 'completed')->count(),
             'cancelled' => $orders->where('status', 'cancelled')->count(),
-            'paid'      => $orders->where('payment_status', 'paid')->count(),
-            'unpaid'    => $orders->where('payment_status', 'unpaid')->count(),
+            'paid' => $orders->where('payment_status', 'paid')->count(),
+            'unpaid' => $orders->where('payment_status', 'unpaid')->count(),
         ];
     }
 
@@ -149,18 +150,18 @@ class LaporanPesananController extends Controller
      */
     protected function getAvailableYears(): array
     {
-        $driver = \Illuminate\Support\Facades\DB::getDriverName();
-        
+        $driver = DB::getDriverName();
+
         $query = Order::query();
-        
+
         if ($driver === 'sqlite') {
             $query->selectRaw('strftime("%Y", created_at) as y');
         } else {
             $query->selectRaw('YEAR(created_at) as y');
         }
-        
+
         $years = $query->distinct()->orderByDesc('y')->pluck('y')->toArray();
-        
+
         return empty($years) ? [(int) now()->year] : array_map('intval', $years);
     }
 }

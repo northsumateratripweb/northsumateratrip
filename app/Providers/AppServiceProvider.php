@@ -2,9 +2,15 @@
 
 namespace App\Providers;
 
+use App\Mcp\Servers\DefaultServer;
 use App\Models\Category;
 use App\Models\Setting;
 use App\Models\Wishlist;
+use App\Repositories\CarRepository;
+use App\Repositories\Contracts\CarRepositoryInterface;
+use App\Repositories\Contracts\TourRepositoryInterface;
+use App\Repositories\TourRepository;
+use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Session;
@@ -17,18 +23,18 @@ class AppServiceProvider extends ServiceProvider
     public function register(): void
     {
         $this->app->bind(
-            \App\Repositories\Contracts\TourRepositoryInterface::class,
-            \App\Repositories\TourRepository::class
+            TourRepositoryInterface::class,
+            TourRepository::class
         );
         $this->app->bind(
-            \App\Repositories\Contracts\CarRepositoryInterface::class,
-            \App\Repositories\CarRepository::class
+            CarRepositoryInterface::class,
+            CarRepository::class
         );
     }
 
     public function boot(): void
     {
-        Mcp::local('default', \App\Mcp\Servers\DefaultServer::class);
+        Mcp::local('default', DefaultServer::class);
 
         // Share categories and settings with all views (cached per request)
         View::composer('*', function ($view) {
@@ -52,6 +58,7 @@ class AppServiceProvider extends ServiceProvider
                         }
                         $result[$s->key] = $value;
                     }
+
                     return $result;
                 });
 
@@ -84,7 +91,7 @@ class AppServiceProvider extends ServiceProvider
         try {
             $locale = Session::get('locale');
             if ($locale) {
-                \Illuminate\Support\Facades\App::setLocale($locale);
+                App::setLocale($locale);
             }
         } catch (\Throwable $e) {
             // ignore during early bootstrap

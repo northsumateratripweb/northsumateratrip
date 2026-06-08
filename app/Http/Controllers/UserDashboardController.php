@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Models\Order;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 class UserDashboardController extends Controller
@@ -18,9 +17,9 @@ class UserDashboardController extends Controller
             ->paginate(20);
 
         $stats = [
-            'total'     => $orders->count(),
+            'total' => $orders->count(),
             'completed' => $orders->where('status', 'completed')->count(),
-            'pending'   => $orders->where('status', 'pending')->count(),
+            'pending' => $orders->where('status', 'pending')->count(),
         ];
 
         return view('pages.dashboard', compact('orders', 'stats'));

@@ -14,15 +14,15 @@ trait OptimizesImages
     {
         static::saving(function ($model) {
             // Get fields to optimize from model property or use defaults
-            $fields = property_exists($model, 'optimizableImages') 
-                ? $model->optimizableImages 
+            $fields = property_exists($model, 'optimizableImages')
+                ? $model->optimizableImages
                 : ['featured_image', 'gallery_images'];
-            
+
             foreach ($fields as $field) {
                 // Only process if the field has changed
                 if ($model->isDirty($field)) {
                     $value = $model->getAttribute($field);
-                    
+
                     if (empty($value)) {
                         continue;
                     }
@@ -43,7 +43,7 @@ trait OptimizesImages
                             $model->setAttribute($field, ImageProcessor::toWebp($value));
                         }
                     } catch (\Exception $e) {
-                        Log::error("Failed to optimize image field [{$field}] for model [" . get_class($model) . "]: " . $e->getMessage());
+                        Log::error("Failed to optimize image field [{$field}] for model [".get_class($model).']: '.$e->getMessage());
                     }
                 }
             }

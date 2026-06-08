@@ -4,25 +4,30 @@ namespace App\Filament\Resources;
 
 use App\Filament\Resources\BlogResource\Pages;
 use App\Models\Blog;
-use Filament\Forms;
-use Filament\Schemas;
-use Filament\Resources\Resource;
 use Filament\Actions\BulkActionGroup;
+use Filament\Actions\CreateAction;
+use Filament\Actions\DeleteAction;
 use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
+use Filament\Forms;
+use Filament\Resources\Resource;
+use Filament\Schemas;
+use Filament\Schemas\Schema;
 use Filament\Tables;
 use Filament\Tables\Table;
+use Illuminate\Support\Str;
 
 class BlogResource extends Resource
 {
     protected static ?string $model = Blog::class;
 
     protected static string|\UnitEnum|null $navigationGroup = 'Konten Website';
+
     protected static string|\BackedEnum|null $navigationIcon = 'heroicon-o-document-text';
 
     protected static ?string $navigationLabel = 'Artikel / Blog';
 
-    public static function form(\Filament\Schemas\Schema $schema): \Filament\Schemas\Schema
+    public static function form(Schema $schema): Schema
     {
         return $schema
             ->schema([
@@ -35,7 +40,7 @@ class BlogResource extends Resource
                             ->required()
                             ->maxLength(255)
                             ->live(onBlur: true)
-                            ->afterStateUpdated(fn ($state, callable $set) => $set('slug', \Illuminate\Support\Str::slug($state)))
+                            ->afterStateUpdated(fn ($state, callable $set) => $set('slug', Str::slug($state)))
                             ->columnSpan(1),
                         Forms\Components\TextInput::make('slug')
                             ->label('Slug URL')
@@ -110,7 +115,7 @@ class BlogResource extends Resource
                                         Forms\Components\Textarea::make('translations.ms.excerpt')->label('Kutipan Singkat (MS)'),
                                         Forms\Components\RichEditor::make('translations.ms.content')->label('Isi Artikel (MS)'),
                                     ]),
-                            ])->columnSpanFull()
+                            ])->columnSpanFull(),
                     ]),
             ]);
     }
@@ -155,10 +160,10 @@ class BlogResource extends Resource
             ])
             ->recordActions([
                 EditAction::make(),
-                \Filament\Actions\DeleteAction::make(),
+                DeleteAction::make(),
             ])
             ->toolbarActions([
-                \Filament\Actions\CreateAction::make(),
+                CreateAction::make(),
                 BulkActionGroup::make([
                     DeleteBulkAction::make(),
                 ]),

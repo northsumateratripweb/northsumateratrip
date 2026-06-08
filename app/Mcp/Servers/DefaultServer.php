@@ -2,6 +2,10 @@
 
 namespace App\Mcp\Servers;
 
+use App\Mcp\Tools\DatabaseQuery;
+use App\Mcp\Tools\ListModels;
+use App\Mcp\Tools\ListRoutes;
+use App\Mcp\Tools\RunArtisan;
 use Laravel\Mcp\Server;
 use Laravel\Mcp\Server\Attributes\Instructions;
 use Laravel\Mcp\Server\Attributes\Name;
@@ -13,10 +17,10 @@ use Laravel\Mcp\Server\Attributes\Version;
 class DefaultServer extends Server
 {
     protected array $tools = [
-        \App\Mcp\Tools\DatabaseQuery::class,
-        \App\Mcp\Tools\ListRoutes::class,
-        \App\Mcp\Tools\ListModels::class,
-        \App\Mcp\Tools\RunArtisan::class,
+        DatabaseQuery::class,
+        ListRoutes::class,
+        ListModels::class,
+        RunArtisan::class,
     ];
 
     protected array $resources = [

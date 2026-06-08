@@ -7,6 +7,7 @@ use Filament\Actions\CreateAction;
 use Filament\Actions\DeleteAction;
 use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
+use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 
 class ActivityLogsTable
@@ -15,18 +16,18 @@ class ActivityLogsTable
     {
         return $table
             ->columns([
-                \Filament\Tables\Columns\TextColumn::make('created_at')
+                TextColumn::make('created_at')
                     ->label('Waktu')
                     ->dateTime()
                     ->sortable(),
-                \Filament\Tables\Columns\TextColumn::make('user.name')
+                TextColumn::make('user.name')
                     ->label('Penguna')
                     ->searchable()
                     ->sortable(),
-                \Filament\Tables\Columns\TextColumn::make('description')
+                TextColumn::make('description')
                     ->label('Aktivitas')
                     ->searchable(),
-                \Filament\Tables\Columns\TextColumn::make('ip_address')
+                TextColumn::make('ip_address')
                     ->label('IP Address')
                     ->searchable(),
             ])

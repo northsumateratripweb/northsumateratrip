@@ -2,12 +2,14 @@
 
 namespace App\Models;
 
-use App\Traits\ResolvesImagePath;
 use App\Traits\HasTranslations;
+use App\Traits\ResolvesImagePath;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Support\Carbon;
 
 /**
  * @property int $id
@@ -41,16 +43,16 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  * @property int $sort_order
  * @property bool $is_featured
  * @property bool $is_active
- * @property \Illuminate\Support\Carbon|null $created_at
- * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property Carbon|null $created_at
+ * @property Carbon|null $updated_at
  * @property-read Category|null $category
- * @property-read \Illuminate\Database\Eloquent\Collection<int, Review> $reviews
- * @property-read \Illuminate\Database\Eloquent\Collection<int, Order> $orders
- * @property-read \Illuminate\Database\Eloquent\Collection<int, Review> $approvedReviews
+ * @property-read Collection<int, Review> $reviews
+ * @property-read Collection<int, Order> $orders
+ * @property-read Collection<int, Review> $approvedReviews
  */
 class Product extends Model
 {
-    use HasFactory, ResolvesImagePath, \App\Traits\OptimizesImages, HasTranslations;
+    use \App\Traits\OptimizesImages, HasFactory, HasTranslations, ResolvesImagePath;
 
     protected $fillable = [
         'category_id',
@@ -141,7 +143,7 @@ class Product extends Model
     public function getAllImageUrlsAttribute(): array
     {
         $images = [];
-        
+
         // Add all featured images
         if (is_array($this->featured_image)) {
             foreach ($this->featured_image as $img) {
@@ -166,6 +168,7 @@ class Product extends Model
         if (empty($this->gallery_images)) {
             return [];
         }
+
         return array_map(fn ($img) => self::resolveImagePath($img, 'images/products'), $this->gallery_images);
     }
 

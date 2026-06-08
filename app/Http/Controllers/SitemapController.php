@@ -3,8 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Models\Blog;
+use App\Models\CarRental;
 use App\Models\Category;
 use App\Models\Product;
+use App\Models\RentalPackage;
 use App\Models\StaticPage;
 use Illuminate\Http\Response;
 
@@ -16,8 +18,8 @@ class SitemapController extends Controller
         $categories = Category::active()->select('slug', 'updated_at')->get();
         $blogs = Blog::published()->select('slug', 'updated_at')->get();
         $pages = StaticPage::where('is_published', true)->select('slug', 'updated_at')->get();
-        $cars = \App\Models\CarRental::where('is_available', true)->select('slug', 'updated_at')->get();
-        $rentalPackages = \App\Models\RentalPackage::where('is_active', true)->select('slug', 'updated_at')->get();
+        $cars = CarRental::where('is_available', true)->select('slug', 'updated_at')->get();
+        $rentalPackages = RentalPackage::where('is_active', true)->select('slug', 'updated_at')->get();
 
         return response()->view('sitemap', [
             'products' => $products,

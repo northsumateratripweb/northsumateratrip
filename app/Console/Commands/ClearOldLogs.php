@@ -2,9 +2,9 @@
 
 namespace App\Console\Commands;
 
+use Carbon\Carbon;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\File;
-use Carbon\Carbon;
 
 class ClearOldLogs extends Command
 {
@@ -29,9 +29,10 @@ class ClearOldLogs extends Command
     {
         $days = $this->option('days');
         $logPath = storage_path('logs');
-        
-        if (!File::exists($logPath)) {
+
+        if (! File::exists($logPath)) {
             $this->error('Log directory does not exist');
+
             return 1;
         }
 
@@ -41,7 +42,7 @@ class ClearOldLogs extends Command
 
         foreach ($files as $file) {
             $fileTime = Carbon::createFromTimestamp(File::lastModified($file));
-            
+
             if ($fileTime->lt($cutoffDate)) {
                 File::delete($file);
                 $deletedCount++;
@@ -50,6 +51,7 @@ class ClearOldLogs extends Command
         }
 
         $this->info("Cleared {$deletedCount} old log file(s)");
+
         return 0;
     }
 }

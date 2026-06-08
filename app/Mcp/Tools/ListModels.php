@@ -19,8 +19,10 @@ class ListModels extends Tool
         $output = [];
 
         foreach ($files as $file) {
-            $className = 'App\\Models\\' . $file->getFilenameWithoutExtension();
-            if (!class_exists($className)) continue;
+            $className = 'App\\Models\\'.$file->getFilenameWithoutExtension();
+            if (! class_exists($className)) {
+                continue;
+            }
 
             try {
                 $model = new $className;
@@ -28,23 +30,25 @@ class ListModels extends Tool
 
                 $relationships = [];
                 foreach ($reflection->getMethods(\ReflectionMethod::IS_PUBLIC) as $method) {
-                    if ($method->class !== $className) continue;
+                    if ($method->class !== $className) {
+                        continue;
+                    }
                     $returnType = $method->getReturnType();
-                    if ($returnType && str_contains((string)$returnType, 'Illuminate\\Database\\Eloquent\\Relations')) {
+                    if ($returnType && str_contains((string) $returnType, 'Illuminate\\Database\\Eloquent\\Relations')) {
                         $relationships[] = $method->getName();
                     }
                 }
 
                 $info = $file->getFilenameWithoutExtension();
-                $info .= "\n  Table: " . $model->getTable();
-                $info .= "\n  Fillable: " . implode(', ', $model->getFillable());
-                $info .= "\n  Casts: " . json_encode($model->getCasts());
-                if (!empty($relationships)) {
-                    $info .= "\n  Relationships: " . implode(', ', $relationships);
+                $info .= "\n  Table: ".$model->getTable();
+                $info .= "\n  Fillable: ".implode(', ', $model->getFillable());
+                $info .= "\n  Casts: ".json_encode($model->getCasts());
+                if (! empty($relationships)) {
+                    $info .= "\n  Relationships: ".implode(', ', $relationships);
                 }
                 $output[] = $info;
             } catch (\Throwable $e) {
-                $output[] = $file->getFilenameWithoutExtension() . " - Error: " . $e->getMessage();
+                $output[] = $file->getFilenameWithoutExtension().' - Error: '.$e->getMessage();
             }
         }
 

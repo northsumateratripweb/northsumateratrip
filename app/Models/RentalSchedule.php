@@ -45,12 +45,12 @@ class RentalSchedule extends Model
 
     public function getStatusLabelAttribute(): string
     {
-        return match($this->rental_status) {
-            'booked'    => 'Dipesan',
-            'ongoing'   => 'Dalam Perjalanan',
+        return match ($this->rental_status) {
+            'booked' => 'Dipesan',
+            'ongoing' => 'Dalam Perjalanan',
             'completed' => 'Selesai',
             'cancelled' => 'Dibatalkan',
-            default     => ucfirst($this->rental_status),
+            default => ucfirst($this->rental_status),
         };
     }
 }

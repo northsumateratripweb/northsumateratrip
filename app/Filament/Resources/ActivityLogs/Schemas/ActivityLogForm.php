@@ -2,6 +2,10 @@
 
 namespace App\Filament\Resources\ActivityLogs\Schemas;
 
+use Filament\Forms\Components\DateTimePicker;
+use Filament\Forms\Components\KeyValue;
+use Filament\Forms\Components\Select;
+use Filament\Forms\Components\TextInput;
 use Filament\Schemas\Schema;
 
 class ActivityLogForm
@@ -10,16 +14,16 @@ class ActivityLogForm
     {
         return $schema
             ->components([
-                \Filament\Forms\Components\TextInput::make('description')
+                TextInput::make('description')
                     ->disabled(),
-                \Filament\Forms\Components\Select::make('user_id')
+                Select::make('user_id')
                     ->relationship('user', 'name')
                     ->disabled(),
-                \Filament\Forms\Components\TextInput::make('ip_address')
+                TextInput::make('ip_address')
                     ->disabled(),
-                \Filament\Forms\Components\KeyValue::make('properties')
+                KeyValue::make('properties')
                     ->disabled(),
-                \Filament\Forms\Components\DateTimePicker::make('created_at')
+                DateTimePicker::make('created_at')
                     ->disabled(),
             ]);
     }

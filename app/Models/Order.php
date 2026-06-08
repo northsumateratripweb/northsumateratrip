@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Carbon;
 
 /**
  * @property int $id
@@ -33,8 +34,8 @@ use Illuminate\Database\Eloquent\Model;
  * @property string|null $payment_status
  * @property string|null $transaction_id
  * @property string|null $payment_proof
- * @property \Illuminate\Support\Carbon|null $created_at
- * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property Carbon|null $created_at
+ * @property Carbon|null $updated_at
  * @property-read Product|null $product
  * @property-read Vehicle|null $vehicle
  * @property-read RentalPackage|null $rentalPackage
@@ -47,9 +48,9 @@ class Order extends Model
         parent::boot();
 
         static::creating(function ($model) {
-            if (!$model->transaction_id) {
+            if (! $model->transaction_id) {
                 $prefix = $model->vehicle_id ? 'CAR-' : 'TRIP-';
-                $model->transaction_id = $prefix . strtoupper(substr(uniqid(), -8));
+                $model->transaction_id = $prefix.strtoupper(substr(uniqid(), -8));
             }
         });
     }
@@ -151,23 +152,23 @@ class Order extends Model
 
     public function getStatusLabelAttribute(): string
     {
-        return match($this->status) {
-            'pending'    => 'Menunggu',
-            'confirmed'  => 'Dikonfirmasi',
-            'completed'  => 'Selesai',
-            'cancelled'  => 'Dibatalkan',
-            default      => ucfirst($this->status),
+        return match ($this->status) {
+            'pending' => 'Menunggu',
+            'confirmed' => 'Dikonfirmasi',
+            'completed' => 'Selesai',
+            'cancelled' => 'Dibatalkan',
+            default => ucfirst($this->status),
         };
     }
 
     public function getStatusColorAttribute(): string
     {
-        return match($this->status) {
-            'pending'    => 'yellow',
-            'confirmed'  => 'blue',
-            'completed'  => 'green',
-            'cancelled'  => 'red',
-            default      => 'gray',
+        return match ($this->status) {
+            'pending' => 'yellow',
+            'confirmed' => 'blue',
+            'completed' => 'green',
+            'cancelled' => 'red',
+            default => 'gray',
         };
     }
 }

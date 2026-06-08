@@ -2,13 +2,13 @@
 
 namespace App\Filament\Resources\CustomRequests\Tables;
 
+use Filament\Actions\Action;
 use Filament\Actions\BulkActionGroup;
 use Filament\Actions\CreateAction;
 use Filament\Actions\DeleteAction;
 use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
 use Filament\Actions\ViewAction;
-use Filament\Tables\Columns\BadgeColumn;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Table;
@@ -47,18 +47,18 @@ class CustomRequestsTable
                     ->label('Status')
                     ->badge()
                     ->color(fn (string $state): string => match ($state) {
-                        'new'       => 'info',
-                        'reviewed'  => 'warning',
+                        'new' => 'info',
+                        'reviewed' => 'warning',
                         'responded' => 'success',
-                        'closed'    => 'gray',
-                        default     => 'gray',
+                        'closed' => 'gray',
+                        default => 'gray',
                     })
                     ->formatStateUsing(fn (string $state): string => match ($state) {
-                        'new'       => 'Baru',
-                        'reviewed'  => 'Ditinjau',
+                        'new' => 'Baru',
+                        'reviewed' => 'Ditinjau',
                         'responded' => 'Ditanggapi',
-                        'closed'    => 'Selesai',
-                        default     => ucfirst($state),
+                        'closed' => 'Selesai',
+                        default => ucfirst($state),
                     })
                     ->sortable(),
                 TextColumn::make('created_at')
@@ -70,10 +70,10 @@ class CustomRequestsTable
             ->filters([
                 SelectFilter::make('status')
                     ->options([
-                        'new'       => 'Baru',
-                        'reviewed'  => 'Ditinjau',
+                        'new' => 'Baru',
+                        'reviewed' => 'Ditinjau',
                         'responded' => 'Ditanggapi',
-                        'closed'    => 'Selesai',
+                        'closed' => 'Selesai',
                     ]),
             ])
             ->recordActions([
@@ -86,19 +86,19 @@ class CustomRequestsTable
                 BulkActionGroup::make([
                     DeleteBulkAction::make(),
                 ]),
-                \Filament\Actions\Action::make('viewLaporan')
+                Action::make('viewLaporan')
                     ->label('View Laporan')
                     ->icon('heroicon-o-eye')
                     ->color('info')
                     ->url(fn () => route('laporan.pesanan'))
                     ->openUrlInNewTab(),
-                \Filament\Actions\Action::make('downloadCsv')
+                Action::make('downloadCsv')
                     ->label('Download CSV')
                     ->icon('heroicon-o-arrow-down-tray')
                     ->color('secondary')
                     ->url(fn () => route('laporan.pesanan.csv'))
                     ->openUrlInNewTab(),
-                \Filament\Actions\Action::make('downloadExcel')
+                Action::make('downloadExcel')
                     ->label('Download Excel')
                     ->icon('heroicon-o-arrow-down-tray')
                     ->color('success')

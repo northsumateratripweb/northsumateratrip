@@ -2,6 +2,10 @@
 
 namespace App\Filament\Resources\TripSchedules\Schemas;
 
+use Filament\Forms\Components\DatePicker;
+use Filament\Forms\Components\Select;
+use Filament\Forms\Components\Textarea;
+use Filament\Forms\Components\TextInput;
 use Filament\Schemas\Schema;
 
 class TripScheduleForm
@@ -10,23 +14,23 @@ class TripScheduleForm
     {
         return $schema
             ->components([
-                \Filament\Forms\Components\Select::make('order_id')
+                Select::make('order_id')
                     ->relationship('order', 'id') // Usually customized to show customer name
                     ->getOptionLabelFromRecordUsing(fn ($record) => "#{$record->id} - {$record->customer_name}")
                     ->searchable()
                     ->required(),
-                \Filament\Forms\Components\Select::make('vehicle_id')
+                Select::make('vehicle_id')
                     ->relationship('vehicle', 'name')
                     ->searchable()
                     ->preload(),
-                \Filament\Forms\Components\TextInput::make('driver_name')
+                TextInput::make('driver_name')
                     ->maxLength(255),
-                \Filament\Forms\Components\TextInput::make('driver_phone')
+                TextInput::make('driver_phone')
                     ->tel()
                     ->maxLength(20),
-                \Filament\Forms\Components\DatePicker::make('trip_date')
+                DatePicker::make('trip_date')
                     ->required(),
-                \Filament\Forms\Components\Select::make('status')
+                Select::make('status')
                     ->options([
                         'scheduled' => 'Scheduled',
                         'ongoing' => 'Ongoing',
@@ -35,7 +39,7 @@ class TripScheduleForm
                     ])
                     ->required()
                     ->default('scheduled'),
-                \Filament\Forms\Components\Textarea::make('notes')
+                Textarea::make('notes')
                     ->rows(3),
             ]);
     }

@@ -9,17 +9,18 @@ class WhatsAppService
 {
     /**
      * Kirim pesan WhatsApp menggunakan Fonnte API
-     * 
-     * @param string $target Nomor tujuan (62812...)
-     * @param string $message Isi pesan
+     *
+     * @param  string  $target  Nomor tujuan (62812...)
+     * @param  string  $message  Isi pesan
      * @return bool
      */
     public static function sendMessage($target, $message)
     {
         $token = config('services.fonnte.token');
-        
-        if (!$token) {
+
+        if (! $token) {
             Log::warning('WhatsApp Service: FONNTE_TOKEN tidak ditemukan di .env');
+
             return false;
         }
 
@@ -33,15 +34,17 @@ class WhatsAppService
             ]);
 
             $result = $response->json();
-            
+
             if ($response->successful() && isset($result['status']) && $result['status'] === true) {
                 return true;
             }
 
-            Log::error('WhatsApp Service Error: ' . ($result['reason'] ?? 'Unknown error'));
+            Log::error('WhatsApp Service Error: '.($result['reason'] ?? 'Unknown error'));
+
             return false;
         } catch (\Exception $e) {
-            Log::error('WhatsApp Service Exception: ' . $e->getMessage());
+            Log::error('WhatsApp Service Exception: '.$e->getMessage());
+
             return false;
         }
     }

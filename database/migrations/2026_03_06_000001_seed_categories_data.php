@@ -85,7 +85,7 @@ return new class extends Migration
         foreach ($categories as $category) {
             $exists = DB::table('categories')->where('slug', $category['slug'])->exists();
 
-            if (!$exists) {
+            if (! $exists) {
                 DB::table('categories')->insert(array_merge($category, [
                     'created_at' => $now,
                     'updated_at' => $now,

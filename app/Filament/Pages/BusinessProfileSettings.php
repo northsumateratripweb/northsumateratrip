@@ -2,15 +2,19 @@
 
 namespace App\Filament\Pages;
 
+use App\Filament\Resources\SettingResource;
 use App\Models\Setting;
 use Filament\Actions\Action;
 use Filament\Forms;
+use Filament\Forms\Concerns\InteractsWithForms;
+use Filament\Forms\Contracts\HasForms;
 use Filament\Notifications\Notification;
 use Filament\Pages\Page;
-use Filament\Schemas\Schema;
-use Filament\Forms\Contracts\HasForms;
-use Filament\Forms\Concerns\InteractsWithForms;
 use Filament\Schemas\Components as Schemas;
+use Filament\Schemas\Schema;
+use Illuminate\Support\Facades\Artisan;
+use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\HtmlString;
 
 class BusinessProfileSettings extends Page implements HasForms
 {
@@ -134,7 +138,7 @@ class BusinessProfileSettings extends Page implements HasForms
                                             ]),
                                     ]),
                             ]),
-                        
+
                         Schemas\Tabs\Tab::make('Visual & Branding')
                             ->icon('heroicon-o-swatch')
                             ->schema([
@@ -209,7 +213,7 @@ class BusinessProfileSettings extends Page implements HasForms
                                             ->rows(2),
                                     ]),
                             ]),
-                        
+
                         Schemas\Tabs\Tab::make('Media Sosial')
                             ->icon('heroicon-o-share')
                             ->schema([
@@ -292,7 +296,7 @@ class BusinessProfileSettings extends Page implements HasForms
                                             ->schema([
                                                 Forms\Components\Placeholder::make('kurs_info')
                                                     ->label('')
-                                                    ->content(new \Illuminate\Support\HtmlString('
+                                                    ->content(new HtmlString('
                                                         <div class="grid grid-cols-2 gap-4 text-sm">
                                                             <div class="bg-blue-50 dark:bg-blue-900/20 rounded-lg p-3">
                                                                 <div class="font-bold text-blue-700 dark:text-blue-300">🇺🇸 IDR → SGD</div>
@@ -338,14 +342,14 @@ class BusinessProfileSettings extends Page implements HasForms
                 ->icon('heroicon-o-arrow-path')
                 ->color('success')
                 ->action(function () {
-                    $exitCode = \Illuminate\Support\Facades\Artisan::call('currency:sync');
+                    $exitCode = Artisan::call('currency:sync');
                     if ($exitCode === 0) {
                         Notification::make()
                             ->title('Kurs SGD & MYR Berhasil Disinkronkan!')
                             ->body('Kurs terbaru telah diambil langsung dari ExchangeRate-API.')
                             ->success()
                             ->send();
-                        
+
                         // Isi ulang formulir dengan data baru
                         $this->mount();
                     } else {
@@ -364,7 +368,7 @@ class BusinessProfileSettings extends Page implements HasForms
                 ->icon('heroicon-o-arrow-top-right-on-square'),
             Action::make('manage_settings')
                 ->label('Advanced Settings')
-                ->url(fn () => \App\Filament\Resources\SettingResource::getUrl('index'))
+                ->url(fn () => SettingResource::getUrl('index'))
                 ->icon('heroicon-o-cog-6-tooth')
                 ->color('info'),
         ];
@@ -393,8 +397,8 @@ class BusinessProfileSettings extends Page implements HasForms
             ->title('Pengaturan berhasil disimpan')
             ->success()
             ->send();
-            
-        \Illuminate\Support\Facades\Cache::forget('site_settings');
-        \Illuminate\Support\Facades\Cache::forget('app_settings');
+
+        Cache::forget('site_settings');
+        Cache::forget('app_settings');
     }
 }

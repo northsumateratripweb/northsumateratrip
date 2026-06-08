@@ -4,13 +4,15 @@ namespace App\Filament\Resources;
 
 use App\Filament\Resources\PackageRentalScheduleResource\Pages;
 use App\Models\PackageRentalSchedule;
-use Filament\Forms;
-use Filament\Schemas;
-use Filament\Resources\Resource;
 use Filament\Actions\BulkActionGroup;
+use Filament\Actions\DeleteAction;
 use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
 use Filament\Actions\ViewAction;
+use Filament\Forms;
+use Filament\Resources\Resource;
+use Filament\Schemas;
+use Filament\Schemas\Schema;
 use Filament\Tables;
 use Filament\Tables\Table;
 
@@ -19,13 +21,14 @@ class PackageRentalScheduleResource extends Resource
     protected static ?string $model = PackageRentalSchedule::class;
 
     protected static string|\UnitEnum|null $navigationGroup = 'Pesanan & Jadwal';
+
     protected static string|\BackedEnum|null $navigationIcon = 'heroicon-o-clipboard-document-list';
 
     protected static ?string $navigationLabel = 'Jadwal Paket Rental';
-    
+
     protected static ?int $navigationSort = 4;
 
-    public static function form(\Filament\Schemas\Schema $schema): \Filament\Schemas\Schema
+    public static function form(Schema $schema): Schema
     {
         return $schema
             ->schema([
@@ -35,7 +38,7 @@ class PackageRentalScheduleResource extends Resource
                         Forms\Components\Select::make('order_id')
                             ->label('ID Pesanan (Opsional)')
                             ->relationship('order', 'id')
-                            ->getOptionLabelFromRecordUsing(fn ($record) => "#ORD-" . str_pad($record->id, 5, '0', STR_PAD_LEFT) . " ({$record->customer_name})")
+                            ->getOptionLabelFromRecordUsing(fn ($record) => '#ORD-'.str_pad($record->id, 5, '0', STR_PAD_LEFT)." ({$record->customer_name})")
                             ->searchable()
                             ->preload()
                             ->columnSpanFull()
@@ -60,7 +63,7 @@ class PackageRentalScheduleResource extends Resource
                             ->email()
                             ->maxLength(255),
                     ]),
-                
+
                 Schemas\Components\Section::make('Jadwal & Durasi')
                     ->columns(3)
                     ->schema([
@@ -79,7 +82,7 @@ class PackageRentalScheduleResource extends Resource
                             ->required()
                             ->default(1),
                     ]),
-                
+
                 Schemas\Components\Section::make('Detail Tambahan')
                     ->columns(2)
                     ->schema([
@@ -98,7 +101,7 @@ class PackageRentalScheduleResource extends Resource
                             ->rows(3)
                             ->columnSpanFull(),
                     ]),
-                
+
                 Schemas\Components\Section::make('Harga & Status')
                     ->columns(3)
                     ->schema([
@@ -226,7 +229,7 @@ class PackageRentalScheduleResource extends Resource
             ->recordActions([
                 ViewAction::make(),
                 EditAction::make(),
-                \Filament\Actions\DeleteAction::make(),
+                DeleteAction::make(),
             ])
             ->bulkActions([
                 BulkActionGroup::make([

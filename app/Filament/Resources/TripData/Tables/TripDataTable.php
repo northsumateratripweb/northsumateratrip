@@ -3,7 +3,6 @@
 namespace App\Filament\Resources\TripData\Tables;
 
 use Filament\Actions\BulkActionGroup;
-use Filament\Actions\CreateAction;
 use Filament\Actions\DeleteAction;
 use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
@@ -67,10 +66,10 @@ class TripDataTable
                     ->formatStateUsing(fn ($record) => $record->status_label)
                     ->color(fn (string $state): string => match ($state) {
                         'confirmed' => 'primary',
-                        'ongoing'   => 'warning',
+                        'ongoing' => 'warning',
                         'completed' => 'success',
                         'cancelled' => 'danger',
-                        default     => 'gray',
+                        default => 'gray',
                     }),
 
                 TextColumn::make('harga')
@@ -94,26 +93,26 @@ class TripDataTable
                 SelectFilter::make('bulan')
                     ->label('Bulan')
                     ->options([
-                        'Januari'   => 'Januari',
-                        'Februari'  => 'Februari',
-                        'Maret'     => 'Maret',
-                        'April'     => 'April',
-                        'Mei'       => 'Mei',
-                        'Juni'      => 'Juni',
-                        'Juli'      => 'Juli',
-                        'Agustus'   => 'Agustus',
+                        'Januari' => 'Januari',
+                        'Februari' => 'Februari',
+                        'Maret' => 'Maret',
+                        'April' => 'April',
+                        'Mei' => 'Mei',
+                        'Juni' => 'Juni',
+                        'Juli' => 'Juli',
+                        'Agustus' => 'Agustus',
                         'September' => 'September',
-                        'Oktober'   => 'Oktober',
-                        'November'  => 'November',
-                        'Desember'  => 'Desember',
+                        'Oktober' => 'Oktober',
+                        'November' => 'November',
+                        'Desember' => 'Desember',
                     ]),
 
                 SelectFilter::make('status')
                     ->label('Status')
                     ->options([
-                        'pending'   => 'Belum Konfirmasi',
+                        'pending' => 'Belum Konfirmasi',
                         'confirmed' => 'Terkonfirmasi',
-                        'ongoing'   => 'Berlangsung',
+                        'ongoing' => 'Berlangsung',
                         'completed' => 'Selesai',
                         'cancelled' => 'Dibatalkan',
                     ]),

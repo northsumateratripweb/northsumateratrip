@@ -32,23 +32,23 @@ class TripSchedule extends Model
 
     public function getStatusLabelAttribute(): string
     {
-        return match($this->status) {
-            'scheduled'  => 'Terjadwal',
-            'ongoing'    => 'Berlangsung',
-            'completed'  => 'Selesai',
-            'cancelled'  => 'Dibatalkan',
-            default      => ucfirst($this->status),
+        return match ($this->status) {
+            'scheduled' => 'Terjadwal',
+            'ongoing' => 'Berlangsung',
+            'completed' => 'Selesai',
+            'cancelled' => 'Dibatalkan',
+            default => ucfirst($this->status),
         };
     }
 
     public function getStatusColorAttribute(): string
     {
-        return match($this->status) {
-            'scheduled'  => 'blue',
-            'ongoing'    => 'yellow',
-            'completed'  => 'green',
-            'cancelled'  => 'red',
-            default      => 'gray',
+        return match ($this->status) {
+            'scheduled' => 'blue',
+            'ongoing' => 'yellow',
+            'completed' => 'green',
+            'cancelled' => 'red',
+            default => 'gray',
         };
     }
 }

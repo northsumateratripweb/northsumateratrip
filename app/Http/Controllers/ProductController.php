@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Category;
+use App\Models\Hotel;
 use App\Models\Product;
 use Illuminate\Http\Request;
 
@@ -39,7 +40,7 @@ class ProductController extends Controller
             ->take(10)
             ->get();
 
-        $hotels = \App\Models\Hotel::active()->orderBy('name')->limit(50)->get();
+        $hotels = Hotel::active()->orderBy('name')->limit(50)->get();
 
         return view('pages.products.show', compact('product', 'relatedProducts', 'reviews', 'hotels'));
     }
@@ -55,6 +56,7 @@ class ProductController extends Controller
 
         return view('pages.products.category', compact('products', 'category', 'categories'));
     }
+
     public function search(Request $request)
     {
         $query = $request->validate([
@@ -63,7 +65,7 @@ class ProductController extends Controller
 
         // Escape LIKE wildcards
         $searchTerm = $query ? str_replace(['%', '_'], ['\%', '\_'], $query) : null;
-        
+
         $products = Product::active()
             ->when($searchTerm, function ($q) use ($searchTerm) {
                 return $q->where('name', 'like', "%{$searchTerm}%")
@@ -80,7 +82,7 @@ class ProductController extends Controller
             'products' => $products,
             'categories' => $categories,
             'category' => null,
-            'searchQuery' => $query
+            'searchQuery' => $query,
         ]);
     }
 }

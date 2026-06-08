@@ -1,3 +1,4 @@
 <?php
+
 // Copy dari id
-return require __DIR__ . '/../id/validation.php';
+return require __DIR__.'/../id/validation.php';

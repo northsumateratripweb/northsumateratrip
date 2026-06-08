@@ -4,12 +4,15 @@ namespace App\Filament\Resources;
 
 use App\Filament\Resources\ReviewResource\Pages;
 use App\Models\Review;
-use Filament\Forms;
-use Filament\Schemas;
-use Filament\Resources\Resource;
+use Filament\Actions\Action;
 use Filament\Actions\BulkActionGroup;
+use Filament\Actions\DeleteAction;
 use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
+use Filament\Forms;
+use Filament\Resources\Resource;
+use Filament\Schemas;
+use Filament\Schemas\Schema;
 use Filament\Tables;
 use Filament\Tables\Table;
 
@@ -18,11 +21,12 @@ class ReviewResource extends Resource
     protected static ?string $model = Review::class;
 
     protected static string|\UnitEnum|null $navigationGroup = 'Interaksi User';
+
     protected static string|\BackedEnum|null $navigationIcon = 'heroicon-o-chat-bubble-bottom-center-text';
 
     protected static ?string $navigationLabel = 'Ulasan / Review';
 
-    public static function form(\Filament\Schemas\Schema $schema): \Filament\Schemas\Schema
+    public static function form(Schema $schema): Schema
     {
         return $schema
             ->schema([
@@ -74,14 +78,14 @@ class ReviewResource extends Resource
                 Tables\Filters\TernaryFilter::make('is_approved'),
             ])
             ->recordActions([
-                \Filament\Actions\Action::make('approve')
+                Action::make('approve')
                     ->label('Approve')
                     ->icon('heroicon-o-check-circle')
                     ->color('success')
-                    ->visible(fn ($record) => !$record->is_approved)
+                    ->visible(fn ($record) => ! $record->is_approved)
                     ->action(fn ($record) => $record->update(['is_approved' => true])),
                 EditAction::make(),
-                \Filament\Actions\DeleteAction::make(),
+                DeleteAction::make(),
             ])
             ->toolbarActions([
                 BulkActionGroup::make([

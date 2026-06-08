@@ -2,6 +2,10 @@
 
 namespace App\Filament\Resources\Galleries\Schemas;
 
+use Filament\Forms\Components\FileUpload;
+use Filament\Forms\Components\Textarea;
+use Filament\Forms\Components\TextInput;
+use Filament\Forms\Components\Toggle;
 use Filament\Schemas\Schema;
 
 class GalleryForm
@@ -10,21 +14,21 @@ class GalleryForm
     {
         return $schema
             ->components([
-                \Filament\Forms\Components\TextInput::make('title')
+                TextInput::make('title')
                     ->maxLength(255),
-                \Filament\Forms\Components\FileUpload::make('image_url')
+                FileUpload::make('image_url')
                     ->image()
                     ->disk('public')
                     ->directory('galleries')
                     ->visibility('public')
                     ->required(),
-                \Filament\Forms\Components\Textarea::make('caption')
+                Textarea::make('caption')
                     ->rows(2)
                     ->maxLength(500),
-                \Filament\Forms\Components\TextInput::make('sort_order')
+                TextInput::make('sort_order')
                     ->numeric()
                     ->default(0),
-                \Filament\Forms\Components\Toggle::make('is_active')
+                Toggle::make('is_active')
                     ->default(true),
             ]);
     }

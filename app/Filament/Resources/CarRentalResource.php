@@ -4,28 +4,34 @@ namespace App\Filament\Resources;
 
 use App\Filament\Resources\CarRentalResource\Pages;
 use App\Models\CarRental;
-use Filament\Forms;
-use Filament\Schemas;
-use Filament\Resources\Resource;
+use App\Models\Vehicle;
 use Filament\Actions\BulkActionGroup;
+use Filament\Actions\CreateAction;
+use Filament\Actions\DeleteAction;
 use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
 use Filament\Actions\ViewAction;
+use Filament\Forms;
+use Filament\Resources\Resource;
+use Filament\Schemas;
+use Filament\Schemas\Schema;
 use Filament\Tables;
 use Filament\Tables\Table;
+use Illuminate\Support\Str;
 
 class CarRentalResource extends Resource
 {
     protected static ?string $model = CarRental::class;
 
     protected static string|\UnitEnum|null $navigationGroup = 'Aset & Armada';
+
     protected static string|\BackedEnum|null $navigationIcon = 'heroicon-o-truck';
 
     protected static ?string $navigationLabel = 'Rental Mobil';
-    
+
     protected static ?int $navigationSort = 3;
 
-    public static function form(\Filament\Schemas\Schema $schema): \Filament\Schemas\Schema
+    public static function form(Schema $schema): Schema
     {
         return $schema
             ->schema([
@@ -42,7 +48,7 @@ class CarRentalResource extends Resource
                             ->reactive()
                             ->afterStateUpdated(function ($state, callable $set, callable $get) {
                                 if ($state) {
-                                    $vehicle = \App\Models\Vehicle::find($state);
+                                    $vehicle = Vehicle::find($state);
                                     if ($vehicle) {
                                         $set('name', $vehicle->name);
                                         $set('capacity', $vehicle->capacity);
@@ -55,7 +61,7 @@ class CarRentalResource extends Resource
                             ->required()
                             ->maxLength(255)
                             ->live(onBlur: true)
-                            ->afterStateUpdated(fn ($state, callable $set) => $set('slug', \Illuminate\Support\Str::slug($state)))
+                            ->afterStateUpdated(fn ($state, callable $set) => $set('slug', Str::slug($state)))
                             ->columnSpan(2),
                         Forms\Components\TextInput::make('category')
                             ->label('Kategori')
@@ -76,7 +82,7 @@ class CarRentalResource extends Resource
                             ->label('Deskripsi')
                             ->columnSpanFull(),
                     ]),
-                
+
                 Schemas\Components\Section::make('Harga Rental')
                     ->icon('heroicon-o-banknotes')
                     ->columns(3)
@@ -90,7 +96,7 @@ class CarRentalResource extends Resource
                             ->label('Harga + Driver')
                             ->numeric()
                             ->prefix('Rp'),
-                        
+
                         Forms\Components\Repeater::make('pricing_details')
                             ->label('Pengaturan Harga Custom (Berdasarkan Jumlah Hari)')
                             ->schema([
@@ -111,7 +117,7 @@ class CarRentalResource extends Resource
                             ->createItemButtonLabel('Tambah Harga Custom')
                             ->helperText('Gunakan ini jika Anda ingin memberikan harga berbeda untuk durasi rental tertentu (misal: sewa 3 hari harga lebih murah).'),
                     ]),
-                
+
                 Schemas\Components\Section::make('Spesifikasi')
                     ->icon('heroicon-o-cog')
                     ->columns(3)
@@ -126,7 +132,7 @@ class CarRentalResource extends Resource
                             ->label('Tahun')
                             ->numeric(),
                     ]),
-                
+
                 Schemas\Components\Section::make('Fasilitas & Ketentuan')
                     ->icon('heroicon-o-list-bullet')
                     ->schema([
@@ -141,7 +147,7 @@ class CarRentalResource extends Resource
                             ->rows(3)
                             ->columnSpanFull(),
                     ]),
-                
+
                 Schemas\Components\Section::make('Media')
                     ->icon('heroicon-o-photo')
                     ->schema([
@@ -153,7 +159,7 @@ class CarRentalResource extends Resource
                             ->image()
                             ->multiple()
                             ->reorderable()
-                            ->acceptedFileTypes(['image/jpeg','image/png','image/webp'])
+                            ->acceptedFileTypes(['image/jpeg', 'image/png', 'image/webp'])
                             ->required()
                             ->helperText('Akan tampil sebagai slider di halaman detail'),
                         Forms\Components\FileUpload::make('gallery_images')
@@ -162,12 +168,12 @@ class CarRentalResource extends Resource
                             ->directory('car-rentals/gallery')
                             ->visibility('public')
                             ->image()
-                            ->acceptedFileTypes(['image/jpeg','image/png','image/webp'])
+                            ->acceptedFileTypes(['image/jpeg', 'image/png', 'image/webp'])
                             ->multiple()
                             ->reorderable()
                             ->columnSpanFull(),
                     ]),
-                
+
                 Schemas\Components\Section::make('Status & SEO')
                     ->icon('heroicon-o-globe-alt')
                     ->collapsed()
@@ -221,7 +227,7 @@ class CarRentalResource extends Resource
                                         Forms\Components\TagsInput::make('translations.ms.includes')->label('Termasuk (MS)'),
                                         Forms\Components\Textarea::make('translations.ms.terms')->label('Syarat & Ketentuan (MS)'),
                                     ]),
-                            ])->columnSpanFull()
+                            ])->columnSpanFull(),
                     ]),
             ]);
     }
@@ -271,10 +277,10 @@ class CarRentalResource extends Resource
             ->recordActions([
                 ViewAction::make(),
                 EditAction::make(),
-                \Filament\Actions\DeleteAction::make(),
+                DeleteAction::make(),
             ])
             ->toolbarActions([
-                \Filament\Actions\CreateAction::make(),
+                CreateAction::make(),
                 BulkActionGroup::make([
                     DeleteBulkAction::make(),
                 ]),

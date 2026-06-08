@@ -13,6 +13,7 @@ if (! function_exists('currency')) {
         if (! $format) {
             return CurrencyService::convert($amountIdr, $locale);
         }
+
         return CurrencyService::format($amountIdr, $locale);
     }
 }

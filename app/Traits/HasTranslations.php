@@ -9,8 +9,6 @@ trait HasTranslations
     /**
      * Get the translated value for a given attribute.
      *
-     * @param string $attribute
-     * @param string|null $locale
      * @return mixed
      */
     public function translate(string $attribute, ?string $locale = null)
@@ -30,7 +28,7 @@ trait HasTranslations
         }
 
         // Cek struktur translations. Biasanya kita akan simpan sebagai translations->{locale}->{attribute}
-        if (isset($translations[$locale][$attribute]) && !empty($translations[$locale][$attribute])) {
+        if (isset($translations[$locale][$attribute]) && ! empty($translations[$locale][$attribute])) {
             return $translations[$locale][$attribute];
         }
 

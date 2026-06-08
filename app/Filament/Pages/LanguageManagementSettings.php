@@ -2,15 +2,17 @@
 
 namespace App\Filament\Pages;
 
+use App\Filament\Resources\SettingResource;
 use App\Models\Setting;
 use Filament\Actions\Action;
 use Filament\Forms\Components as Forms;
-use Filament\Schemas\Components as Schemas;
+use Filament\Forms\Concerns\InteractsWithForms;
+use Filament\Forms\Contracts\HasForms;
 use Filament\Notifications\Notification;
 use Filament\Pages\Page;
+use Filament\Schemas\Components as Schemas;
 use Filament\Schemas\Schema;
-use Filament\Forms\Contracts\HasForms;
-use Filament\Forms\Concerns\InteractsWithForms;
+use Illuminate\Support\Facades\Cache;
 
 class LanguageManagementSettings extends Page implements HasForms
 {
@@ -29,14 +31,14 @@ class LanguageManagementSettings extends Page implements HasForms
     public function mount(): void
     {
         $this->form->fill([
-            'default_language'   => Setting::get('default_language', 'id'),
-            'timezone'           => Setting::get('timezone', 'Asia/Jakarta'),
-            'exchange_rate_myr'  => Setting::get('exchange_rate_myr', '0.00029'),
-            'exchange_rate_sgd'  => Setting::get('exchange_rate_sgd', '0.000085'),
+            'default_language' => Setting::get('default_language', 'id'),
+            'timezone' => Setting::get('timezone', 'Asia/Jakarta'),
+            'exchange_rate_myr' => Setting::get('exchange_rate_myr', '0.00029'),
+            'exchange_rate_sgd' => Setting::get('exchange_rate_sgd', '0.000085'),
         ]);
     }
 
-    public function form(\Filament\Schemas\Schema $form): \Filament\Schemas\Schema
+    public function form(Schema $form): Schema
     {
         return $form
             ->schema([
@@ -54,7 +56,7 @@ class LanguageManagementSettings extends Page implements HasForms
                         Forms\Select::make('timezone')
                             ->label('Zona Waktu')
                             ->options([
-                                'Asia/Jakarta'  => 'WIB (GMT+7)',
+                                'Asia/Jakarta' => 'WIB (GMT+7)',
                                 'Asia/Makassar' => 'WITA (GMT+8)',
                                 'Asia/Jayapura' => 'WIT (GMT+9)',
                             ])
@@ -93,14 +95,16 @@ class LanguageManagementSettings extends Page implements HasForms
                             ->label('Contoh: Rp 1.000.000')
                             ->content(function () {
                                 $rate = (float) Setting::get('exchange_rate_myr', 0.00029);
-                                $myr  = number_format(1000000 * $rate, 2);
+                                $myr = number_format(1000000 * $rate, 2);
+
                                 return "≈ RM {$myr}";
                             }),
                         Forms\Placeholder::make('preview_sgd')
                             ->label('Contoh: Rp 1.000.000')
                             ->content(function () {
                                 $rate = (float) Setting::get('exchange_rate_sgd', 0.000085);
-                                $sgd  = number_format(1000000 * $rate, 2);
+                                $sgd = number_format(1000000 * $rate, 2);
+
                                 return "≈ S\$ {$sgd}";
                             }),
                     ])->columns(2),
@@ -113,12 +117,12 @@ class LanguageManagementSettings extends Page implements HasForms
         return [
             Action::make('create_setting')
                 ->label('Tambah Pengaturan')
-                ->url(fn () => \App\Filament\Resources\SettingResource::getUrl('create'))
+                ->url(fn () => SettingResource::getUrl('create'))
                 ->icon('heroicon-o-plus-circle')
                 ->color('success'),
             Action::make('manage_settings')
                 ->label('Kelola Semua')
-                ->url(fn () => \App\Filament\Resources\SettingResource::getUrl('index'))
+                ->url(fn () => SettingResource::getUrl('index'))
                 ->icon('heroicon-o-cog-6-tooth')
                 ->color('info'),
             Action::make('delete_section')
@@ -137,8 +141,8 @@ class LanguageManagementSettings extends Page implements HasForms
                 ])
                 ->action(function (array $data): void {
                     Setting::whereIn('key', $data['settings_to_delete'])->delete();
-                    \Illuminate\Support\Facades\Cache::forget('site_settings');
-                    \Illuminate\Support\Facades\Cache::forget('app_settings');
+                    Cache::forget('site_settings');
+                    Cache::forget('app_settings');
                     Notification::make()
                         ->title('Pengaturan berhasil dihapus')
                         ->success()

@@ -28,16 +28,16 @@ class PerformanceMonitoring
             Log::warning('Slow request detected', [
                 'url' => $request->fullUrl(),
                 'method' => $request->method(),
-                'execution_time' => round($executionTime, 2) . 'ms',
-                'memory_used' => round($memoryUsed, 2) . 'MB',
+                'execution_time' => round($executionTime, 2).'ms',
+                'memory_used' => round($memoryUsed, 2).'MB',
                 'user_id' => auth()->id(),
             ]);
         }
 
         // Add performance headers (only in development)
         if (app()->environment('local')) {
-            $response->headers->set('X-Execution-Time', round($executionTime, 2) . 'ms');
-            $response->headers->set('X-Memory-Usage', round($memoryUsed, 2) . 'MB');
+            $response->headers->set('X-Execution-Time', round($executionTime, 2).'ms');
+            $response->headers->set('X-Memory-Usage', round($memoryUsed, 2).'MB');
         }
 
         return $response;

@@ -45,12 +45,12 @@ class PackageRentalSchedule extends Model
 
     public function getStatusLabelAttribute(): string
     {
-        return match($this->booking_status) {
+        return match ($this->booking_status) {
             'confirmed' => 'Dikonfirmasi',
-            'ongoing'   => 'Dalam Perjalanan',
+            'ongoing' => 'Dalam Perjalanan',
             'completed' => 'Selesai',
             'cancelled' => 'Dibatalkan',
-            default     => ucfirst($this->booking_status),
+            default => ucfirst($this->booking_status),
         };
     }
 }

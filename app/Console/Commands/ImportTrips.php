@@ -22,22 +22,24 @@ class ImportTrips extends Command
 
     public function handle(): int
     {
-        $service = new TripImportService();
+        $service = new TripImportService;
 
         // Import satu file spesifik
         if ($file = $this->option('file')) {
             $filePath = base_path($file);
-            $bulan    = $this->extractMonth($file);
+            $bulan = $this->extractMonth($file);
 
             $this->info("Mengimport: {$file} (bulan: {$bulan})...");
             $result = $service->importFile($filePath, $bulan);
 
             if (isset($result['error'])) {
                 $this->error($result['error']);
+
                 return self::FAILURE;
             }
 
             $this->info("[{$result['bulan']}] {$result['inserted']} data berhasil dimasukkan.");
+
             return self::SUCCESS;
         }
 
@@ -46,6 +48,7 @@ class ImportTrips extends Command
 
         if ($truncate && ! $this->confirm('Ini akan menghapus SEMUA data trip yang ada. Lanjutkan?', true)) {
             $this->warn('Import dibatalkan.');
+
             return self::SUCCESS;
         }
 
@@ -71,8 +74,9 @@ class ImportTrips extends Command
 
     private function extractMonth(string $filename): string
     {
-        $base  = pathinfo($filename, PATHINFO_FILENAME);
+        $base = pathinfo($filename, PATHINFO_FILENAME);
         $parts = explode(' - ', $base, 2);
+
         return isset($parts[1]) ? ucfirst(mb_strtolower(trim($parts[1]))) : 'Tidak Diketahui';
     }
 }

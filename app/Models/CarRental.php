@@ -2,10 +2,11 @@
 
 namespace App\Models;
 
+use App\Traits\HasTranslations;
 use App\Traits\ResolvesImagePath;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use App\Traits\HasTranslations;
+use Illuminate\Support\Carbon;
 
 /**
  * @property int $id
@@ -31,13 +32,13 @@ use App\Traits\HasTranslations;
  * @property int $sort_order
  * @property string|null $meta_title
  * @property string|null $meta_description
- * @property \Illuminate\Support\Carbon|null $created_at
- * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property Carbon|null $created_at
+ * @property Carbon|null $updated_at
  * @property-read Vehicle|null $vehicle
  */
 class CarRental extends Model
 {
-    use ResolvesImagePath, \App\Traits\OptimizesImages, HasTranslations;
+    use \App\Traits\OptimizesImages, HasTranslations, ResolvesImagePath;
 
     protected $fillable = [
         'vehicle_id',
@@ -107,13 +108,18 @@ class CarRental extends Model
     {
         $images = [];
         if (is_array($this->featured_image)) {
-            foreach ($this->featured_image as $img) $images[] = self::resolveImagePath($img, 'images/car-rentals');
+            foreach ($this->featured_image as $img) {
+                $images[] = self::resolveImagePath($img, 'images/car-rentals');
+            }
         } elseif ($this->featured_image) {
             $images[] = self::resolveImagePath($this->featured_image, 'images/car-rentals');
         }
         if (is_array($this->gallery_images)) {
-            foreach ($this->gallery_images as $img) $images[] = self::resolveImagePath($img, 'images/car-rentals');
+            foreach ($this->gallery_images as $img) {
+                $images[] = self::resolveImagePath($img, 'images/car-rentals');
+            }
         }
+
         return array_values(array_unique($images));
     }
 
@@ -122,6 +128,7 @@ class CarRental extends Model
         if (empty($this->gallery_images)) {
             return [];
         }
+
         return array_map(fn ($img) => self::resolveImagePath($img, 'images/car-rentals'), $this->gallery_images);
     }
 

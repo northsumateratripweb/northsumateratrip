@@ -32,30 +32,30 @@ class Trip extends Model
 
     protected $casts = [
         'tanggal' => 'date',
-        'drone'   => 'boolean',
+        'drone' => 'boolean',
     ];
 
     public function getStatusLabelAttribute(): string
     {
         return match ($this->status) {
-            'pending'   => 'Belum Konfirmasi',
+            'pending' => 'Belum Konfirmasi',
             'confirmed' => 'Terkonfirmasi',
-            'ongoing'   => 'Berlangsung',
+            'ongoing' => 'Berlangsung',
             'completed' => 'Selesai',
             'cancelled' => 'Dibatalkan',
-            default     => $this->status ?? '-',
+            default => $this->status ?? '-',
         };
     }
 
     public function getStatusColorAttribute(): string
     {
         return match ($this->status) {
-            'pending'   => 'yellow',
+            'pending' => 'yellow',
             'confirmed' => 'blue',
-            'ongoing'   => 'warning',
+            'ongoing' => 'warning',
             'completed' => 'green',
             'cancelled' => 'red',
-            default     => 'gray',
+            default => 'gray',
         };
     }
 

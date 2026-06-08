@@ -3,7 +3,6 @@
 namespace App\Filament\Resources\TripData\Schemas;
 
 use Filament\Forms\Components\DatePicker;
-use Filament\Forms\Components\Grid;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Toggle;
@@ -22,18 +21,18 @@ class TripDataForm
                     Select::make('bulan')
                         ->label('Bulan')
                         ->options([
-                            'Januari'   => 'Januari',
-                            'Februari'  => 'Februari',
-                            'Maret'     => 'Maret',
-                            'April'     => 'April',
-                            'Mei'       => 'Mei',
-                            'Juni'      => 'Juni',
-                            'Juli'      => 'Juli',
-                            'Agustus'   => 'Agustus',
+                            'Januari' => 'Januari',
+                            'Februari' => 'Februari',
+                            'Maret' => 'Maret',
+                            'April' => 'April',
+                            'Mei' => 'Mei',
+                            'Juni' => 'Juni',
+                            'Juli' => 'Juli',
+                            'Agustus' => 'Agustus',
                             'September' => 'September',
-                            'Oktober'   => 'Oktober',
-                            'November'  => 'November',
-                            'Desember'  => 'Desember',
+                            'Oktober' => 'Oktober',
+                            'November' => 'November',
+                            'Desember' => 'Desember',
                         ])
                         ->required()
                         ->default('Januari'),
@@ -45,9 +44,9 @@ class TripDataForm
                     Select::make('status')
                         ->label('Status')
                         ->options([
-                            'pending'   => 'Belum Konfirmasi',
+                            'pending' => 'Belum Konfirmasi',
                             'confirmed' => 'Terkonfirmasi',
-                            'ongoing'   => 'Berlangsung',
+                            'ongoing' => 'Berlangsung',
                             'completed' => 'Selesai',
                             'cancelled' => 'Dibatalkan',
                         ])

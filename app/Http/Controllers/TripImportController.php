@@ -34,11 +34,12 @@ class TripImportController extends Controller
             // First row is header
             if ($header === null) {
                 $header = $row;
+
                 continue;
             }
 
             // Skip empty rows (no tanggal and no pelanggan)
-            $tanggal   = trim($row[0] ?? '');
+            $tanggal = trim($row[0] ?? '');
             $pelanggan = trim($row[1] ?? '');
             if (empty($tanggal) && empty($pelanggan)) {
                 continue;
@@ -46,43 +47,44 @@ class TripImportController extends Controller
 
             // Parse date dd/mm/yyyy
             $parsedDate = null;
-            if (!empty($tanggal)) {
+            if (! empty($tanggal)) {
                 try {
                     $parts = explode('/', $tanggal);
                     if (count($parts) === 3) {
                         $parsedDate = "{$parts[2]}-{$parts[1]}-{$parts[0]}";
                     }
-                } catch (\Exception $e) {}
+                } catch (\Exception $e) {
+                }
             }
 
-            $harga     = (float) preg_replace('/[^0-9.]/', '', $row[15] ?? 0);
-            $deposit   = (float) preg_replace('/[^0-9.]/', '', $row[16] ?? 0);
+            $harga = (float) preg_replace('/[^0-9.]/', '', $row[15] ?? 0);
+            $deposit = (float) preg_replace('/[^0-9.]/', '', $row[16] ?? 0);
             $pelunasan = (float) preg_replace('/[^0-9.]/', '', $row[17] ?? 0);
 
             TripImport::create([
-                'tanggal'        => $parsedDate,
+                'tanggal' => $parsedDate,
                 'nama_pelanggan' => $pelanggan ?: null,
-                'status'         => trim($row[2] ?? '') ?: null,
-                'nomor_hp'       => trim($row[3] ?? '') ?: null,
-                'nama_driver'    => trim($row[4] ?? '') ?: null,
-                'layanan'        => trim($row[5] ?? '') ?: null,
-                'plat_mobil'     => trim($row[6] ?? '') ?: null,
-                'jenis_mobil'    => trim($row[7] ?? '') ?: null,
-                'drone'          => strtoupper(trim($row[8] ?? 'FALSE')) === 'TRUE',
-                'jumlah_hari'    => (int) ($row[9] ?? 1) ?: 1,
-                'penumpang'      => ($row[10] ?? null) ? (int) $row[10] : null,
-                'hotel_1'        => trim($row[11] ?? '') ?: null,
-                'hotel_2'        => trim($row[12] ?? '') ?: null,
-                'hotel_3'        => trim($row[13] ?? '') ?: null,
-                'hotel_4'        => trim($row[14] ?? '') ?: null,
-                'harga'          => $harga,
-                'deposit'        => $deposit,
-                'pelunasan'      => $pelunasan,
-                'tiba'           => trim($row[18] ?? '') ?: null,
-                'flight_balik'   => trim($row[19] ?? '') ?: null,
-                'source_file'    => $filename,
-                'bulan'          => $bulan,
-                'tahun'          => $tahun,
+                'status' => trim($row[2] ?? '') ?: null,
+                'nomor_hp' => trim($row[3] ?? '') ?: null,
+                'nama_driver' => trim($row[4] ?? '') ?: null,
+                'layanan' => trim($row[5] ?? '') ?: null,
+                'plat_mobil' => trim($row[6] ?? '') ?: null,
+                'jenis_mobil' => trim($row[7] ?? '') ?: null,
+                'drone' => strtoupper(trim($row[8] ?? 'FALSE')) === 'TRUE',
+                'jumlah_hari' => (int) ($row[9] ?? 1) ?: 1,
+                'penumpang' => ($row[10] ?? null) ? (int) $row[10] : null,
+                'hotel_1' => trim($row[11] ?? '') ?: null,
+                'hotel_2' => trim($row[12] ?? '') ?: null,
+                'hotel_3' => trim($row[13] ?? '') ?: null,
+                'hotel_4' => trim($row[14] ?? '') ?: null,
+                'harga' => $harga,
+                'deposit' => $deposit,
+                'pelunasan' => $pelunasan,
+                'tiba' => trim($row[18] ?? '') ?: null,
+                'flight_balik' => trim($row[19] ?? '') ?: null,
+                'source_file' => $filename,
+                'bulan' => $bulan,
+                'tahun' => $tahun,
             ]);
             $imported++;
         }

@@ -7,8 +7,8 @@ use Illuminate\Database\Eloquent\Model;
 
 class Vehicle extends Model
 {
-    use ResolvesImagePath, \App\Traits\OptimizesImages;
-    
+    use \App\Traits\OptimizesImages, ResolvesImagePath;
+
     public $optimizableImages = ['thumbnail'];
 
     protected $fillable = [
