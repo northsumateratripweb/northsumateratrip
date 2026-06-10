@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Carbon;
 
 /**
@@ -52,7 +53,7 @@ use Illuminate\Support\Carbon;
  */
 class Product extends Model
 {
-    use \App\Traits\OptimizesImages, HasFactory, HasTranslations, ResolvesImagePath;
+    use \App\Traits\OptimizesImages, HasFactory, HasTranslations, ResolvesImagePath, SoftDeletes;
 
     protected $fillable = [
         'category_id',
@@ -74,10 +75,8 @@ class Product extends Model
         'featured_image',
         'gallery_images',
         'trip_options',
-        'pricing_details',
         'includes',
         'excludes',
-        'itinerary',
         'notes',
         'itinerary_text',
         'meta_title',
@@ -97,10 +96,8 @@ class Product extends Model
         'featured_image' => 'array',
         'gallery_images' => 'array',
         'trip_options' => 'array',
-        'pricing_details' => 'array',
         'includes' => 'array',
         'excludes' => 'array',
-        'itinerary' => 'array',
         'is_featured' => 'boolean',
         'is_active' => 'boolean',
         'translations' => 'array',
@@ -124,6 +121,16 @@ class Product extends Model
     public function approvedReviews(): HasMany
     {
         return $this->hasMany(Review::class)->where('is_approved', true);
+    }
+
+    public function pricings(): HasMany
+    {
+        return $this->hasMany(ProductPricing::class);
+    }
+
+    public function itineraries(): HasMany
+    {
+        return $this->hasMany(ProductItinerary::class);
     }
 
     public function getFormattedPriceAttribute(): string

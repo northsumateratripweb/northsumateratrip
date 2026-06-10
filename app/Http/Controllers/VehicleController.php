@@ -68,7 +68,7 @@ class VehicleController extends Controller
         return view('pages.car-detail', compact('carRental', 'relatedCarRentals'));
     }
 
-    public function storeOrder(Request $request, string $slug)
+    public function storeOrder(\App\Http\Requests\StoreCarRentalRequest $request, string $slug)
     {
         $carRental = is_numeric($slug)
             ? CarRental::find($slug)
@@ -78,33 +78,12 @@ class VehicleController extends Controller
             abort(404);
         }
 
-        $request->validate([
-            'customer_name' => 'required|string|max:255',
-            'customer_email' => 'required|email|max:255',
-            'customer_phone' => 'required|string|max:20',
-            'trip_date' => 'required|date|after_or_equal:today',
-            'quantity' => 'required|integer|min:1',
-            'notes' => 'nullable|string|max:1000',
-        ]);
+        $validated = $request->validated();
+        $days = (int) $validated['quantity'];
 
-        $days = (int) $request->quantity;
-        $pricePerDay = (float) ($carRental->price_per_day ?? 0);
-        $pricingDetails = $carRental->pricing_details ?? [];
+        $total_price = \App\Services\PricingService::calculateCarRentalPrice($carRental, $days);
 
-        if (! empty($pricingDetails)) {
-            // Sort by days ascending
-            usort($pricingDetails, fn ($a, $b) => (int) $a['days'] <=> (int) $b['days']);
-
-            // Find exact match or nearest lower bracket
-            $matched = collect($pricingDetails)->filter(fn ($r) => (int) $r['days'] <= $days)->last();
-            if ($matched) {
-                $pricePerDay = (float) $matched['price'];
-            }
-        }
-
-        $total_price = $pricePerDay * $days;
-
-        $order = DB::transaction(function () use ($carRental, $request, $total_price, $days) {
+        $order = DB::transaction(function () use ($carRental, $validated, $total_price, $days) {
             $vehicleId = $carRental->vehicle_id ?: null;
             if (! $vehicleId && $carRental->vehicle) {
                 $vehicleId = $carRental->vehicle->id;
@@ -112,23 +91,23 @@ class VehicleController extends Controller
             $order = Order::create([
                 'vehicle_id' => $vehicleId,
                 'user_id' => Auth::check() ? Auth::id() : null,
-                'customer_name' => $request->customer_name,
-                'customer_email' => $request->customer_email,
-                'customer_phone' => $request->customer_phone,
-                'trip_date' => $request->trip_date,
+                'customer_name' => $validated['customer_name'],
+                'customer_email' => $validated['customer_email'],
+                'customer_phone' => $validated['customer_phone'],
+                'trip_date' => $validated['trip_date'],
                 'quantity' => $days,
                 'total_price' => $total_price,
                 'status' => 'pending',
-                'notes' => $request->input('notes', 'Penyewaan unit: '.($carRental->vehicle->name ?? $carRental->name)),
+                'notes' => $validated['notes'] ?? ('Penyewaan unit: '.($carRental->vehicle->name ?? $carRental->name)),
             ]);
 
             // Automatically create a Rental Schedule entry for car rentals
             RentalSchedule::create([
                 'order_id' => $order->id,
                 'car_rental_id' => $carRental->id,
-                'customer_name' => $request->customer_name,
-                'customer_phone' => $request->customer_phone,
-                'customer_email' => $request->customer_email,
+                'customer_name' => $validated['customer_name'],
+                'customer_phone' => $validated['customer_phone'],
+                'customer_email' => $validated['customer_email'],
                 'start_date' => $order->trip_date,
                 'end_date' => Carbon::parse($order->trip_date)->addDays($days),
                 'rental_days' => $days,
@@ -148,7 +127,7 @@ class VehicleController extends Controller
             return $order;
         });
 
-        $waUrl = $this->generateWhatsAppUrl($order, $carRental);
+        $waUrl = \App\Services\WhatsAppService::generateCarRentalMessage($order, $carRental);
 
         if ($request->ajax() || $request->wantsJson()) {
             return response()->json([
@@ -158,39 +137,15 @@ class VehicleController extends Controller
                 'whatsapp_url' => $waUrl,
                 'redirect' => route('booking.status', [
                     'order_id' => $order->id,
-                    'phone' => $request->customer_phone,
+                    'phone' => $validated['customer_phone'],
                 ]),
             ]);
         }
 
         return redirect()->route('booking.status', [
             'order_id' => $order->id,
-            'phone' => $request->customer_phone,
+            'phone' => $validated['customer_phone'],
         ])->with('success', 'Pesanan sewa mobil berhasil dikirim!')
             ->with('whatsapp_url', $waUrl);
-    }
-
-    private function generateWhatsAppUrl(Order $order, CarRental $carRental)
-    {
-        $siteName = Setting::get('site_name', 'NorthSumateraTrip');
-        $whatsappNumber = Setting::get('whatsapp_number', '6281298622143');
-
-        $message = "Halo {$siteName},\n\n";
-        $message .= "Saya ingin memesan Sewa Mobil:\n";
-        $message .= "━━━━━━━━━━━━━━━━━━━━━━\n";
-        $message .= "*Unit:* {$carRental->name}\n";
-        $message .= "━━━━━━━━━━━━━━━━━━━━━━\n";
-        $message .= '*ID Pesanan:* #ORD-'.str_pad($order->id, 5, '0', STR_PAD_LEFT)."\n";
-        $message .= "*Nama:* {$order->customer_name}\n";
-        $message .= "*Telepon:* {$order->customer_phone}\n";
-        $message .= "━━━━━━━━━━━━━━━━━━━━━━\n";
-        $message .= '*Tanggal Mulai:* '.Carbon::parse($order->trip_date)->format('d-m-Y')."\n";
-        $message .= "*Durasi:* {$order->quantity} Hari\n";
-        $message .= "━━━━━━━━━━━━━━━━━━━━━━\n";
-        $message .= '*Total Pembayaran:* Rp '.number_format($order->total_price, 0, ',', '.')."\n";
-        $message .= "━━━━━━━━━━━━━━━━━━━━━━\n";
-        $message .= "\nMohon konfirmasi pesanan saya. Terima kasih.";
-
-        return "https://wa.me/{$whatsappNumber}?text=".urlencode($message);
     }
 }

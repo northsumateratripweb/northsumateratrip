@@ -129,7 +129,8 @@ class ProductResource extends Resource
                     ->icon('heroicon-o-banknotes')
                     ->description('Isi harga per orang untuk setiap jumlah peserta. Harga tampil di kartu listing diambil dari baris pertama dan terakhir.')
                     ->schema([
-                        Forms\Components\Repeater::make('pricing_details')
+                        Forms\Components\Repeater::make('pricings')
+                            ->relationship('pricings')
                             ->label('Tabel Harga per Orang')
                             ->schema([
                                 Forms\Components\TextInput::make('pax')
@@ -220,7 +221,8 @@ class ProductResource extends Resource
                     ->icon('heroicon-o-map')
                     ->description('Tampil di Brosur PDF dan Timeline (jika aktif). Gunakan kolom ini untuk detail hari demi hari.')
                     ->schema([
-                        Forms\Components\Repeater::make('itinerary')
+                        Forms\Components\Repeater::make('itineraries')
+                            ->relationship('itineraries')
                             ->label('Jadwal Harian')
                             ->schema([
                                 Forms\Components\TextInput::make('day')->label('Hari Ke')->placeholder('Contoh: 1')->required(),

@@ -5,6 +5,7 @@ namespace App\Models;
 use App\Traits\HasTranslations;
 use App\Traits\ResolvesImagePath;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Carbon;
 
 /**
@@ -22,10 +23,11 @@ use Illuminate\Support\Carbon;
  * @property int $sort_order
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
+ * @property Carbon|null $deleted_at
  */
 class RentalPackage extends Model
 {
-    use HasTranslations, ResolvesImagePath;
+    use HasTranslations, ResolvesImagePath, SoftDeletes;
 
     protected $fillable = [
         'name',

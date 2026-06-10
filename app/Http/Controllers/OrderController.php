@@ -16,64 +16,17 @@ use Illuminate\Validation\ValidationException;
 
 class OrderController extends Controller
 {
-    public function store(Request $request, Product $product)
+    public function store(\App\Http\Requests\StoreOrderRequest $request, Product $product)
     {
         try {
-            $validated = $request->validate([
-                'customer_name' => 'required|string|max:255',
-                'customer_email' => 'nullable|email|max:255',
-                'customer_phone' => 'required|string|max:20',
-                'customer_whatsapp' => 'nullable|string|max:20',
-                'trip_date' => 'required|date|after_or_equal:today',
-                'trip_end_date' => 'nullable|date|after_or_equal:trip_date',
-                'trip_type' => 'nullable|string|max:100',
-                'pax_adult' => 'required|integer|min:1',
-                'pax_child' => 'required|integer|min:0',
-                'notes' => 'nullable|string|max:1000',
-                'hotel_category' => 'nullable|string|in:bintang_1,bintang_3,bintang_5,non_hotel',
-                'hotel_1' => 'nullable|string|max:255',
-                'hotel_2' => 'nullable|string|max:255',
-                'hotel_3' => 'nullable|string|max:255',
-                'hotel_4' => 'nullable|string|max:255',
-                'flight_info' => 'nullable|string|max:500',
-                'use_drone' => 'nullable|boolean',
-                'agree_terms' => 'accepted',
-            ], [
-                'agree_terms.accepted' => 'Anda harus menyetujui Syarat & Ketentuan sebelum memesan.',
-            ]);
+            $validated = $request->validated();
 
-            // Look up price per person from pricing_details table
             $adultPax = (int) $validated['pax_adult'];
             $childPax = (int) $validated['pax_child'];
-            $pricingDetails = $product->pricing_details ?? [];
-            $pricePerAdult = $product->price_min ?? 0;
-            $childPrice = $product->child_price ?? 0;
-
-            if (! empty($pricingDetails)) {
-                // Sort by pax ascending
-                usort($pricingDetails, fn ($a, $b) => (int) $a['pax'] <=> (int) $b['pax']);
-
-                // Exact match for adult pax
-                $matched = collect($pricingDetails)->firstWhere('pax', $adultPax);
-                if ($matched) {
-                    $pricePerAdult = (float) $matched['price_per_person'];
-                } else {
-                    // Nearest lower bracket
-                    $lower = collect($pricingDetails)->filter(fn ($r) => (int) $r['pax'] <= $adultPax)->last();
-                    if ($lower) {
-                        $pricePerAdult = (float) $lower['price_per_person'];
-                    } else {
-                        // Nearest higher bracket
-                        $higher = collect($pricingDetails)->filter(fn ($r) => (int) $r['pax'] > $adultPax)->first();
-                        if ($higher) {
-                            $pricePerAdult = (float) $higher['price_per_person'];
-                        }
-                    }
-                }
-            }
-
+            
+            $totalTourPrice = \App\Services\PricingService::calculateTourPrice($product, $adultPax, $childPax);
             $droneFee = ! empty($validated['use_drone']) ? (float) ($product->drone_price ?? 1500000) : 0;
-            $totalPrice = ($pricePerAdult * $adultPax) + ($childPrice * $childPax) + $droneFee;
+            $totalPrice = $totalTourPrice + $droneFee;
 
             $order = DB::transaction(function () use ($product, $validated, $adultPax, $childPax, $totalPrice) {
                 $order = Order::create([
@@ -124,7 +77,7 @@ class OrderController extends Controller
                 'success' => true,
                 'message' => 'Pesanan berhasil disimpan.',
                 'order_id' => $order->id,
-                'whatsapp_url' => $this->generateWhatsAppUrl($order),
+                'whatsapp_url' => \App\Services\WhatsAppService::generateTourOrderMessage($order, $product),
             ]);
         } catch (ValidationException $e) {
             return response()->json([
@@ -140,48 +93,5 @@ class OrderController extends Controller
                 'message' => 'Terjadi kesalahan sistem: '.$e->getMessage(),
             ], 500);
         }
-    }
-
-    private function generateWhatsAppUrl(Order $order)
-    {
-        $siteName = Setting::get('site_name', 'NorthSumateraTrip');
-        $whatsappNumber = Setting::get('whatsapp_number', '6281298622143');
-
-        // Bank Info for Manual Payment Instruction in WA
-        $bank1 = Setting::get('bank_name_1') ? "\n💳 *Transfer Ke:* ".Setting::get('bank_name_1').' ('.Setting::get('bank_account_1').' a/n '.Setting::get('bank_holder_1').')' : '';
-        $bank2 = Setting::get('bank_name_2') ? "\n💳 *Transfer Ke:* ".Setting::get('bank_name_2').' ('.Setting::get('bank_account_2').' a/n '.Setting::get('bank_holder_2').')' : '';
-
-        $message = "Halo {$siteName},\n\n";
-        $message .= "Saya ingin memesan paket wisata:\n";
-        $message .= "━━━━━━━━━━━━━━━━━━━━━━\n";
-        $message .= "*Paket:* " . ($order->product ? $order->product->name : 'Wisata') . "\n";
-        if ($order->trip_type) {
-            $message .= "*Tipe Trip:* {$order->trip_type}\n";
-        }
-        $message .= "━━━━━━━━━━━━━━━━━━━━━━\n";
-        $message .= '*ID Pesanan:* #ORD-'.str_pad($order->id, 5, '0', STR_PAD_LEFT)."\n";
-        $message .= "*Nama:* {$order->customer_name}\n";
-        $message .= "*Telepon:* {$order->customer_phone}\n";
-        $message .= "━━━━━━━━━━━━━━━━━━━━━━\n";
-        $message .= '*Berangkat:* '.Carbon::parse($order->trip_date)->format('d-m-Y')."\n";
-        $message .= "*Peserta:* {$order->pax_adult} Dewasa";
-        if ($order->pax_child > 0) {
-            $message .= ", {$order->pax_child} Anak (<= 8 Thn)";
-        }
-        if ($order->use_drone) {
-            $message .= "\n*Tambahan:* Paket Video Cinematic Drone";
-        }
-        $message .= "\n━━━━━━━━━━━━━━━━━━━━━━\n";
-        $message .= '*Total Pembayaran:* Rp '.number_format($order->total_price, 0, ',', '.')."\n";
-        $message .= "━━━━━━━━━━━━━━━━━━━━━━\n";
-        $message .= "\n*Instruksi Pembayaran Manual:*";
-        $message .= $bank1;
-        $message .= $bank2;
-        if (Setting::get('qris_image')) {
-            $message .= "\n🖼️ *Atau scan QRIS yang tersedia di website.*";
-        }
-        $message .= "\n\nMohon konfirmasi pesanan saya. Terima kasih.";
-
-        return "https://wa.me/{$whatsappNumber}?text=".urlencode($message);
     }
 }

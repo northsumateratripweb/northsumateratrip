@@ -97,7 +97,8 @@ class CarRentalResource extends Resource
                             ->numeric()
                             ->prefix('Rp'),
 
-                        Forms\Components\Repeater::make('pricing_details')
+                        Forms\Components\Repeater::make('pricings')
+                            ->relationship('pricings')
                             ->label('Pengaturan Harga Custom (Berdasarkan Jumlah Hari)')
                             ->schema([
                                 Forms\Components\TextInput::make('days')

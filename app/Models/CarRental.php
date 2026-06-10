@@ -6,6 +6,7 @@ use App\Traits\HasTranslations;
 use App\Traits\ResolvesImagePath;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Carbon;
 
 /**
@@ -38,7 +39,7 @@ use Illuminate\Support\Carbon;
  */
 class CarRental extends Model
 {
-    use \App\Traits\OptimizesImages, HasTranslations, ResolvesImagePath;
+    use \App\Traits\OptimizesImages, HasTranslations, ResolvesImagePath, SoftDeletes;
 
     protected $fillable = [
         'vehicle_id',
@@ -63,7 +64,6 @@ class CarRental extends Model
         'sort_order',
         'meta_title',
         'meta_description',
-        'pricing_details',
         'translations',
     ];
 
@@ -72,7 +72,6 @@ class CarRental extends Model
         'includes' => 'array',
         'gallery_images' => 'array',
         'featured_image' => 'array',
-        'pricing_details' => 'array',
         'is_available' => 'boolean',
         'is_featured' => 'boolean',
         'price_per_day' => 'integer',
@@ -87,6 +86,11 @@ class CarRental extends Model
     public function vehicle(): BelongsTo
     {
         return $this->belongsTo(Vehicle::class);
+    }
+
+    public function pricings()
+    {
+        return $this->hasMany(CarRentalPricing::class);
     }
 
     public function scopeAvailable($query)

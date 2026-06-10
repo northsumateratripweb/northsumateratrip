@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Carbon;
 
 /**
@@ -36,6 +37,7 @@ use Illuminate\Support\Carbon;
  * @property string|null $payment_proof
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
+ * @property Carbon|null $deleted_at
  * @property-read Product|null $product
  * @property-read Vehicle|null $vehicle
  * @property-read RentalPackage|null $rentalPackage
@@ -43,6 +45,7 @@ use Illuminate\Support\Carbon;
  */
 class Order extends Model
 {
+    use SoftDeletes;
     protected static function boot()
     {
         parent::boot();
