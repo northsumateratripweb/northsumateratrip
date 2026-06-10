@@ -24,7 +24,18 @@ class Setting extends Model
         // Handle JSON strings (for arrays/objects)
         if (is_string($value) && (str_starts_with($value, '[') || str_starts_with($value, '{'))) {
             try {
-                return json_decode($value, true) ?: $value;
+                $decoded = json_decode($value, true) ?: $value;
+                if (is_array($decoded)) {
+                    // If sequential array, convert to associative for Filament FileUpload compatibility
+                    if (array_keys($decoded) === range(0, count($decoded) - 1)) {
+                        $assoc = [];
+                        foreach ($decoded as $item) {
+                            $assoc[$item] = $item;
+                        }
+                        return $assoc;
+                    }
+                }
+                return $decoded;
             } catch (\Exception $e) {
                 return $value;
             }
@@ -42,9 +53,10 @@ class Setting extends Model
             try {
                 if (is_array($value)) {
                     $processed = [];
-                    foreach ($value as $path) {
+                    foreach ($value as $k => $path) {
                         $newPath = ImageProcessor::toWebp($path, 'public');
-                        $processed[] = $newPath;
+                        // Preserve the key for Filament FileUpload state compatibility
+                        $processed[$k] = $newPath;
                     }
                     $value = $processed;
                 } elseif (is_string($value)) {
