@@ -38,6 +38,10 @@ class AppServiceProvider extends ServiceProvider
             \Laravel\Mcp\Facades\Mcp::local('default', DefaultServer::class);
         }
 
+        if (str_starts_with(config('app.url'), 'https://')) {
+            \Illuminate\Support\Facades\URL::forceScheme('https');
+        }
+
         // Share categories and settings with all views (cached per request)
         View::composer('*', function ($view) {
             static $sharedData = null;
